@@ -25,7 +25,7 @@ GLdouble centerz = 0;
 GLfloat kat_obrotu = 0;
 
 void initGL() {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set background color to black and opaque
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set background color
 	glClearDepth(1.0f);                   // Set background depth to farthest
 	glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
 	glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
@@ -41,7 +41,7 @@ void Display()
 	glMatrixMode(GL_MODELVIEW);  
 	glLoadIdentity();
 
-	float x2 = sin(glm::radians(kat_obrotu)) * 5;		//tutaj powinno byæ 5.19615  (sqrt(27))
+	float x2 = sin(glm::radians(kat_obrotu)) * 5;		
 	float z2 = cos(glm::radians(kat_obrotu)) * 5;
 	gluLookAt( x2 + centerx, eyey, z2 + centerz, centerx, centery, centerz, 0, 1, 0 );	//prosta kamera która obraca siê  i przesuwa w jednej p³aszczyŸnie (xz) 
 
