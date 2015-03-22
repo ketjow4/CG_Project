@@ -6,9 +6,13 @@ At the end this will be Tower Defense game in 3D. We are using OpenGL as graphic
 Camera movement:
 
 x - rotate right 
+
 z - rotate left
 
 left arrow - move left
+
 right arrow - move right
+
 up arrow - move forward
+
 down arrow move backward
