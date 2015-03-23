@@ -1,28 +1,16 @@
-#include <stdlib.h>
-#include <gl/glut.h>
 #include <iostream>
 
-#include <glm/glm.hpp>					//biblioteka pomocnicza zawierajaca operacje na macierzach i wektorach
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "Camera.h"
 
-
+/*Global variables -- temporary*/
 GLfloat anglePyramid = 0.0f;  // Rotational angle for pyramid 
 GLfloat angleCube = 0.0f;     // Rotational angle for cube
 int refreshMills = 15;        // refresh interval in milliseconds
 
+Camera cam;
+
+/*Functions predefinitions*/
 void DrawBox();
-
-// wpó³rzêdne po³o¿enia obserwatora
-GLdouble eyey = 3;
-
-
-// wspó³rzêdne punktu w którego kierunku jest zwrócony obserwator,
-GLdouble centerx = 0;
-GLdouble centery = 0;
-GLdouble centerz = 0;
-
-GLfloat kat_obrotu = 0;
 
 void initGL() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set background color
@@ -41,10 +29,7 @@ void Display()
 	glMatrixMode(GL_MODELVIEW);  
 	glLoadIdentity();
 
-	float x2 = sin(glm::radians(kat_obrotu)) * 5;		
-	float z2 = cos(glm::radians(kat_obrotu)) * 5;
-	gluLookAt( x2 + centerx, eyey, z2 + centerz, centerx, centery, centerz, 0, 1, 0 );	//prosta kamera która obraca siê  i przesuwa w jednej p³aszczyŸnie (xz) 
-
+	cam.UpdateCamera();		//NEW
 
 	glRotatef(angleCube, 0.0f, 0.0f, 1.0f); 
 	DrawBox();
@@ -173,11 +158,12 @@ void timer(int value) {
 
 void Keyboard( unsigned char key, int x, int y )
 {
+	double angle = 5;
 	if( key == 'z')
-		kat_obrotu += 5;
+		cam.Rotate(-angle);	//kat_obrotu += 5;
 
 	if( key == 'x')
-		kat_obrotu -= 5;
+		cam.Rotate(angle);	//kat_obrotu -= 5;
 
 	// odrysowanie okna
 	Reshape( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
@@ -186,30 +172,27 @@ void Keyboard( unsigned char key, int x, int y )
 //Dzia³a nie tykaæ
 void SpecialKeys( int key, int x, int y )
 {
+	double movementSpeed = 0.5;
 	switch( key )
 	{
 		// kursor w lewo
 	case GLUT_KEY_LEFT:
-		centerx -= 0.5 * cos(glm::radians(kat_obrotu));
-		centerz += 0.5 * sin(glm::radians(kat_obrotu));
+		cam.MoveLeft(movementSpeed);
 		break;
 
 		// kursor w górê
 	case GLUT_KEY_UP:
-		centerz -= 0.5 * cos(glm::radians(kat_obrotu));
-		centerx -= 0.5 * sin(glm::radians(kat_obrotu));
+		cam.MoveForward(movementSpeed);
 		break;
 
 		// kursor w prawo
 	case GLUT_KEY_RIGHT:
-		centerx += 0.5 * cos(glm::radians(kat_obrotu));
-		centerz -= 0.5 * sin(glm::radians(kat_obrotu));
+		cam.MoveRight(movementSpeed);
 		break;
 
 		// kursor w dó³
 	case GLUT_KEY_DOWN:
-		centerz += 0.5 * cos(glm::radians(kat_obrotu));
-		centerx += 0.5 * sin(glm::radians(kat_obrotu));
+		cam.MoveBackward(movementSpeed);
 		break;
 	}
 	// odrysowanie okna
@@ -250,6 +233,7 @@ int main( int argc, char * argv[] )
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
+
 
 	return 0;
 }
