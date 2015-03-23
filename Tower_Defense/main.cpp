@@ -13,11 +13,11 @@ Camera cam;
 void DrawBox();
 
 void initGL() {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set background color
-	glClearDepth(1.0f);                   // Set background depth to farthest
-	glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
-	glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
-	glShadeModel(GL_SMOOTH);   // Enable smooth shading
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
+	glClearDepth(1.0f);									// Set background depth to farthest
+	glEnable(GL_DEPTH_TEST);							// Enable depth testing for z-culling
+	glDepthFunc(GL_LEQUAL);								// Set the type of depth-test
+	glShadeModel(GL_SMOOTH);							// Enable smooth shading
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 }
 
@@ -151,8 +151,8 @@ void Reshape( int width, int height )
 
 
 void timer(int value) {
-	glutPostRedisplay();      // Post re-paint request to activate display()
-	glutTimerFunc(refreshMills, timer, 0); // next timer call milliseconds later
+	glutPostRedisplay();					// Post re-paint request to activate display()
+	glutTimerFunc(refreshMills, timer, 0);	// next timer call milliseconds later
 }
 
 
@@ -208,7 +208,7 @@ int main( int argc, char * argv[] )
 	glutInit( & argc, argv );
 
 	// inicjalizacja bufora ramki
-	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA );
+	glutInitDisplayMode(  GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA );
 
 	// rozmiary g³ównego okna programu
 	glutInitWindowSize( 640, 480 );
