@@ -16,3 +16,8 @@ right arrow - move right
 up arrow - move forward
 
 down arrow move backward
+
+
+Assimp for Model Loading
+
+SOIL -- for future if needed to open images in many different formats
