@@ -21,3 +21,6 @@ down arrow move backward
 Assimp for Model Loading
 
 SOIL -- for future if needed to open images in many different formats
+
+USEFUL TOOLS -- READ!
+http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/
