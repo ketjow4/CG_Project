@@ -9,6 +9,15 @@ int refreshMills = 15;        // refresh interval in milliseconds
 
 Camera cam;
 
+
+
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
+
+Assimp::Importer importer;
+
+
 /*Functions predefinitions*/
 void DrawBox();
 
