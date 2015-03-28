@@ -2,7 +2,7 @@
 #define CAMERA_H
 
 #include <stdlib.h>
-#include <gl/glut.h>
+#include <glut.h>
 
 #include <glm/glm.hpp>					//biblioteka pomocnicza zawierajaca operacje na macierzach i wektorach
 #include <glm/gtc/matrix_transform.hpp>
