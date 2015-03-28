@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\T430\Documents\GitHub\CG_Project\assimp-3.1.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\T430\Documents\GitHub\CG_Project\assimp-3.1.1;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\ImageMagick-6\ImageMagick-6;..\glew\include;..\assimp-3.1.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\ImageMagick-6;..\glew;..\assimp-3.1.1;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -56,18 +56,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\T430\Documents\GitHub\CG_Project\assimp-3.1.1\include;..\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ImageMagick-6\ImageMagick-6;..\glew\include;..\assimp-3.1.1\include;..\glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp.lib;glew32.lib;CORE_DB_Magick++_.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy "$(ProjectDir)\DLL\*.dll" "$(ProjectDir)..\Debug\" /i /y
+xcopy "$(ProjectDir)\Shaders\*.*" "$(ProjectDir)..\Debug\Shaders\" /i /y
+xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -98,11 +99,24 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="math_3d.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="basic_lighting.cpp" />
+    <ClCompile Include="texture.cpp" />
+    <ClCompile Include="util.cpp" />
+    <ClCompile Include="pipeline.cpp" />
+    <ClCompile Include="technique.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="basic_lighting.h" />
+    <ClInclude Include="math_3d.h" />
+    <ClInclude Include="pipeline.h" />
+    <ClInclude Include="texture.h" />
+    <ClInclude Include="types.h" />
+    <ClInclude Include="util.h" />
+    <ClInclude Include="technique.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

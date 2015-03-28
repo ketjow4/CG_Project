@@ -12,7 +12,7 @@
 
 class Camera
 {
-private:
+public:
 	// wpó³rzêdne po³o¿enia obserwatora
 	GLdouble eyex;
 	GLdouble eyey;

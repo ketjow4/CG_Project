@@ -1,21 +1,49 @@
 #include "Camera.h"
 
+//#define TEST
+
 Camera::Camera()
 {
+//#ifndef TEST
+	//centerx = 0;
+	//centery = 0;
+	//centerz = 0;
+	//eyex = 0;
+	//eyey = 50;
+	//eyez = 0;
+	//yawAngle = 0;
+//#elif
 	centerx = 0;
-	centery = 0;
-	centerz = 0;
+	centery = -0.2;
+	centerz = 1;
+	eyex = 3;
+	eyey = 7;
+	eyez = -10;
+	//yawAngle = 0;
+//#endif
+	/*centerx = 0;
+	centery = -1;
+	centerz = 1;
 	eyex = 0;
-	eyey = 3;
+	eyey = 15;
 	eyez = 0;
-	yawAngle = 0;
+	yawAngle = 0;*/
+
 }
 
 void Camera::UpdateCamera()
 {
-	eyex = sin(glm::radians(yawAngle)) * 5;		
-	eyez = cos(glm::radians(yawAngle)) * 5;
-	gluLookAt( eyex + centerx, eyey, eyez + centerz, centerx, centery, centerz, 0, 1, 0 );	//prosta kamera która obraca siê  i przesuwa w jednej p³aszczyŸnie (xz) 
+	//eyex = sin(glm::radians(yawAngle)) * 5;		
+	//eyez = cos(glm::radians(yawAngle)) * 5;
+	//gluLookAt( eyex + centerx, eyey, eyez + centerz, centerx, centery, centerz, 0, 1, 0 );	//prosta kamera która obraca siê  i przesuwa w jednej p³aszczyŸnie (xz) 
+#ifndef TEST
+	//dla moich testow
+	//eyex = sin(glm::radians(yawAngle)) * 100;		
+	//eyez = cos(glm::radians(yawAngle)) * 100;
+	//gluLookAt( eyex + centerx, eyey, eyez + centerz, centerx, centery, centerz, 0, 1, 0 );	//prosta kamera która obraca siê  i przesuwa w jednej p³aszczyŸnie (xz) 
+#endif	
+	//eyex = yawAngle;
+	//eyez = yawAngle;
 }
 
 void Camera::SetRotation(double angle)
@@ -39,26 +67,26 @@ void Camera::SetCenterPoint(double x, double y, double z)
 
 void Camera::MoveForward(double delta)
 {
-	centerz -= delta * cos(glm::radians(yawAngle));
-	centerx -= delta * sin(glm::radians(yawAngle));
+	eyez -= delta * cos(glm::radians(yawAngle));
+	eyex -= delta * sin(glm::radians(yawAngle));
 }
 
 void Camera::MoveBackward(double delta)
 {
-	centerz += delta * cos(glm::radians(yawAngle));
-	centerx += delta * sin(glm::radians(yawAngle));
+	eyez += delta * cos(glm::radians(yawAngle));
+	eyex += delta * sin(glm::radians(yawAngle));
 }
 
 void Camera::MoveLeft(double delta)
 {
-	centerx -= delta * cos(glm::radians(yawAngle));
-	centerz += delta * sin(glm::radians(yawAngle));
+	eyex -= delta * cos(glm::radians(yawAngle));
+	eyez += delta * sin(glm::radians(yawAngle));
 }
 
 void Camera::MoveRight(double delta)
 {
-	centerx += delta * cos(glm::radians(yawAngle));
-	centerz -= delta * sin(glm::radians(yawAngle));
+	eyex += delta * cos(glm::radians(yawAngle));
+	eyez -= delta * sin(glm::radians(yawAngle));
 }
 
 void Camera::Rotate(double angle)
