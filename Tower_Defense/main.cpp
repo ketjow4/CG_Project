@@ -19,10 +19,11 @@ int refreshMills = 15;        // refresh interval in milliseconds
 Camera cam;
 
 Mesh* object; 
+Mesh* terain; 
 
 BasicLightingTechnique* light;
 
-
+DirectionalLight m_directionalLight;
 
 void initGL() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
@@ -43,6 +44,10 @@ void initGL() {
  //   glAlphaFunc(GL_NOTEQUAL, 0);
    //glEnable(GL_LIGHT0);
 
+	 m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
+     m_directionalLight.AmbientIntensity = 0.1f;				//sila swiatla globalnego
+	 m_directionalLight.DiffuseIntensity = 0.75f;
+     m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 }
 
 Vector3f m_up = Vector3f(0,1,0);
@@ -107,13 +112,9 @@ void camUpdate()
 // funkcja generuj¹ca scenê 3D
 void Display()
 {
-	//cam.UpdateCamera();
 	camUpdate();
 	glDisable(GL_LIGHTING);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-
-
-	//cam.UpdateCamera();		//NEW
 
 	
 	PersProjInfo pers;
@@ -129,24 +130,22 @@ void Display()
 	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez ), Vector3f(cam.centerx, cam.centery, cam.centerz), m_up);
 	p.SetPerspectiveProj(pers);
 
-	/*glm::mat4 projection = glm::perspective(glm::radians(90.0f), (float)glutGet( GLUT_WINDOW_WIDTH )/(float)glutGet( GLUT_WINDOW_HEIGHT ), 0.1f, 1000.0f);
-	glm::mat4 view = glm::lookAt(glm::vec3(cam.eyex, cam.eyey, cam.eyez ), glm::vec3(cam.centerx, cam.centery, cam.centerz), glm::vec3(0,1,0));
-	glm::mat4 model;
-	model = glm::translate(model, glm::vec3(0,0,10));
-	glm::mat4  projectiont = glm::transpose(projection);
-	glm::mat4 viewt = glm::transpose(view);
-	glm::mat4 result = projectiont * viewt * glm::transpose(model);*/
-	//light->SetWVP(Matrix4f(result[0][0],result[0][1],result[0][2],result[0][3],result[1][0],result[1][1],result[1][2],result[1][3],result[2][0],result[2][1],result[2][2],result[2][3],result[3][0],result[3][1],result[3][2],result[3][3]));
-	
-	
     light->SetWVP(p.GetWVPTrans());
+	 const Matrix4f& WorldTransformation = p.GetWorldTrans();
+      light->SetWorldMatrix(WorldTransformation);
+      light->SetDirectionalLight(m_directionalLight);
+
 	object->Render();
+	p.Scale(0.1f, 0.1f, 0.1f);
 	p.Rotate(0.0f,0.0f, 0.0f);
 	p.WorldPos(0.0f,-5.0f,10.0f);
 	light->SetWVP(p.GetWVPTrans());
 	object->Render();
 
-
+	p.Scale(0.5f, 0.5f, 0.5f);
+	p.WorldPos(0.0f,-90.0f,0.0f);
+	light->SetWVP(p.GetWVPTrans());
+	//terain->Render();
 	
 	
 	glFlush();
@@ -302,6 +301,12 @@ int main( int argc, char * argv[] )
 
 	light = new BasicLightingTechnique();
 	object = new Mesh();
+	//terain = new Mesh();
+
+	/*if(terain->LoadMesh("Models/Small/SmallTropicalIsland.obj"))
+	{
+		cout << "udalos sie wczystac teren" << endl;
+	}*/
 
 	if (!light->Init()) {
             printf("Error initializing the lighting technique\n");
