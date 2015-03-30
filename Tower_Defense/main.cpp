@@ -8,12 +8,7 @@
 
 
 /*Global variables -- temporary*/
-GLfloat anglePyramid = 0.0f;  // Rotational angle for pyramid 
-GLfloat angleCube = 0.0f;     // Rotational angle for cube
 int refreshMills = 15;        // refresh interval in milliseconds
-
-#define TEST
-
 
 
 Camera cam;
@@ -34,85 +29,22 @@ void initGL() {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 	glEnable( GL_TEXTURE_2D );
 	
-
-	// 	glEnable( GL_COLOR_MATERIAL );
- //   glColorMaterial( GL_FRONT, GL_AMBIENT );
-	////glDisable(GL_BLEND);
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	//glEnable(GL_ALPHA_TEST);
- //   glAlphaFunc(GL_NOTEQUAL, 0);
-   //glEnable(GL_LIGHT0);
-
 	 m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
      m_directionalLight.AmbientIntensity = 0.1f;				//sila swiatla globalnego
 	 m_directionalLight.DiffuseIntensity = 0.75f;
      m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 }
 
-Vector3f m_up = Vector3f(0,1,0);
-float m_AngleV;
-
-void camInit()
-{
-	Vector3f HTarget(cam.centerx, 0.0, cam.centerz);
-    HTarget.Normalize();
-    
-    if (HTarget.z >= 0.0f)
-    {
-        if (HTarget.x >= 0.0f)
-        {
-            cam.yawAngle = 360.0f - ToDegree(asin(HTarget.z));
-        }
-        else
-        {
-            cam.yawAngle = 180.0f + ToDegree(asin(HTarget.z));
-        }
-    }
-    else
-    {
-        if (HTarget.x >= 0.0f)
-        {
-            cam.yawAngle = ToDegree(asin(-HTarget.z));
-        }
-        else
-        {
-            cam.yawAngle = 90.0f + ToDegree(asin(-HTarget.z));
-        }
-    }
-    
-	m_AngleV = -ToDegree(asin(cam.centery));
-}
-
 
 void camUpdate()
 {
-	const Vector3f Vaxis(0.0f, 1.0f, 0.0f);
 
-    // Rotate the view vector by the horizontal angle around the vertical axis
-    Vector3f View(1.0f, 0.0f, 0.0f);
-	View.Rotate(cam.yawAngle, Vaxis);
-    View.Normalize();
-
-    // Rotate the view vector by the vertical angle around the horizontal axis
-    Vector3f Haxis = Vaxis.Cross(View);
-    Haxis.Normalize();
-	View.Rotate(45, Haxis);
-       
-	View.Normalize();
-
-	cam.centerx = View.x;
-	cam.centery = View.y;
-	cam.centerz = View.z;
-
-	m_up = View.Normalize().Cross(Haxis);
-    m_up.Normalize();
 }
 
 // funkcja generuj¹ca scenê 3D
 void Display()
 {
-	camUpdate();
+	cam.UpdateCamera();
 	glDisable(GL_LIGHTING);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
@@ -127,7 +59,7 @@ void Display()
 	p.Scale(0.1f, 0.1f, 0.1f);
     p.Rotate(0.0f,90.0f, 0.0f);
     p.WorldPos(0.0f, 0.0f, 10.0f);
-	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez ), Vector3f(cam.centerx, cam.centery, cam.centerz), m_up);
+	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez ), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	p.SetPerspectiveProj(pers);
 
     light->SetWVP(p.GetWVPTrans());
@@ -185,12 +117,10 @@ void Keyboard( unsigned char key, int x, int y )
 	double angle = 5;
 	if( key == 'z')
 	{
-		//cam.eyey -= 0.5;
 		cam.Rotate(-angle);	//kat_obrotu += 5;
 	}
 	if( key == 'x')
 	{
-		//cam.eyey += 0.5;
 		cam.Rotate(angle);	//kat_obrotu -= 5;
 	}
 
@@ -202,61 +132,24 @@ void Keyboard( unsigned char key, int x, int y )
 void SpecialKeys( int key, int x, int y )
 {
 	double movementSpeed = 0.5;
-	double STEP_SCALE = 1.0;
-	Vector3f Left = Vector3f(cam.centerx,cam.centery,cam.centerz).Cross(Vector3f(0,1,0));
-	Vector3f Right = Vector3f(0,1,0).Cross(Vector3f(cam.centerx,cam.centery,cam.centerz));
-	
+
 	switch( key )
 	{
 		// kursor w lewo
 	case GLUT_KEY_LEFT:
-#ifdef TEST
-			Left.Normalize();
-			Left *= STEP_SCALE;
-			cam.eyex += Left.x;
-			cam.eyey += Left.y;
-			cam.eyez += Left.z;
-#else
 			cam.MoveLeft(movementSpeed);
-#endif
 		break;
-
 		// kursor w górê
 	case GLUT_KEY_UP:
-		
-
-#ifdef TEST
-		cam.eyex += (Vector3f(cam.centerx,cam.centery,cam.centerz) * STEP_SCALE).x;
-		//cam.eyey += (Vector3f(cam.centerx,cam.centery,cam.centerz) * STEP_SCALE).y;
-		cam.eyez += (Vector3f(cam.centerx,cam.centery,cam.centerz) * STEP_SCALE).z;
-#else
 		cam.MoveForward(movementSpeed);
-#endif
 		break;
-
 		// kursor w prawo
 	case GLUT_KEY_RIGHT:
-#ifdef TEST		            
-            Right.Normalize();
-            Right *= STEP_SCALE;
-            cam.eyex += Right.x;
-			cam.eyey += Right.y;
-			cam.eyez += Right.z;
-#else
 		cam.MoveRight(movementSpeed);
-
-#endif
 		break;
-
 		// kursor w dó³
 	case GLUT_KEY_DOWN:
-		#ifdef TEST	
-		cam.eyex -= (Vector3f(cam.centerx,cam.centery,cam.centerz) * STEP_SCALE).x;
-		//cam.eyey -= (Vector3f(cam.centerx,cam.centery,cam.centerz) * STEP_SCALE).y;
-		cam.eyez -= (Vector3f(cam.centerx,cam.centery,cam.centerz) * STEP_SCALE).z;
-#else
 		cam.MoveBackward(movementSpeed);
-#endif
 		break;
 	}
 	// odrysowanie okna
@@ -268,7 +161,6 @@ void SpecialKeys( int key, int x, int y )
 
 int main( int argc, char * argv[] )
 {
-
 	Magick::InitializeMagick(*argv);
 	// inicjalizacja biblioteki GLUT
 	glutInit( & argc, argv );
@@ -314,7 +206,7 @@ int main( int argc, char * argv[] )
         }
 
 	light->Enable();
-	camInit();
+	//camInit();
 
 
 	if( object->LoadMesh("Models/phoenix_ugv.md2") )

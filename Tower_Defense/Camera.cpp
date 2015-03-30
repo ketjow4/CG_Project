@@ -4,46 +4,68 @@
 
 Camera::Camera()
 {
-//#ifndef TEST
-	//centerx = 0;
-	//centery = 0;
-	//centerz = 0;
-	//eyex = 0;
-	//eyey = 50;
-	//eyez = 0;
-	//yawAngle = 0;
-//#elif
 	centerx = 0;
 	centery = -0.2;
 	centerz = 1;
 	eyex = 3;
 	eyey = 7;
 	eyez = -10;
-	//yawAngle = 0;
-//#endif
-	/*centerx = 0;
-	centery = -1;
-	centerz = 1;
-	eyex = 0;
-	eyey = 15;
-	eyez = 0;
-	yawAngle = 0;*/
+	STEP_SCALE = 1.0;
+	m_up = Vector3f(0,1,0);
+
+
+	Vector3f HTarget(centerx, 0.0, centerz);
+    HTarget.Normalize();
+    
+    if (HTarget.z >= 0.0f)
+    {
+        if (HTarget.x >= 0.0f)
+        {
+            yawAngle = 360.0f - ToDegree(asin(HTarget.z));
+        }
+        else
+        {
+           yawAngle = 180.0f + ToDegree(asin(HTarget.z));
+        }
+    }
+    else
+    {
+        if (HTarget.x >= 0.0f)
+        {
+            yawAngle = ToDegree(asin(-HTarget.z));
+        }
+        else
+        {
+            yawAngle = 90.0f + ToDegree(asin(-HTarget.z));
+        }
+    }
+    
+	m_AngleV = -ToDegree(asin(centery));
 
 }
 
 void Camera::UpdateCamera()
 {
-	//eyex = sin(glm::radians(yawAngle)) * 5;		
-	//eyez = cos(glm::radians(yawAngle)) * 5;
-	//gluLookAt( eyex + centerx, eyey, eyez + centerz, centerx, centery, centerz, 0, 1, 0 );	//prosta kamera która obraca siê  i przesuwa w jednej p³aszczyŸnie (xz) 
-#ifndef TEST
-	//dla moich testow
-	//eyex = sin(glm::radians(yawAngle)) * 100;		
-	//eyez = cos(glm::radians(yawAngle)) * 100;
-	//gluLookAt( eyex + centerx, eyey, eyez + centerz, centerx, centery, centerz, 0, 1, 0 );	//prosta kamera która obraca siê  i przesuwa w jednej p³aszczyŸnie (xz) 
-#endif	
-	//eyex = yawAngle;
-	//eyez = yawAngle;
+		const Vector3f Vaxis(0.0f, 1.0f, 0.0f);
+
+    // Rotate the view vector by the horizontal angle around the vertical axis
+    Vector3f View(1.0f, 0.0f, 0.0f);
+	View.Rotate(yawAngle, Vaxis);
+    View.Normalize();
+
+    // Rotate the view vector by the vertical angle around the horizontal axis
+    Vector3f Haxis = Vaxis.Cross(View);
+    Haxis.Normalize();
+	View.Rotate(45, Haxis);
+       
+	View.Normalize();
+
+	centerx = View.x;
+	centery = View.y;
+	centerz = View.z;
+
+	m_up = View.Normalize().Cross(Haxis);
+    m_up.Normalize();
 }
 
 void Camera::SetRotation(double angle)
@@ -67,26 +89,38 @@ void Camera::SetCenterPoint(double x, double y, double z)
 
 void Camera::MoveForward(double delta)
 {
-	eyez -= delta * cos(glm::radians(yawAngle));
-	eyex -= delta * sin(glm::radians(yawAngle));
+	eyex += (Vector3f(centerx,centery,centerz) * STEP_SCALE).x;
+	//eyey += (Vector3f(centerx,centery,centerz) * STEP_SCALE).y;
+	eyez += (Vector3f(centerx,centery,centerz) * STEP_SCALE).z;
 }
 
 void Camera::MoveBackward(double delta)
 {
-	eyez += delta * cos(glm::radians(yawAngle));
-	eyex += delta * sin(glm::radians(yawAngle));
+	eyex -= (Vector3f(centerx,centery,centerz) * STEP_SCALE).x;
+	//eyey += (Vector3f(centerx,centery,centerz) * STEP_SCALE).y;
+	eyez -= (Vector3f(centerx,centery,centerz) * STEP_SCALE).z;
 }
 
 void Camera::MoveLeft(double delta)
 {
-	eyex -= delta * cos(glm::radians(yawAngle));
-	eyez += delta * sin(glm::radians(yawAngle));
+	Vector3f Left = Vector3f(centerx,centery,centerz).Cross(Vector3f(0,1,0));
+
+	Left.Normalize();
+	Left *= STEP_SCALE;
+	eyex += Left.x;
+	eyey += Left.y;
+	eyez += Left.z;
 }
 
 void Camera::MoveRight(double delta)
 {
-	eyex += delta * cos(glm::radians(yawAngle));
-	eyez -= delta * sin(glm::radians(yawAngle));
+	Vector3f Right = Vector3f(0,1,0).Cross(Vector3f(centerx,centery,centerz));
+
+	Right.Normalize();
+	Right *= STEP_SCALE;
+	eyex += Right.x;
+	eyey += Right.y;
+	eyez += Right.z;
 }
 
 void Camera::Rotate(double angle)

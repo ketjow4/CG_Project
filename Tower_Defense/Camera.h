@@ -8,7 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
+#include "math_3d.h"
 
 class Camera
 {
@@ -25,6 +25,11 @@ public:
 	GLdouble centerz;
 
 	GLfloat yawAngle;
+
+	double STEP_SCALE;
+
+	Vector3f m_up;
+	float m_AngleV;
 
 public:
 
