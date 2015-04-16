@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "basic_lighting.h"
 #include "pipeline.h"
+#include "Terrain.h"
 
 
 /*Global variables -- temporary*/
@@ -20,6 +21,8 @@ BasicLightingTechnique* light;
 
 DirectionalLight m_directionalLight;
 
+Terrain* terrain;
+
 void initGL() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
 	glClearDepth(1.0f);									// Set background depth to farthest
@@ -33,6 +36,9 @@ void initGL() {
      m_directionalLight.AmbientIntensity = 0.1f;				//sila swiatla globalnego
 	 m_directionalLight.DiffuseIntensity = 0.75f;
      m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
+
+	 terrain = new Terrain();
+	 
 }
 
 
@@ -62,10 +68,14 @@ void Display()
 	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez ), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	p.SetPerspectiveProj(pers);
 
+	
+
     light->SetWVP(p.GetWVPTrans());
 	 const Matrix4f& WorldTransformation = p.GetWorldTrans();
       light->SetWorldMatrix(WorldTransformation);
       light->SetDirectionalLight(m_directionalLight);
+
+	  terrain->Render();
 
 	object->Render();
 	p.Scale(0.1f, 0.1f, 0.1f);
@@ -214,7 +224,10 @@ int main( int argc, char * argv[] )
 		cout << "udalo sie wczytac" << endl;
 	}
 
+	terrain->Init("Models/terrain1.bmp", 0.1f);
+
 	glutTimerFunc(0, timer, 0);
+
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
