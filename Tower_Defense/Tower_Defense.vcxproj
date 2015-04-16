@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,13 +19,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -102,7 +102,6 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClCompile Include="math_3d.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="basic_lighting.cpp" />
-    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="pipeline.cpp" />
@@ -114,7 +113,6 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClInclude Include="basic_lighting.h" />
     <ClInclude Include="math_3d.h" />
     <ClInclude Include="pipeline.h" />
-    <ClInclude Include="Terrain.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="util.h" />

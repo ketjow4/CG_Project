@@ -36,5 +36,4 @@ void main()
                                                                                     
     FragColor = texture2D(gSampler, TexCoord0.xy) *                                 
                 (AmbientColor + DiffuseColor);                                      
-
 }
