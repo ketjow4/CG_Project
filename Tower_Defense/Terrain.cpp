@@ -126,56 +126,56 @@ void Terrain::Init(char *filename, float heightFactor)
 		for (int j = 1; j < this->height; ++j)
 		{
 			Vertex t1BottomLeft
-			{
-				{ vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z },
-				{ texCoordS, texCoordT },
-				{ 0.0, 0.0, -1.0 }
-			};
+			(
+				Vector3f( vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z ),
+				Vector2f( texCoordS, texCoordT ),
+				Vector3f( 0.0, 0.0, -1.0)
+			);
 			Vertices.push_back(t1BottomLeft);
 			AddThreeIndices(Indices, index);
 			
 			Vertex t1UpperLeft
-			{
-				{ vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z },
-				{ texCoordS + texCoordSStep, texCoordT },
-				{ 0.0, 0.0, -1.0 }
-			};
+			(
+				Vector3f(vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z),
+				Vector2f(texCoordS + texCoordSStep, texCoordT),
+				Vector3f(0.0, 0.0, -1.0)
+			);
 			Vertices.push_back(t1UpperLeft);
 			AddThreeIndices(Indices, index);
 			
 			Vertex t1UpperRight
-			{
-				{ vertices[i][j].x, vertices[i][j].y, vertices[i][j].z },
-				{ texCoordS + texCoordSStep, texCoordT + texCoordTStep },
-				{ 0.0, 0.0, -1.0 }
-			};
+			(
+				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
+				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
+				Vector3f(0.0, 0.0, -1.0)
+			);
 			Vertices.push_back(t1UpperRight);
 			AddThreeIndices(Indices, index);
 
 			Vertex t2BottomLeft
-			{
-				{ vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z },
-				{ texCoordS, texCoordT },
-				{ 0.0, 0.0, -1.0 }
-			};
+			(
+				Vector3f(vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z),
+				Vector2f(texCoordS, texCoordT),
+				Vector3f(0.0, 0.0, -1.0)
+			);
 			Vertices.push_back(t2BottomLeft);
 			AddThreeIndices(Indices, index);
 
 			Vertex t2UpperRight
-			{
-				{ vertices[i][j].x, vertices[i][j].y, vertices[i][j].z },
-				{ texCoordS + texCoordSStep, texCoordT + texCoordTStep },
-				{ 0.0, 0.0, -1.0 }
-			};
+			(
+				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
+				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
+				Vector3f(0.0, 0.0, -1.0)
+			);
 			Vertices.push_back(t2UpperRight);
 			AddThreeIndices(Indices, index);
 
 			Vertex t2BottomRight
-			{
-				{ vertices[i - 1][j].x, vertices[i - 1][j].y, vertices[i - 1][j].z },
-				{ texCoordS, texCoordT + texCoordTStep },
-				{ 0.0, 0.0, -1.0 }
-			};
+			(
+				Vector3f(vertices[i - 1][j].x, vertices[i - 1][j].y, vertices[i - 1][j].z),
+				Vector2f(texCoordS, texCoordT + texCoordTStep),
+				Vector3f(0.0, 0.0, -1.0)
+			);
 			Vertices.push_back(t2BottomRight);
 			AddThreeIndices(Indices, index);
 			
