@@ -2,6 +2,7 @@
 #include "GL\glew.h"
 #include "math_3d.h"
 #include "texture.h"
+#include "Model.h"
 
 class Terrain
 {
@@ -44,5 +45,8 @@ public:
 
 	// Draws terrain
 	void Render();
+
+	std::vector<MeshEntry> m_Entries;
+    std::vector<Texture*> m_Textures;
 };
 
