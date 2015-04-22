@@ -2,7 +2,7 @@
 #include <assert.h>
 
 
-Mesh::MeshEntry::MeshEntry()
+MeshEntry::MeshEntry()
 {
     VB = INVALID_OGL_VALUE;
     IB = INVALID_OGL_VALUE;
@@ -10,7 +10,7 @@ Mesh::MeshEntry::MeshEntry()
     MaterialIndex = INVALID_MATERIAL;
 };
 
-Mesh::MeshEntry::~MeshEntry()
+MeshEntry::~MeshEntry()
 {
     if (VB != INVALID_OGL_VALUE)
     {
@@ -23,7 +23,7 @@ Mesh::MeshEntry::~MeshEntry()
     }
 }
 
-void Mesh::MeshEntry::Init(const std::vector<Vertex>& Vertices,
+void MeshEntry::Init(const std::vector<Vertex>& Vertices,
                           const std::vector<unsigned int>& Indices)
 {
     NumIndices = Indices.size();

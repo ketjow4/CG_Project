@@ -6,7 +6,8 @@
 #include "basic_lighting.h"
 #include "pipeline.h"
 #include "skinning_technique.h"
-#include "skinned_mesh.h"
+#include "Terrain.h"
+
 
 /*Global variables -- temporary*/
 int refreshMills = 15;        // refresh interval in milliseconds
@@ -26,8 +27,8 @@ BasicLightingTechnique* light;
 
 DirectionalLight m_directionalLight;
 
+Terrain* terrain;
 
-SkinningTechnique* m_pEffect;
 SkinnedMesh m_mesh;
 
 void initGL() {
@@ -40,17 +41,19 @@ void initGL() {
 	glEnable( GL_TEXTURE_2D );
 	
 	 m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-     m_directionalLight.AmbientIntensity = 0.7f;				//sila swiatla globalnego
-	 m_directionalLight.DiffuseIntensity = 0.2f;
+     m_directionalLight.AmbientIntensity = 1.0f;				//sila swiatla globalnego
+	 m_directionalLight.DiffuseIntensity = 0.75f;
      m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
+
+	 terrain = new Terrain();
+	 
 }
 
-float GetRunningTime()
+
+void camUpdate()
 {
-    float RunningTime = (float)((double)GetCurrentTimeMillis() - (double)m_startTime) / 1000.0f;
-    return RunningTime;
-}
 
+}
 
 // funkcja generuj¹ca scenê 3D
 void Display()
@@ -73,20 +76,7 @@ void Display()
 	glDisable(GL_LIGHTING);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
-		 m_pEffect->Enable();
-	 
-	vector<Matrix4f> Transforms;
-               
-    float RunningTime = GetRunningTime();
-
-	 m_mesh.BoneTransform(RunningTime, Transforms);
-        
-        for (uint i = 0 ; i < Transforms.size() ; i++) {
-            m_pEffect->SetBoneTransform(i, Transforms[i]);
-        }
-
-		m_pEffect->SetEyeWorldPos(Vector3f(cam.eyex,cam.eyey,cam.eyez));
-
+	
 	PersProjInfo pers;
 	pers.FOV = 90;
 	pers.Height = 480;
@@ -99,33 +89,29 @@ void Display()
     p.WorldPos(0.0f, 0.0f, 10.0f);
 	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez ), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	p.SetPerspectiveProj(pers);
-	light->Enable();
+
+	
+
     light->SetWVP(p.GetWVPTrans());
 	 const Matrix4f& WorldTransformation = p.GetWorldTrans();
       light->SetWorldMatrix(WorldTransformation);
       light->SetDirectionalLight(m_directionalLight);
 
+	  terrain->Render();
+
 	object->Render();
-	//p.Scale(0.1f, 0.1f, 0.1f);
+	p.Scale(0.1f, 0.1f, 0.1f);
 	p.Rotate(0.0f,0.0f, 0.0f);
 	p.WorldPos(0.0f,-5.0f,10.0f);
 	light->SetWVP(p.GetWVPTrans());
 	object->Render();
-/*
+
 	p.Scale(0.5f, 0.5f, 0.5f);
 	p.WorldPos(0.0f,-90.0f,0.0f);
-	light->SetWVP(p.GetWVPTrans())*/;
+	light->SetWVP(p.GetWVPTrans());
 	//terain->Render();
-	 m_pEffect->Enable();
-	 Vector3f Pos(Vector3f(0.0f, 0.0f, 2.0f));
-        p.WorldPos(Pos);        
-        p.Rotate(270.0f, 180.0f, 0.0f);       
-        m_pEffect->SetWVP(p.GetWVPTrans());
-        m_pEffect->SetWorldMatrix(p.GetWorldTrans());          
 	
-	 m_mesh.Render();
-
-
+	
 	glFlush();
 
 	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
@@ -252,22 +238,7 @@ int main( int argc, char * argv[] )
         }
 
 	light->Enable();
-
-
-
-	 m_pEffect = new SkinningTechnique();
-
-        if (!m_pEffect->Init()) {
-            printf("Error initializing the lighting technique\n");
-            return false;
-        }
-
-    m_pEffect->Enable();
-
-	if( m_mesh.LoadMesh("Models/boblampclean.md5mesh") )
-	{
-		cout << "udalo sie wczytac" << endl;
-	}
+	//camInit();
 
 
 	if( object->LoadMesh("Models/phoenix_ugv.md2") )
@@ -275,7 +246,10 @@ int main( int argc, char * argv[] )
 		cout << "udalo sie wczytac" << endl;
 	}
 
+	terrain->Init("Models/terrain1.bmp", 0.15f);
+
 	glutTimerFunc(0, timer, 0);
+
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();

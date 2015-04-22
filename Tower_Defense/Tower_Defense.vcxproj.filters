@@ -43,6 +43,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="skinning_technique.cpp">
+    <ClCompile Include="Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="skinned_mesh.cpp">
@@ -78,6 +79,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="skinning_technique.h">
+    <ClInclude Include="Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="skinned_mesh.h">
