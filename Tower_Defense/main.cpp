@@ -33,7 +33,7 @@ void initGL() {
 	glEnable( GL_TEXTURE_2D );
 	
 	 m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-     m_directionalLight.AmbientIntensity = 0.1f;				//sila swiatla globalnego
+     m_directionalLight.AmbientIntensity = 1.0f;				//sila swiatla globalnego
 	 m_directionalLight.DiffuseIntensity = 0.75f;
      m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 
