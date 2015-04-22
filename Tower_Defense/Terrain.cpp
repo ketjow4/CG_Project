@@ -1,7 +1,5 @@
 #include "Terrain.h"
 
-#include "Model.h"
-
 Terrain::Terrain()
 {
 }
@@ -12,12 +10,12 @@ Terrain::~Terrain()
 	for (int i = 0; i < this->width; ++i)
 		delete this->vertices[i];
 	delete this->vertices;
-	glDeleteLists(this->terrainList,1);
+	glDeleteLists(this->terrainList, 1);
 }
 
 void Terrain::LoadHeightMap(char *filename)
 {
-	FILE *file = fopen(filename,"rb");
+	FILE *file = fopen(filename, "rb");
 	if (!file) { printf("terrain file error\n"); return; }
 
 	// Get terrain width
@@ -54,7 +52,7 @@ void Terrain::LoadHeightMap(char *filename)
 	delete terrainData;
 }
 
-bool Terrain::IsTriangle2dCollision(float x, float z,const Triangle& triangle)
+bool Terrain::IsTriangle2dCollision(float x, float z, const Triangle& triangle)
 {
 	for (int i = 0; i < 3; ++i)
 	{
@@ -82,7 +80,7 @@ Terrain::Triangle Terrain::GetActiveTriangle(float x, float z)
 	result.vertices[2] = this->vertices[ix2][iz2];
 	if (IsTriangle2dCollision(x, z, result))
 		return result;
-	
+
 	// Check the latter one
 	result.vertices[0] = this->vertices[ix1][iz1];
 	result.vertices[1] = this->vertices[ix2][iz2];
@@ -104,7 +102,7 @@ Vector3f Terrain::GetNormal(const Triangle& triangle)
 	v2.x = triangle.vertices[0].x - triangle.vertices[2].x;
 	v2.y = triangle.vertices[0].y - triangle.vertices[2].y;
 	v2.z = triangle.vertices[0].z - triangle.vertices[2].z;
-	Vector3f result =  Vector3f((v1.y*v2.z - v1.z*v2.y), (v1.z*v2.x - v1.x*v2.z), (v1.x*v2.y - v1.y*v2.x));
+	Vector3f result = Vector3f((v1.y*v2.z - v1.z*v2.y), (v1.z*v2.x - v1.x*v2.z), (v1.x*v2.y - v1.y*v2.x));
 	return result.Normalize();
 }
 
@@ -113,126 +111,98 @@ void Terrain::Init(char *filename, float heightFactor)
 	this->heightFactor = heightFactor;
 	this->LoadHeightMap(filename);
 	glEnable(GL_TEXTURE_2D);
-	/*this->texture = new Texture(GL_TEXTURE_2D, "Models/terrain1texture.bmp");
-	this->texture->Load();
-	this->texture->Bind(GL_TEXTURE0);*/
-	//this->terrainList = glGenLists(1);
-	//glNewList(this->terrainList, GL_COMPILE);
-	//{
-		//glColor4f(1.0, 1.0, 1.0, 1.0);
-		//glBegin(GL_TRIANGLES);
-		//{
-			float texCoordS = 0.0;
-			float texCoordSStep = 1.0 / (float)this->width;
-			float texCoordTStep = 1.0 / (float)this->height;
+
+	float texCoordS = 0.0;
+	float texCoordSStep = 1.0 / (float)this->width;
+	float texCoordTStep = 1.0 / (float)this->height;
+
+	std::vector<Vertex> Vertices;
+	std::vector<unsigned int> Indices;
+
+	unsigned int index = 0;
+	for (int i = 1; i < this->width; ++i)
+	{
+		float texCoordT = 0.0;
+		for (int j = 1; j < this->height; ++j)
+		{
+			Vertex t1BottomLeft
+			{
+				{ vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z },
+				{ texCoordS, texCoordT },
+				{ 0.0, 0.0, -1.0 }
+			};
+			Vertices.push_back(t1BottomLeft);
+			AddThreeIndices(Indices, index);
 			
-			 std::vector<Vertex> Vertices;
-    std::vector<unsigned int> Indices;
+			Vertex t1UpperLeft
+			{
+				{ vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z },
+				{ texCoordS + texCoordSStep, texCoordT },
+				{ 0.0, 0.0, -1.0 }
+			};
+			Vertices.push_back(t1UpperLeft);
+			AddThreeIndices(Indices, index);
 			
-	  Vertex v(Vector3f(0.0 , -100.0, 0.0),
-                 Vector2f(0.0, 0.0),
-                 Vector3f(0.0,0.0,-1.0));
+			Vertex t1UpperRight
+			{
+				{ vertices[i][j].x, vertices[i][j].y, vertices[i][j].z },
+				{ texCoordS + texCoordSStep, texCoordT + texCoordTStep },
+				{ 0.0, 0.0, -1.0 }
+			};
+			Vertices.push_back(t1UpperRight);
+			AddThreeIndices(Indices, index);
 
-        Vertices.push_back(v);
+			Vertex t2BottomLeft
+			{
+				{ vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z },
+				{ texCoordS, texCoordT },
+				{ 0.0, 0.0, -1.0 }
+			};
+			Vertices.push_back(t2BottomLeft);
+			AddThreeIndices(Indices, index);
 
-		Indices.push_back(0);
-        Indices.push_back(1);
-        Indices.push_back(2);
+			Vertex t2UpperRight
+			{
+				{ vertices[i][j].x, vertices[i][j].y, vertices[i][j].z },
+				{ texCoordS + texCoordSStep, texCoordT + texCoordTStep },
+				{ 0.0, 0.0, -1.0 }
+			};
+			Vertices.push_back(t2UpperRight);
+			AddThreeIndices(Indices, index);
+
+			Vertex t2BottomRight
+			{
+				{ vertices[i - 1][j].x, vertices[i - 1][j].y, vertices[i - 1][j].z },
+				{ texCoordS, texCoordT + texCoordTStep },
+				{ 0.0, 0.0, -1.0 }
+			};
+			Vertices.push_back(t2BottomRight);
+			AddThreeIndices(Indices, index);
+			
+			texCoordT += texCoordTStep;
+		}
+		texCoordS += texCoordSStep;
+	}
 
 
-		 Vertex v1(Vector3f(300.0 , 0.0, 0.0),
-                 Vector2f(1.0, 0.0),
-                 Vector3f(0.0,0.0,-1.0));
-
-        Vertices.push_back(v1);
-
-		Indices.push_back(3);
-        Indices.push_back(4);
-        Indices.push_back(5);
-
-		 Vertex v2(Vector3f(300.0 , 0.0, 300.0),
-                 Vector2f(1.0, 1.0),
-                 Vector3f(0.0,0.0,-1.0));
-
-        Vertices.push_back(v2);
-
-		Indices.push_back(6);
-        Indices.push_back(7);
-        Indices.push_back(8);
-    
-		m_Entries.resize(1);
-    m_Entries[0].Init(Vertices, Indices);
+	m_Entries.resize(1);
+	m_Entries[0].Init(Vertices, Indices);
 	m_Entries[0].MaterialIndex = 0;
 
 	m_Textures.resize(1);
-	 m_Textures[0] = NULL;
-	 m_Textures[0] = new Texture(GL_TEXTURE_2D, "Models/terrain1texture.bmp");
+	m_Textures[0] = NULL;
+	m_Textures[0] = new Texture(GL_TEXTURE_2D, "Models/terrain1texture.bmp");
 
+	if (!m_Textures[0]->Load()) {
+		printf("Error loading texture '%s'\n", "Models/terrain1texture.bmp");
+		delete m_Textures[0];
+		m_Textures[0] = NULL;
 
+	}
+	else {
+		printf("Loaded texture '%s'\n", "Models/terrain1texture.bmp");
+	}
 
-	  if (!m_Textures[0]->Load()) {
-                    printf("Error loading texture '%s'\n", "Models/terrain1texture.bmp");
-                    delete m_Textures[0];
-                    m_Textures[0] = NULL;
-                   
-                }
-                else {
-                    printf("Loaded texture '%s'\n", "Models/terrain1texture.bmp");
-                }
-			
-		/*	glTexCoord2f(0.0, 0.0);
-			glNormal3f(0.0, 0.0, -1.0);
-			glVertex3f(0.0, -100.0, 0.0);*/
-			
-			/*glTexCoord2f(1.0, 0.0);
-			glNormal3f(0.0, 0.0, -1.0);
-			glVertex3f(300.0, 0.0, 0.0);*/
-			
-			/*glTexCoord2f(1.0, 1.0);
-			glNormal3f(0.0, 0.0, -1.0);
-			glVertex3f(300.0, 0.0, 300.0);*/
-
-
-			//for (int i = 1; i < this->width; ++i)
-			//{
-			//	float texCoordT = 0.0;
-			//	for (int j = 1; j < this->height; ++j)
-			//	{
-
-			//		glTexCoord2f(texCoordS, texCoordT); //glTexCoord2f(0.0, 0.0);
-			//		glNormal3f(0.0, 0.0, 1.0);
-			//		glVertex3f(vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z);
-
-			//		glTexCoord2f(texCoordS + texCoordSStep, texCoordT); //glTexCoord2f(1.0, 0.0);
-			//		glNormal3f(0.0, 0.0, 1.0);
-			//		glVertex3f(vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z);
-			//		
-			//		glTexCoord2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep); //glTexCoord2f(1.0, 1.0);
-			//		glNormal3f(0.0, 0.0, 1.0);
-			//		glVertex3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z);
-
-			//		glTexCoord2f(texCoordS, texCoordT); //glTexCoord2f(0.0, 0.0);
-			//		glNormal3f(0.0, 0.0, 1.0);
-			//		glVertex3f(vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z);
-
-			//		glTexCoord2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep); //glTexCoord2f(1.0, 1.0);
-			//		glNormal3f(0.0, 0.0, 1.0);
-			//		glVertex3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z);
-
-			//		glTexCoord2f(texCoordS, texCoordT + texCoordTStep); //glTexCoord2f(0.0, 1.0);
-			//		glNormal3f(0.0, 0.0, 1.0);
-			//		glVertex3f(vertices[i - 1][j].x, vertices[i - 1][j].y, vertices[i - 1][j].z);
-
-			//		texCoordT += texCoordTStep;
-
-			//		//printf("%f ; %f\n", texCoordX, texCoordY);
-			//	}
-			//	texCoordS += texCoordSStep;
-			//}
-		//}
-		//glEnd();
-	//}
-	//glEndList();
 }
 
 
@@ -250,32 +220,36 @@ float Terrain::GetTerrainHeight(float x, float z)
 
 void Terrain::Render()
 {
-	/*this->texture->Bind(GL_TEXTURE0);
-	glCallList(this->terrainList);*/
 
-	 glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 
-    for (unsigned int i = 0 ; i < m_Entries.size() ; i++) {
-        glBindBuffer(GL_ARRAY_BUFFER, m_Entries[i].VB);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
-        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20);
+	for (unsigned int i = 0; i < m_Entries.size(); i++) {
+		glBindBuffer(GL_ARRAY_BUFFER, m_Entries[i].VB);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entries[i].IB);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entries[i].IB);
 
-        const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
+		const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
 
-        if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
-            m_Textures[MaterialIndex]->Bind(GL_TEXTURE0);
-        }
-		
-        glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
-		//glDrawArrays(GL_TRIANGLES,0,m_Entries[i].NumIndices);
-    }
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
+		if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
+			m_Textures[MaterialIndex]->Bind(GL_TEXTURE0);
+		}
 
+		glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
+	}
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+
+}
+
+void Terrain::AddThreeIndices(std::vector<unsigned int> &indicesVec, unsigned int &firstIndex)
+{
+	indicesVec.push_back(firstIndex++);
+	indicesVec.push_back(firstIndex++);
+	indicesVec.push_back(firstIndex++);
 }

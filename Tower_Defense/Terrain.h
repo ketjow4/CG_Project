@@ -32,7 +32,7 @@ private:
 	// Calculates normal to plane of triangle
 	Vector3f GetNormal(const Triangle& triangle);
 
-	
+	void AddThreeIndices(std::vector<unsigned int> &indicesVec, unsigned int &firstIndex);
 public:
 	Terrain();
 	~Terrain();

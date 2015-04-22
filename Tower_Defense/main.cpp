@@ -224,7 +224,7 @@ int main( int argc, char * argv[] )
 		cout << "udalo sie wczytac" << endl;
 	}
 
-	terrain->Init("Models/terrain1.bmp", 0.1f);
+	terrain->Init("Models/terrain1.bmp", 0.15f);
 
 	glutTimerFunc(0, timer, 0);
 
