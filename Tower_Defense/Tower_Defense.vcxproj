@@ -106,6 +106,7 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="skinning_technique.cpp" />
     <ClCompile Include="texture.cpp" />
+    <ClCompile Include="Tower.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="technique.cpp" />
@@ -120,6 +121,7 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClInclude Include="skinning_technique.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="texture.h" />
+    <ClInclude Include="Tower.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="technique.h" />

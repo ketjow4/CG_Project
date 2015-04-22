@@ -37,6 +37,9 @@
     <ClCompile Include="basic_lighting.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Tower.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basic_lighting.h">
@@ -73,6 +76,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="util.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Tower.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
