@@ -6,6 +6,7 @@
 #include "basic_lighting.h"
 #include "pipeline.h"
 #include "skinning_technique.h"
+#include "skinned_mesh.h"
 #include "Terrain.h"
 
 
