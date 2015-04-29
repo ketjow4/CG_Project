@@ -49,7 +49,7 @@ void Path::LoadPathMap(char *filename)
 	{
 		for (int i = 1; i <= width; ++i, pdI += 3)
 		{
-			map[i][j] = RgbToPointChar(RgbPoint(pathData[pdI + 2], pathData[pdI + 1], pathData[pdI]));
+			map[i][width - j + 1] = RgbToPointChar(RgbPoint(pathData[pdI + 2], pathData[pdI + 1], pathData[pdI]));
 			//auto newP = RgbPoint(pathData[pdI + 2], pathData[pdI + 1], pathData[pdI]);
 			//bool hasIt = false;
 			//for (auto p : diffrentPoints)
