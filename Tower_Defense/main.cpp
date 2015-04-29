@@ -14,9 +14,9 @@
 int refreshMills = 15;        // refresh interval in milliseconds
 
 long long m_frameTime;
-	long long m_startTime;
-	int m_frameCount;
-        int m_fps;
+long long m_startTime;
+int m_frameCount;
+int m_fps;
 
 
 Camera cam;
@@ -33,7 +33,8 @@ Path* path;
 
 //SkinnedMesh m_mesh;
 
-void initGL() {
+void initGL() 
+{
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
 	glClearDepth(1.0f);									// Set background depth to farthest
 	glEnable(GL_DEPTH_TEST);							// Enable depth testing for z-culling
@@ -42,11 +43,17 @@ void initGL() {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 	glEnable( GL_TEXTURE_2D );
 	
-	 m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-     m_directionalLight.AmbientIntensity = 1.0f;				//sila swiatla globalnego
-	 m_directionalLight.DiffuseIntensity = 0.75f;
-     m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
+	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
+    m_directionalLight.AmbientIntensity = 1.0f;				//sila swiatla globalnego
+	m_directionalLight.DiffuseIntensity = 0.75f;
+    m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 
+	cam.eyey = 256;//100;
+	cam.eyex = 256;//250;
+	cam.eyez = 0;
+	cam.centerx = 256;
+	cam.centerz = 256;
+	cam.centery = 0;
 }
 
 
@@ -93,18 +100,29 @@ void Display()
 	
 
     light->SetWVP(p.GetWVPTrans());
-	 const Matrix4f& WorldTransformation = p.GetWorldTrans();
-      light->SetWorldMatrix(WorldTransformation);
-      light->SetDirectionalLight(m_directionalLight);
+	const Matrix4f& WorldTransformation = p.GetWorldTrans();
+    light->SetWorldMatrix(WorldTransformation);
+    light->SetDirectionalLight(m_directionalLight);
 
-	  terrain->Render();
+	p.Scale(1.f, 1.f, 1.f);
+	p.Rotate(0.0f, 0.0f, 0.0f);
+	p.WorldPos(0.f, 0.f, 0.f);
+	light->SetWVP(p.GetWVPTrans());
+	terrain->Render();
 
-	object->Render();
+	
+	static int pathIndex = 0;
 	p.Scale(0.1f, 0.1f, 0.1f);
 	p.Rotate(0.0f,0.0f, 0.0f);
-	p.WorldPos(0.0f,-5.0f,10.0f);
+	float x = path->pathPoints[pathIndex].first;
+	float z = path->pathPoints[pathIndex].second;
+	float y = terrain->GetTerrainHeight(x, z);
+	p.WorldPos(x,y,z);
 	light->SetWVP(p.GetWVPTrans());
 	object->Render();
+
+	if (++pathIndex >= path->pathPoints.size())
+		pathIndex = 0;
 
 	p.Scale(0.5f, 0.5f, 0.5f);
 	p.WorldPos(0.0f,-90.0f,0.0f);
@@ -134,7 +152,8 @@ void Reshape( int width, int height )
 	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
 	glLoadIdentity();             // Reset
 	// Enable perspective projection with fovy, aspect, zNear and zFar
-	gluPerspective(90.0f, aspect, 0.1f, 1000.0f);		//kat widzenia, aspect ratio, zNear, zFar
+	//gluPerspective(90.0f, aspect, 0.1f, 1000.0f);		//kat widzenia, aspect ratio, zNear, zFar
+	glOrtho(-1000, 1000, -1000, 1000, -1000, 1000);
 }
 
 
@@ -163,7 +182,7 @@ void Keyboard( unsigned char key, int x, int y )
 //Dzia³a nie tykaæ
 void SpecialKeys( int key, int x, int y )
 {
-	double movementSpeed = 0.5;
+	double movementSpeed = 50.0;
 
 	switch( key )
 	{
@@ -251,6 +270,8 @@ int main( int argc, char * argv[] )
 
 	path = new Path();
 	path->Init("Models/path1.bmp");
+
+
 
 	glutTimerFunc(0, timer, 0);
 

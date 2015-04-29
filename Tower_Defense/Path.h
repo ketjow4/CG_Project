@@ -8,9 +8,10 @@
 class Path
 {
 public:
+	std::vector<std::pair<float, float>> pathPoints;
+
 	Path();
 	~Path();
-
 	void Init(char *filename);
 private:
 	struct RgbPoint
@@ -26,7 +27,6 @@ private:
 	};
 
 	int width, height;
-	std::vector<std::pair<float,float>> pathPoints;
 
 	// Black (0,0,0)
 	const static RgbPoint pathPoint;
