@@ -4,7 +4,8 @@ const Path::RgbPoint Path::pathPoint(0, 0, 0);
 const Path::RgbPoint Path::beginPoint(0, 0, 255);
 const Path::RgbPoint Path::endPoint(255, 0, 0);
 
-Path::Path()
+Path::Path(Terrain* terrain)
+	: terrain(terrain)
 {
 }
 
@@ -16,6 +17,31 @@ Path::~Path()
 void Path::Init(char *filename)
 {
 	LoadPathMap(filename);
+}
+
+Vector3f Path::GetRotation(const Vector3f &currentPos, int nextPathPointIndex) const
+{
+	Vector3f rotation(0.f, 0.f, 0.f);
+	const int dIndexForRotY = 40;
+	const int dIndexForRotX = 1;
+	const float maxRotXValue = 30.f;
+	const float radToDeg = 180.0 / 3.141592;
+
+	float targetX = pathPoints[std::min(nextPathPointIndex + dIndexForRotY, (int)pathPoints.size() - 1)].first;
+	float targetZ = pathPoints[std::min(nextPathPointIndex + dIndexForRotY, (int)pathPoints.size() - 1)].second;
+	float targetY = terrain->GetTerrainHeight(targetX, targetZ);
+	Vector3f lookAt(targetX - currentPos.x, targetY - currentPos.y, targetZ - currentPos.z);
+	lookAt = lookAt.Normalize();
+	rotation.y = 90.0 + atan2(lookAt.z, lookAt.x) * radToDeg;
+
+	//targetX = pathPoints[std::min(nextPathPointIndex + dIndexForRotX, (int)pathPoints.size() - 1)].first;
+	//targetZ = pathPoints[std::min(nextPathPointIndex + dIndexForRotX, (int)pathPoints.size() - 1)].second;
+	//targetY = terrain->GetTerrainHeight(targetX, targetZ);
+	//lookAt = Vector3f(targetX - currentPos.x, targetY - currentPos.y, targetZ - currentPos.z).Normalize();
+	//rotation.x = atan2(lookAt.y, sqrt(lookAt.x * lookAt.x + lookAt.z * lookAt.z)) * radToDeg;
+	//rotation.x = std::max(std::min(rotation.x, maxRotXValue),-maxRotXValue);
+	
+	return rotation;
 }
 
 void Path::LoadPathMap(char *filename)

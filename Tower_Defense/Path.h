@@ -4,15 +4,19 @@
 #include <vector>
 #include <set>
 #include <algorithm>
+#include "math_3d.h"
+#include "Terrain.h"
 
 class Path
 {
 public:
 	std::vector<std::pair<float, float>> pathPoints;
+	Terrain* terrain;
 
-	Path();
+	Path(Terrain* terrain);
 	~Path();
 	void Init(char *filename);
+	Vector3f GetRotation(const Vector3f &currentPos, int nextPathPointIndex) const;
 private:
 	struct RgbPoint
 	{

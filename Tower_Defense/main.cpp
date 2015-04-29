@@ -12,7 +12,7 @@
 
 
 /*Global variables -- temporary*/
-int refreshMills = 15;        // refresh interval in milliseconds
+int refreshMills = 30;        // refresh interval in milliseconds
 
 long long m_frameTime;
 long long m_startTime;
@@ -49,7 +49,7 @@ void initGL()
 	m_directionalLight.DiffuseIntensity = 0.75f;
     m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 
-	cam.eyey = 256;//100;
+	cam.eyey = 200;//100;
 	cam.eyex = 256;//250;
 	cam.eyez = 0;
 	cam.centerx = 256;
@@ -114,15 +114,22 @@ void Display()
 	
 	static int pathIndex = 0;
 	p.Scale(0.1f, 0.1f, 0.1f);
-	p.Rotate(0.0f,0.0f, 0.0f);
 	float x = path->pathPoints[pathIndex].first;
 	float z = path->pathPoints[pathIndex].second;
 	float y = terrain->GetTerrainHeight(x, z);
-	p.WorldPos(x,y,z);
+	p.Rotate(path->GetRotation(Vector3f(x,y,z),pathIndex));
+
+	p.WorldPos(x,y+1.0,z);
 	light->SetWVP(p.GetWVPTrans());
 	object->Render();
 
-	if (++pathIndex >= path->pathPoints.size())
+	p.Scale(1, 1, 1);
+	p.WorldPos(256, 80, 256);
+	//p.Rotate(0, 0, 0);
+	light->SetWVP(p.GetWVPTrans());
+	object->Render();
+
+	if (++pathIndex >= path->pathPoints.size() - 1)
 		pathIndex = 0;
 
 	p.Scale(0.5f, 0.5f, 0.5f);
@@ -269,7 +276,7 @@ int main( int argc, char * argv[] )
 	terrain = new Terrain();
 	terrain->Init("Models/terrain1.bmp", 0.15f);
 
-	path = new Path();
+	path = new Path(terrain);
 	path->Init("Models/path1.bmp");
 
 
