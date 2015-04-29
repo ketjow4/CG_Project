@@ -7,6 +7,7 @@
 #include "pipeline.h"
 #include "skinning_technique.h"
 #include "Terrain.h"
+#include "Path.h"
 
 
 /*Global variables -- temporary*/
@@ -21,15 +22,16 @@ long long m_frameTime;
 Camera cam;
 
 Mesh* object; 
-Mesh* terain; 
 
 BasicLightingTechnique* light;
 
 DirectionalLight m_directionalLight;
 
-Terrain* terrain;
 
-SkinnedMesh m_mesh;
+Terrain* terrain;
+Path* path;
+
+//SkinnedMesh m_mesh;
 
 void initGL() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
@@ -45,8 +47,6 @@ void initGL() {
 	 m_directionalLight.DiffuseIntensity = 0.75f;
      m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 
-	 terrain = new Terrain();
-	 
 }
 
 
@@ -246,7 +246,11 @@ int main( int argc, char * argv[] )
 		cout << "udalo sie wczytac" << endl;
 	}
 
+	terrain = new Terrain();
 	terrain->Init("Models/terrain1.bmp", 0.15f);
+
+	path = new Path();
+	path->Init("Models/path1.bmp");
 
 	glutTimerFunc(0, timer, 0);
 
