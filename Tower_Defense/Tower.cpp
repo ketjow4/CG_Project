@@ -24,13 +24,13 @@ void Tower::SetPosition(Vector3f position)
 	this->WorldPosition = position;
 }
 
-void Tower::LoadModel(string filename)
+bool Tower::LoadModel(string filename)
 {
-	this->Model3D.LoadMesh(filename);
+	return this->Model3D.LoadMesh(filename);
 }
 
 
 void Tower::LoadMissile(string filename)
 {
-	this->LoadMissile.LoadMesh(filename);
+//	this->LoadMissile.LoadMesh(filename);
 }

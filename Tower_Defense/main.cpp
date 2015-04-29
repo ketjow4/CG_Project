@@ -8,6 +8,7 @@
 #include "skinning_technique.h"
 #include "skinned_mesh.h"
 #include "Terrain.h"
+#include "Tower.h"
 
 
 /*Global variables -- temporary*/
@@ -29,8 +30,9 @@ BasicLightingTechnique* light;
 DirectionalLight m_directionalLight;
 
 Terrain* terrain;
-
+SkinnedMesh* tower1;
 SkinnedMesh m_mesh;
+SkinningTechnique *m_pEffect;
 
 void initGL() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
@@ -47,13 +49,19 @@ void initGL() {
      m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 
 	 terrain = new Terrain();
-	 
+	 tower1 = new SkinnedMesh();
 }
 
 
 void camUpdate()
 {
 
+}
+
+float GetRunningTime()
+{
+	float RunningTime = (float)((double)GetCurrentTimeMillis() - (double)m_startTime) / 1000.0f;
+	return RunningTime;
 }
 
 // funkcja generuj¹ca scenê 3D
@@ -68,9 +76,6 @@ void Display()
         m_fps = m_frameCount;
         m_frameCount = 0;
     }
-
-
-
 
 
 	cam.UpdateCamera();
@@ -98,6 +103,29 @@ void Display()
       light->SetWorldMatrix(WorldTransformation);
       light->SetDirectionalLight(m_directionalLight);
 
+	  m_pEffect->Enable();
+
+	  vector<Matrix4f> Transforms;
+	  float RunningTime = GetRunningTime();
+
+	  tower1->BoneTransform(RunningTime, Transforms);
+
+	  for (uint i = 0; i < Transforms.size(); i++) {
+		  m_pEffect->SetBoneTransform(i, Transforms[i]);
+	  }
+
+	  m_pEffect->SetEyeWorldPos(Vector3f(cam.eyex, cam.eyey, cam.eyez));
+
+	  tower1->Render();
+	  //p.Scale(1.0f, 1.0f, 1.0f);
+	  p.Rotate(-90.0f, 0.0f, 0.0f);
+	  p.WorldPos(0.0f, 5.0f, 2.0f);
+	  m_pEffect->Enable();
+	  m_pEffect->SetWVP(p.GetWVPTrans());
+	  m_pEffect->SetWorldMatrix(p.GetWVTrans());
+	  light->SetWVP(p.GetWVPTrans());
+	  tower1->Render();
+
 	  terrain->Render();
 
 	object->Render();
@@ -111,8 +139,7 @@ void Display()
 	p.WorldPos(0.0f,-90.0f,0.0f);
 	light->SetWVP(p.GetWVPTrans());
 	//terain->Render();
-	
-	
+
 	glFlush();
 
 	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
@@ -248,6 +275,22 @@ int main( int argc, char * argv[] )
 	}
 
 	terrain->Init("Models/terrain1.bmp", 0.15f);
+
+
+	m_pEffect = new SkinningTechnique();
+
+	if (!m_pEffect->Init()) {
+		printf("Error initializing the lighting technique\n");
+		return false;
+	}
+
+	m_pEffect->Enable();
+
+	if(tower1->LoadMesh("Models/firstTower.md5mesh"))
+	{
+		cout << "udalo sie wczytac towera" << endl;
+	}
+	
 
 	glutTimerFunc(0, timer, 0);
 

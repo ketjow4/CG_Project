@@ -24,7 +24,7 @@ public:
 
 	void SetPosition(Vector3f position);
 
-	void LoadModel(string filename);
+	bool LoadModel(string filename);
 
 	void LoadMissile(string filename);
 
