@@ -23,7 +23,6 @@ long long m_frameTime;
 Camera cam;
 
 Mesh* object; 
-Mesh* terain; 
 
 BasicLightingTechnique* light;
 
@@ -82,6 +81,8 @@ void Display()
 	glDisable(GL_LIGHTING);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
+
+
 	
 	PersProjInfo pers;
 	pers.FOV = 90;
@@ -103,9 +104,9 @@ void Display()
       light->SetWorldMatrix(WorldTransformation);
       light->SetDirectionalLight(m_directionalLight);
 
-	  m_pEffect->Enable();
+	  m_pEffect->Enable();					//to musiæ byæ ¿eby przeliczyæ koœci i potem zrobiæ render tej animacji (odpowiedni shader jest w³¹czany)
 
-	  vector<Matrix4f> Transforms;
+	 	 vector<Matrix4f> Transforms;
 	  float RunningTime = GetRunningTime();
 
 	  tower1->BoneTransform(RunningTime, Transforms);
@@ -116,17 +117,27 @@ void Display()
 
 	  m_pEffect->SetEyeWorldPos(Vector3f(cam.eyex, cam.eyey, cam.eyez));
 
-	  tower1->Render();
-	  //p.Scale(1.0f, 1.0f, 1.0f);
-	  p.Rotate(-90.0f, 0.0f, 0.0f);
-	  p.WorldPos(0.0f, 5.0f, 2.0f);
-	  m_pEffect->Enable();
+	  //to se odkomnetuj i zmien jak chcesz mieæ 2 wie¿e :)
+	  //p.Scale(2.5f, 2.5f, 2.5f);			//tutaj ustawiasz skalê modelu przed jego renderowaniem (ta funkcja zmienia odpowiedni¹ macierz.
+	  //p.Rotate(-90.0f, 0.0f, 0.0f);			//tu ustawiasz obrót tego modelu (teraz jest wzglêdm osi X o -90)
+	  //p.WorldPos(0.0f, 5.0f, 2.0f);			//no i ustawienie jego pozycji w œwiecie :)
+
+	  //tower1->Render();		//tu jeœli chcesz 2 raz renderowaæ
+
+
+	  p.Scale(2.5f, 2.5f, 2.5f);			//tutaj ustawiasz skalê modelu przed jego renderowaniem (ta funkcja zmienia odpowiedni¹ macierz.
+	  p.Rotate(-90.0f, 0.0f, 0.0f);			//tu ustawiasz obrót tego modelu (teraz jest wzglêdm osi X o -90)
+	  p.WorldPos(0.0f, 5.0f, 2.0f);			//no i ustawienie jego pozycji w œwiecie :)
+
 	  m_pEffect->SetWVP(p.GetWVPTrans());
 	  m_pEffect->SetWorldMatrix(p.GetWVTrans());
 	  light->SetWVP(p.GetWVPTrans());
+
 	  tower1->Render();
 
-	  terrain->Render();
+	  light->Enable();		//¿eby wyœwietlaæ obiekty statyczne trzeba prze³¹czyæ shadery. Wiem ze nazwy s¹ strasznie z dupy ale s³u¿y³y mi jeszcze du¿o wczeœniej do innych rzeczy.
+
+	  terrain->Render();	//renderowanie terenu od adama.
 
 	object->Render();
 	p.Scale(0.1f, 0.1f, 0.1f);
@@ -138,14 +149,11 @@ void Display()
 	p.Scale(0.5f, 0.5f, 0.5f);
 	p.WorldPos(0.0f,-90.0f,0.0f);
 	light->SetWVP(p.GetWVPTrans());
-	//terain->Render();
 
 	glFlush();
 
 	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 
-
-	//cout << glGetError() << endl;
 }
 
 // zmiana wielkoœci okna
@@ -253,12 +261,7 @@ int main( int argc, char * argv[] )
 
 	light = new BasicLightingTechnique();
 	object = new Mesh();
-	//terain = new Mesh();
 
-	/*if(terain->LoadMesh("Models/Small/SmallTropicalIsland.obj"))
-	{
-		cout << "udalos sie wczystac teren" << endl;
-	}*/
 
 	if (!light->Init()) {
             printf("Error initializing the lighting technique\n");
