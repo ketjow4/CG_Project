@@ -127,6 +127,7 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClInclude Include="types.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="technique.h" />
+    <ClInclude Include="WorldObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

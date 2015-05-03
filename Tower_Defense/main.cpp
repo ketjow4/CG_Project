@@ -9,6 +9,7 @@
 #include "skinned_mesh.h"
 #include "Terrain.h"
 #include "Path.h"
+#include "Tower.h"
 
 
 /*Global variables -- temporary*/
@@ -28,9 +29,14 @@ BasicLightingTechnique* light;
 
 DirectionalLight m_directionalLight;
 
+Tower tow;
+
 
 Terrain* terrain;
 Path* path;
+
+
+SkinningTechnique* m_pEffect;
 
 //SkinnedMesh m_mesh;
 
@@ -49,18 +55,26 @@ void initGL()
 	m_directionalLight.DiffuseIntensity = 0.75f;
     m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 
-	cam.eyey = 200;//100;
-	cam.eyex = 256;//250;
-	cam.eyez = 0;
-	cam.centerx = 256;
-	cam.centerz = 256;
-	cam.centery = 0;
+	//cam.eyey = 200;//100;
+	//cam.eyex = 256;//250;
+	//cam.eyez = 0;
+	//cam.centerx = 256;
+	//cam.centerz = 256;
+	//cam.centery = 0;
+
+
 }
 
 
 void camUpdate()
 {
 
+}
+
+float GetRunningTime()
+{
+ float RunningTime = (float)((double)GetCurrentTimeMillis() - (double)m_startTime) / 1000.0f;
+    return RunningTime;
 }
 
 // funkcja generuj¹ca scenê 3D
@@ -109,9 +123,32 @@ void Display()
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
 	light->SetWVP(p.GetWVPTrans());
-	terrain->Render();
+	//terrain->Render();
 
 	
+
+
+	m_pEffect->Enable();
+	 
+	vector<Matrix4f> Transforms;
+               
+    float RunningTime = GetRunningTime();
+
+	tow.Model3D.BoneTransform(RunningTime, Transforms);
+        
+        for (uint i = 0 ; i < Transforms.size() ; i++) {
+            m_pEffect->SetBoneTransform(i, Transforms[i]);
+        }
+
+		m_pEffect->SetEyeWorldPos(Vector3f(cam.eyex,cam.eyey,cam.eyez));
+
+
+	p.WorldPos(1,1,1);
+	p.Scale(10,10,10);
+	tow.Render();
+
+	light->Enable();
+
 	static int pathIndex = 0;
 	p.Scale(0.1f, 0.1f, 0.1f);
 	float x = path->pathPoints[pathIndex].first;
@@ -121,13 +158,13 @@ void Display()
 
 	p.WorldPos(x,y+1.0,z);
 	light->SetWVP(p.GetWVPTrans());
-	object->Render();
+	//object->Render();
 
 	p.Scale(1, 1, 1);
 	p.WorldPos(256, 80, 256);
 	p.Rotate(0, 0, 0);
 	light->SetWVP(p.GetWVPTrans());
-	object->Render();
+	//object->Render();
 
 	if (++pathIndex >= path->pathPoints.size() - 1)
 		pathIndex = 0;
@@ -160,8 +197,8 @@ void Reshape( int width, int height )
 	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
 	glLoadIdentity();             // Reset
 	// Enable perspective projection with fovy, aspect, zNear and zFar
-	//gluPerspective(90.0f, aspect, 0.1f, 1000.0f);		//kat widzenia, aspect ratio, zNear, zFar
-	glOrtho(-1000, 1000, -1000, 1000, -1000, 1000);
+	gluPerspective(90.0f, aspect, 0.1f, 1000.0f);		//kat widzenia, aspect ratio, zNear, zFar
+	//glOrtho(-1000, 1000, -1000, 1000, -1000, 1000);
 }
 
 
@@ -252,20 +289,30 @@ int main( int argc, char * argv[] )
 
 	light = new BasicLightingTechnique();
 	object = new Mesh();
-	//terain = new Mesh();
 
-	/*if(terain->LoadMesh("Models/Small/SmallTropicalIsland.obj"))
-	{
-		cout << "udalos sie wczystac teren" << endl;
-	}*/
 
 	if (!light->Init()) {
             printf("Error initializing the lighting technique\n");
             return -1;
         }
 
+	 m_pEffect = new SkinningTechnique();
+
+        if (!m_pEffect->Init()) {
+            printf("Error initializing the lighting technique\n");
+            return false;
+        }
+
+
+
+
+
 	light->Enable();
 	//camInit();
+
+
+		tow.LoadModel("Models/firstTower.md5mesh");
+	tow.LoadMissile("Models/missile.fbx");
 
 
 	if( object->LoadMesh("Models/phoenix_ugv.md2") )

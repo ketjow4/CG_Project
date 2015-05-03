@@ -2,31 +2,34 @@
 #define TOWER_H
 
 #include "Model.h"
+//#include "WorldObject.h"
+#include "skinned_mesh.h"
 
 //TODO
 //	add some constructors
 //	first shoot at point
 // later missile should have struct(or even class) to check collision, lifetime etc.
 
-class Tower
+class Tower				//: public WorldObject
 {
 public:
 	Tower();
 	~Tower();
 
 
-	Vector3f WorldPosition;
-	Mesh Model3D;
+	SkinnedMesh Model3D;
 	Mesh Missile;
+	float missileLife;
 	double Range;
 
 	void Shoot();
 
-	void SetPosition(Vector3f position);
 
 	void LoadModel(string filename);
 
 	void LoadMissile(string filename);
+
+	void Render();
 
 private:
 

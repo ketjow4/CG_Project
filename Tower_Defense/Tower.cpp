@@ -3,26 +3,22 @@
 
 Tower::Tower()
 {
+	this->missileLife = 1000; //wartoœæ w milisekundach
 }
 
 Tower::~Tower()
 {
 }
 
+
 void Tower::Shoot()
 {
 	//create missile
 	//shot at target
-	//trace targer
+	//trace target
 	//if missed destroy missile
 }
 
-
-
-void Tower::SetPosition(Vector3f position)
-{
-	this->WorldPosition = position;
-}
 
 void Tower::LoadModel(string filename)
 {
@@ -33,4 +29,10 @@ void Tower::LoadModel(string filename)
 void Tower::LoadMissile(string filename)
 {
 	//this->LoadMissile.LoadMesh(filename);
+}
+
+void Tower::Render()
+{
+	this->Model3D.Render();
+
 }
