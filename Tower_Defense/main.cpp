@@ -125,7 +125,7 @@ void Display()
 
 	p.Scale(1, 1, 1);
 	p.WorldPos(256, 80, 256);
-	//p.Rotate(0, 0, 0);
+	p.Rotate(0, 0, 0);
 	light->SetWVP(p.GetWVPTrans());
 	object->Render();
 
