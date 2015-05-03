@@ -55,12 +55,12 @@ void initGL()
 	m_directionalLight.DiffuseIntensity = 0.75f;
     m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 
-	//cam.eyey = 200;//100;
-	//cam.eyex = 256;//250;
-	//cam.eyez = 0;
-	//cam.centerx = 256;
-	//cam.centerz = 256;
-	//cam.centery = 0;
+	cam.eyey = 200;//100;
+	cam.eyex = 256;//250;
+	cam.eyez = 0;
+	cam.centerx = 256;
+	cam.centerz = 256;
+	cam.centery = 0;
 
 
 }
@@ -123,7 +123,7 @@ void Display()
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
 	light->SetWVP(p.GetWVPTrans());
-	//terrain->Render();
+	terrain->Render();
 
 	
 
@@ -143,8 +143,10 @@ void Display()
 		m_pEffect->SetEyeWorldPos(Vector3f(cam.eyex,cam.eyey,cam.eyez));
 
 
-	p.WorldPos(1,1,1);
-	p.Scale(10,10,10);
+	p.WorldPos(100,50,100);
+	p.Scale(5,5,5);
+	p.Rotate(0,90,-90);
+	m_pEffect->SetWVP(p.GetWVPTrans());
 	tow.Render();
 
 	light->Enable();
@@ -158,13 +160,13 @@ void Display()
 
 	p.WorldPos(x,y+1.0,z);
 	light->SetWVP(p.GetWVPTrans());
-	//object->Render();
+	object->Render();
 
 	p.Scale(1, 1, 1);
 	p.WorldPos(256, 80, 256);
 	p.Rotate(0, 0, 0);
 	light->SetWVP(p.GetWVPTrans());
-	//object->Render();
+	object->Render();
 
 	if (++pathIndex >= path->pathPoints.size() - 1)
 		pathIndex = 0;
@@ -227,7 +229,8 @@ void Keyboard( unsigned char key, int x, int y )
 //Dzia³a nie tykaæ
 void SpecialKeys( int key, int x, int y )
 {
-	double movementSpeed = 50.0;
+	double movementSpeed = 150.0;
+	cam.STEP_SCALE = 10;
 
 	switch( key )
 	{
@@ -311,10 +314,17 @@ int main( int argc, char * argv[] )
 	//camInit();
 
 
-		tow.LoadModel("Models/firstTower.md5mesh");
+	m_pEffect->Enable();
+
+	/*if(tower1->LoadMesh("Models/firstTower.md5mesh"))
+	{
+		cout << "udalo sie wczytac towera" << endl;
+	}*/
+
+	tow.LoadModel("Models/firstTower.md5mesh");
 	tow.LoadMissile("Models/missile.fbx");
 
-
+	light->Enable();
 	if( object->LoadMesh("Models/phoenix_ugv.md2") )
 	{
 		cout << "udalo sie wczytac" << endl;
