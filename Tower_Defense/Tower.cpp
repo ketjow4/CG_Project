@@ -29,10 +29,19 @@ void Tower::LoadModel(string filename)
 void Tower::LoadMissile(string filename)
 {
 	//this->LoadMissile.LoadMesh(filename);
+	this->Missile.LoadMesh(filename);
+	missilePos =  Vector3f(100,55,100);
 }
 
 void Tower::Render()
 {
-	this->Model3D.Render();
-
+	//this->Model3D.Render();
+	if(missileLife < 10000)
+	{
+		this->Missile.Render();
+	}
+	else
+	{
+		missileLife = 0;
+	}
 }

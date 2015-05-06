@@ -142,14 +142,17 @@ void Display()
 
 		m_pEffect->SetEyeWorldPos(Vector3f(cam.eyex,cam.eyey,cam.eyez));
 
-
-	p.WorldPos(100,50,100);
 	p.Scale(5,5,5);
 	p.Rotate(0,90,-90);
+	p.WorldPos(100,50,100);
 	m_pEffect->SetWVP(p.GetWVPTrans());
-	tow.Render();
+	//tow.Render();
+	tow.Model3D.Render();
 
 	light->Enable();
+
+	
+	//light->Enable();
 
 	static int pathIndex = 0;
 	p.Scale(0.1f, 0.1f, 0.1f);
@@ -161,6 +164,26 @@ void Display()
 	p.WorldPos(x,y+1.0,z);
 	light->SetWVP(p.GetWVPTrans());
 	object->Render();
+
+	static float v = 0;
+	v += 0.005;
+	if(v > 1)
+		v = 0;
+	float x_dist = x - tow.missilePos.x;
+	float y_dist = y -  tow.missilePos.y;
+	float z_dist = z -  tow.missilePos.z;
+	//p.WorldPos((x-100),50+5,(z-100));
+	p.WorldPos(v*x_dist+tow.missilePos.x,v*y_dist+tow.missilePos.y,v*z_dist+tow.missilePos.z);
+	p.Scale(5,5,5);
+	p.Rotate(0,0,0);
+	light->SetWVP(p.GetWVPTrans());
+	//tow.Missile.Render();
+	tow.missileLife += 30;
+	tow.Render();
+
+
+
+
 
 	p.Scale(1, 1, 1);
 	p.WorldPos(256, 80, 256);
@@ -323,6 +346,8 @@ int main( int argc, char * argv[] )
 
 	tow.LoadModel("Models/firstTower.md5mesh");
 	tow.LoadMissile("Models/missile.fbx");
+	//tow.LoadMissile("Models/phoenix_ugv.md2");
+
 
 	light->Enable();
 	if( object->LoadMesh("Models/phoenix_ugv.md2") )

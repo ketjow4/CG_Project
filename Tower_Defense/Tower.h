@@ -21,6 +21,8 @@ public:
 	Mesh Missile;
 	float missileLife;
 	double Range;
+	Vector3f missilePos;
+
 
 	void Shoot();
 
