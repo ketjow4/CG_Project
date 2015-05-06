@@ -1,22 +1,22 @@
 #include <iostream>
 
 
-#include "Model.h"
-#include "Camera.h"
-#include "basic_lighting.h"
-#include "pipeline.h"
-#include "skinning_technique.h"
-#include "skinned_mesh.h"
-#include "Terrain.h"
-#include "Path.h"
+//#include "Model.h"
+//#include "Camera.h"
+//#include "basic_lighting.h"
+//#include "pipeline.h"
+//#include "skinning_technique.h"
+//#include "skinned_mesh.h"
+//#include "Terrain.h"
+//#include "Path.h"
 #include "Tower.h"
+#include "Enemy.h"
 
 
 /*Global variables -- temporary*/
 int refreshMills = 30;        // refresh interval in milliseconds
 
 long long m_frameTime;
-long long m_startTime;
 int m_frameCount;
 int m_fps;
 
@@ -29,7 +29,7 @@ BasicLightingTechnique* light;
 
 DirectionalLight m_directionalLight;
 
-Tower tow;
+Tower* tow;
 
 
 Terrain* terrain;
@@ -37,6 +37,8 @@ Path* path;
 
 
 SkinningTechnique* m_pEffect;
+
+Enemy en;
 
 //SkinnedMesh m_mesh;
 
@@ -71,11 +73,7 @@ void camUpdate()
 
 }
 
-float GetRunningTime()
-{
- float RunningTime = (float)((double)GetCurrentTimeMillis() - (double)m_startTime) / 1000.0f;
-    return RunningTime;
-}
+
 
 // funkcja generuj¹ca scenê 3D
 void Display()
@@ -128,7 +126,7 @@ void Display()
 	
 
 
-	m_pEffect->Enable();
+	/*m_pEffect->Enable();
 	 
 	vector<Matrix4f> Transforms;
                
@@ -139,47 +137,53 @@ void Display()
         for (uint i = 0 ; i < Transforms.size() ; i++) {
             m_pEffect->SetBoneTransform(i, Transforms[i]);
         }
+		*/
 
-		m_pEffect->SetEyeWorldPos(Vector3f(cam.eyex,cam.eyey,cam.eyez));
+	tow->CalcAnimation();
+
+	m_pEffect->SetEyeWorldPos(Vector3f(cam.eyex,cam.eyey,cam.eyez));
 
 	p.Scale(5,5,5);
 	p.Rotate(0,90,-90);
 	p.WorldPos(100,50,100);
 	m_pEffect->SetWVP(p.GetWVPTrans());
-	//tow.Render();
-	tow.Model3D.Render();
+	tow->Render();
 
-	light->Enable();
+	//tow.Model3D.Render();
 
-	
 	//light->Enable();
 
+
 	static int pathIndex = 0;
-	p.Scale(0.1f, 0.1f, 0.1f);
+	//p.Scale(0.1f, 0.1f, 0.1f);
 	float x = path->pathPoints[pathIndex].first;
 	float z = path->pathPoints[pathIndex].second;
 	float y = terrain->GetTerrainHeight(x, z);
-	p.Rotate(path->GetRotation(Vector3f(x,y,z),pathIndex));
+	//p.Rotate(path->GetRotation(Vector3f(x,y,z),pathIndex));
 
-	p.WorldPos(x,y+1.0,z);
-	light->SetWVP(p.GetWVPTrans());
-	object->Render();
+	//p.WorldPos(x,y+1.0,z);
+	//light->SetWVP(p.GetWVPTrans());
+	//object->Render();
 
-	static float v = 0;
+	en.UpdatePosition(&p);
+
+	tow->Shoot(&p,x,y,z);
+
+	/*static float v = 0;
 	v += 0.005;
 	if(v > 1)
 		v = 0;
 	float x_dist = x - tow.missilePos.x;
 	float y_dist = y -  tow.missilePos.y;
 	float z_dist = z -  tow.missilePos.z;
-	//p.WorldPos((x-100),50+5,(z-100));
+
 	p.WorldPos(v*x_dist+tow.missilePos.x,v*y_dist+tow.missilePos.y,v*z_dist+tow.missilePos.z);
 	p.Scale(5,5,5);
 	p.Rotate(0,0,0);
 	light->SetWVP(p.GetWVPTrans());
-	//tow.Missile.Render();
-	tow.missileLife += 30;
-	tow.Render();
+	tow.Missile.Render();
+	tow.missileLife += 30;*/
+	//tow.Render();
 
 
 
@@ -189,16 +193,14 @@ void Display()
 	p.WorldPos(256, 80, 256);
 	p.Rotate(0, 0, 0);
 	light->SetWVP(p.GetWVPTrans());
-	object->Render();
+	//object->Render();					//ten wielki nad map¹
 
-	if (++pathIndex >= path->pathPoints.size() - 1)
+	if (++pathIndex >= path->pathPoints.size() - 1)				//obiekt dotar³ do celu 
 		pathIndex = 0;
 
-	p.Scale(0.5f, 0.5f, 0.5f);
+	/*p.Scale(0.5f, 0.5f, 0.5f);
 	p.WorldPos(0.0f,-90.0f,0.0f);
-	light->SetWVP(p.GetWVPTrans());
-	//terain->Render();
-	
+	light->SetWVP(p.GetWVPTrans());*/
 	
 	glFlush();
 
@@ -259,7 +261,7 @@ void SpecialKeys( int key, int x, int y )
 	{
 		// kursor w lewo
 	case GLUT_KEY_LEFT:
-			cam.MoveLeft(movementSpeed);
+		cam.MoveLeft(movementSpeed);
 		break;
 		// kursor w górê
 	case GLUT_KEY_UP:
@@ -339,13 +341,19 @@ int main( int argc, char * argv[] )
 
 	m_pEffect->Enable();
 
-	/*if(tower1->LoadMesh("Models/firstTower.md5mesh"))
-	{
-		cout << "udalo sie wczytac towera" << endl;
-	}*/
 
+	//tow = Tower(light,m_pEffect);
+	
+	/*tow.light = light;
+	tow.m_pEffect = m_pEffect;
 	tow.LoadModel("Models/firstTower.md5mesh");
 	tow.LoadMissile("Models/missile.fbx");
+	tow.missilePos = Vector3f(100,55,100);*/
+
+	tow = new Tower(light,m_pEffect);
+	tow->LoadModel("Models/firstTower.md5mesh");
+	tow->LoadMissile("Models/missile.fbx");
+
 	//tow.LoadMissile("Models/phoenix_ugv.md2");
 
 
@@ -361,7 +369,10 @@ int main( int argc, char * argv[] )
 	path = new Path(terrain);
 	path->Init("Models/path1.bmp");
 
-
+	en.light = light;
+	en.LoadModel("Models/phoenix_ugv.md2");
+	en.terrain = terrain;
+	en.path = path;
 
 	glutTimerFunc(0, timer, 0);
 

@@ -4,6 +4,9 @@
 #include "Model.h"
 //#include "WorldObject.h"
 #include "skinned_mesh.h"
+#include "skinning_technique.h"
+#include "basic_lighting.h"
+#include "Engine.h"
 
 //TODO
 //	add some constructors
@@ -17,15 +20,24 @@ public:
 	~Tower();
 
 
+	Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect);
+
 	SkinnedMesh Model3D;
 	Mesh Missile;
 	float missileLife;
 	double Range;
 	Vector3f missilePos;
+	Vector3f towerPos;
+	double distance_to_target;
+
+	BasicLightingTechnique* light;
+	SkinningTechnique* m_pEffect;
 
 
-	void Shoot();
 
+	void Shoot(Pipeline * p, float x, float y, float z);
+
+	void CalcAnimation();
 
 	void LoadModel(string filename);
 

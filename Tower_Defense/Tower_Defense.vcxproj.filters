@@ -43,6 +43,9 @@
     <ClCompile Include="Path.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basic_lighting.h">
@@ -88,6 +91,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="WorldObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
