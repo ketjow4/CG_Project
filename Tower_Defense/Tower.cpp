@@ -25,10 +25,8 @@ Tower::~Tower()
 
 void Tower::Shoot(Pipeline * p, float x, float y, float z)
 {
-	//get vhicle x,y,z
-
 	static float v = 0;
-	v += 0.005;
+	v += 0.015;
 	if(v > 1)
 		v = 0;
 	float x_dist = x - missilePos.x;
@@ -79,9 +77,6 @@ float GetRunningTime()
 
 void Tower::CalcAnimation()
 {
-	
-
-
 	m_pEffect->Enable();
 	 
 	vector<Matrix4f> Transforms;
@@ -98,18 +93,34 @@ void Tower::CalcAnimation()
         for (uint i = 0 ; i < Transforms.size() ; i++) {
             m_pEffect->SetBoneTransform(i, Transforms[i]);
         }
-
 }
 
-void Tower::Render()
+void Tower::Render(Pipeline *p)
 {
+	p->Scale(5,5,5);
+	p->Rotate(0,90,-90);
+	p->WorldPos(towerPos);
+	m_pEffect->SetWVP(p->GetWVPTrans());
 	this->Model3D.Render();
-	if(missileLife < 10000)
+	
+	/*if(missileLife < 10000 && distance_to_target < Range)
 	{
 		this->Missile.Render();
 	}
 	else
 	{
 		missileLife = 0;
+	}*/
+}
+
+bool Tower::IsInRange(Vector3f enemyPos)
+{
+	if( sqrt(pow(towerPos.x - enemyPos.x,2) + pow(towerPos.z - enemyPos.z, 2)) < Range)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }

@@ -30,6 +30,7 @@ BasicLightingTechnique* light;
 DirectionalLight m_directionalLight;
 
 Tower* tow;
+Tower* tow2;
 
 
 Terrain* terrain;
@@ -39,6 +40,7 @@ Path* path;
 SkinningTechnique* m_pEffect;
 
 Enemy en;
+Enemy en2;
 
 //SkinnedMesh m_mesh;
 
@@ -111,7 +113,6 @@ void Display()
 	p.SetPerspectiveProj(pers);
 
 	
-
     light->SetWVP(p.GetWVPTrans());
 	const Matrix4f& WorldTransformation = p.GetWorldTrans();
     light->SetWorldMatrix(WorldTransformation);
@@ -123,70 +124,39 @@ void Display()
 	light->SetWVP(p.GetWVPTrans());
 	terrain->Render();
 
-	
-
-
-	/*m_pEffect->Enable();
-	 
-	vector<Matrix4f> Transforms;
-               
-    float RunningTime = GetRunningTime();
-
-	tow.Model3D.BoneTransform(RunningTime, Transforms);
-        
-        for (uint i = 0 ; i < Transforms.size() ; i++) {
-            m_pEffect->SetBoneTransform(i, Transforms[i]);
-        }
-		*/
 
 	tow->CalcAnimation();
+	tow->Render(&p);
 
-	m_pEffect->SetEyeWorldPos(Vector3f(cam.eyex,cam.eyey,cam.eyez));
+	tow2->CalcAnimation();
+	tow2->Render(&p);
 
-	p.Scale(5,5,5);
-	p.Rotate(0,90,-90);
-	p.WorldPos(100,50,100);
-	m_pEffect->SetWVP(p.GetWVPTrans());
-	tow->Render();
-
-	//tow.Model3D.Render();
-
-	//light->Enable();
-
-
-	static int pathIndex = 0;
-	//p.Scale(0.1f, 0.1f, 0.1f);
-	float x = path->pathPoints[pathIndex].first;
-	float z = path->pathPoints[pathIndex].second;
-	float y = terrain->GetTerrainHeight(x, z);
-	//p.Rotate(path->GetRotation(Vector3f(x,y,z),pathIndex));
-
-	//p.WorldPos(x,y+1.0,z);
-	//light->SetWVP(p.GetWVPTrans());
-	//object->Render();
 
 	en.UpdatePosition(&p);
+	en2.UpdatePosition(&p);
+	//Vector3f pos = en.GetPosition();
 
-	tow->Shoot(&p,x,y,z);
+	if( tow->IsInRange(en.GetPosition()))
+	{
+		Vector3f pos = en.GetPosition();
+		tow->Shoot(&p, pos.x,pos.y,pos.z );
+	}
+	else if( tow->IsInRange(en2.GetPosition()))
+	{
+		Vector3f pos = en2.GetPosition();
+		tow->Shoot(&p, pos.x,pos.y,pos.z );
+	}
 
-	/*static float v = 0;
-	v += 0.005;
-	if(v > 1)
-		v = 0;
-	float x_dist = x - tow.missilePos.x;
-	float y_dist = y -  tow.missilePos.y;
-	float z_dist = z -  tow.missilePos.z;
-
-	p.WorldPos(v*x_dist+tow.missilePos.x,v*y_dist+tow.missilePos.y,v*z_dist+tow.missilePos.z);
-	p.Scale(5,5,5);
-	p.Rotate(0,0,0);
-	light->SetWVP(p.GetWVPTrans());
-	tow.Missile.Render();
-	tow.missileLife += 30;*/
-	//tow.Render();
-
-
-
+	if( tow2->IsInRange(en.GetPosition()))
+	{
+		Vector3f pos = en.GetPosition();
+		tow2->Shoot(&p, pos.x,pos.y,pos.z );
+	}
+	else if( tow2->IsInRange(en2.GetPosition()))
+	{
+		Vector3f pos = en2.GetPosition();
+		tow2->Shoot(&p, pos.x,pos.y,pos.z );
+	}
 
 
 	p.Scale(1, 1, 1);
@@ -195,15 +165,8 @@ void Display()
 	light->SetWVP(p.GetWVPTrans());
 	//object->Render();					//ten wielki nad map¹
 
-	if (++pathIndex >= path->pathPoints.size() - 1)				//obiekt dotar³ do celu 
-		pathIndex = 0;
-
-	/*p.Scale(0.5f, 0.5f, 0.5f);
-	p.WorldPos(0.0f,-90.0f,0.0f);
-	light->SetWVP(p.GetWVPTrans());*/
 	
-	glFlush();
-
+	//glFlush();
 	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 
 
@@ -225,7 +188,6 @@ void Reshape( int width, int height )
 	glLoadIdentity();             // Reset
 	// Enable perspective projection with fovy, aspect, zNear and zFar
 	gluPerspective(90.0f, aspect, 0.1f, 1000.0f);		//kat widzenia, aspect ratio, zNear, zFar
-	//glOrtho(-1000, 1000, -1000, 1000, -1000, 1000);
 }
 
 
@@ -318,7 +280,6 @@ int main( int argc, char * argv[] )
 	light = new BasicLightingTechnique();
 	object = new Mesh();
 
-
 	if (!light->Init()) {
             printf("Error initializing the lighting technique\n");
             return -1;
@@ -332,27 +293,17 @@ int main( int argc, char * argv[] )
         }
 
 
-
-
-
 	light->Enable();
-	//camInit();
-
-
 	m_pEffect->Enable();
-
-
-	//tow = Tower(light,m_pEffect);
-	
-	/*tow.light = light;
-	tow.m_pEffect = m_pEffect;
-	tow.LoadModel("Models/firstTower.md5mesh");
-	tow.LoadMissile("Models/missile.fbx");
-	tow.missilePos = Vector3f(100,55,100);*/
 
 	tow = new Tower(light,m_pEffect);
 	tow->LoadModel("Models/firstTower.md5mesh");
 	tow->LoadMissile("Models/missile.fbx");
+
+	tow2 = new Tower(light,m_pEffect);
+	tow2->LoadModel("Models/firstTower.md5mesh");
+	tow2->LoadMissile("Models/missile.fbx");
+	tow2->missilePos = tow2->towerPos = Vector3f(350,55,350);
 
 	//tow.LoadMissile("Models/phoenix_ugv.md2");
 
@@ -369,10 +320,18 @@ int main( int argc, char * argv[] )
 	path = new Path(terrain);
 	path->Init("Models/path1.bmp");
 
+	//enemy 
 	en.light = light;
 	en.LoadModel("Models/phoenix_ugv.md2");
 	en.terrain = terrain;
 	en.path = path;
+	en.pathIndex = 50;
+
+	en2.light = light;
+	en2.LoadModel("Models/phoenix_ugv.md2");
+	en2.terrain = terrain;
+	en2.path = path;
+	en2.pathIndex = 0;
 
 	glutTimerFunc(0, timer, 0);
 

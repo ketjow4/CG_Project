@@ -20,11 +20,14 @@ public:
 	BasicLightingTechnique* light;
 	Path* path;
 	Terrain* terrain;
+	int pathIndex;
 
 	void LoadModel(string filename);
 
 
 	void UpdatePosition(Pipeline *p);
+
+	Vector3f GetPosition();
 
 
 private:

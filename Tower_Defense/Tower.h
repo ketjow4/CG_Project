@@ -43,7 +43,9 @@ public:
 
 	void LoadMissile(string filename);
 
-	void Render();
+	void Render(Pipeline *p);
+
+	bool IsInRange(Vector3f enemyPos);
 
 private:
 
