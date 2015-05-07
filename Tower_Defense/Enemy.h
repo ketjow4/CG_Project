@@ -21,6 +21,8 @@ public:
 	Path* path;
 	Terrain* terrain;
 	int pathIndex;
+	double HP;
+	double Attack;
 
 	void LoadModel(string filename);
 

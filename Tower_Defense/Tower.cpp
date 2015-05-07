@@ -31,17 +31,21 @@ Tower::~Tower()
 }
 
 
-void Tower::Shoot(Pipeline * p, float x, float y, float z)
+void Tower::Shoot(Pipeline * p, Enemy* en)
 {
+	enemy = en;
 	static float v = 0;
 	v += 0.015;
 	if(v > 1)
+	{
 		v = 0;
-	float x_dist = x - missilePos.x;
-	float y_dist = y -  missilePos.y;
-	float z_dist = z -  missilePos.z;
+		enemy->HP -= 10;
+	}
+	float x_dist = enemy->GetPosition().x - missilePos.x;
+	float y_dist = enemy->GetPosition().y -  missilePos.y;
+	float z_dist = enemy->GetPosition().z -  missilePos.z;
 
-	distance_to_target =  sqrt(pow(towerPos.x - x,2) + pow(towerPos.z - z, 2));
+	distance_to_target =  sqrt(pow(towerPos.x - enemy->GetPosition().x,2) + pow(towerPos.z - enemy->GetPosition().z, 2));
 
 	if( distance_to_target > Range)
 	{

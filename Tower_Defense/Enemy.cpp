@@ -3,6 +3,8 @@
 Enemy::Enemy()
 {
 	pathIndex = 0;
+	HP = 100;
+	Attack = 1;			//to use later when there will be player class
 }
 
 Enemy::~Enemy()
@@ -19,6 +21,10 @@ void Enemy::UpdatePosition(Pipeline *p)
 {
 	light->Enable();
 
+	if(HP <= 0)			//in future delete enemy in this case
+	{
+		return ;		
+	}
 
 	//static int pathIndex = 0;
 	p->Scale(0.1f, 0.1f, 0.1f);

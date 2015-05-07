@@ -7,11 +7,8 @@
 #include "skinning_technique.h"
 #include "basic_lighting.h"
 #include "Engine.h"
+#include "Enemy.h"
 
-//TODO
-//	add some constructors
-//	first shoot at point
-// later missile should have struct(or even class) to check collision, lifetime etc.
 
 class Tower				//: public WorldObject
 {
@@ -31,14 +28,17 @@ public:
 	double distance_to_target;
 	double towerHeight;			//only good when scale is 5
 	double towerScale;
+	Enemy* enemy;
+
 
 	BasicLightingTechnique* light;
 	SkinningTechnique* m_pEffect;
 	Terrain* terrain;
+	
 
 
 
-	void Shoot(Pipeline * p, float x, float y, float z);
+	void Shoot(Pipeline * p, Enemy* en);
 
 	void CalcAnimation();
 

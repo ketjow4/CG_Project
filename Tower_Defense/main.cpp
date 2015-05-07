@@ -134,66 +134,24 @@ void Display()
 		towerList[i]->CalcAnimation();
 		towerList[i]->Render(&p);
 	}
-	/*tow->CalcAnimation();
-	tow->Render(&p);
-
-	tow2->CalcAnimation();
-	tow2->Render(&p);
-
-	tow3->CalcAnimation();
-	tow3->Render(&p);*/
 
 
 	en.UpdatePosition(&p);
 	en2.UpdatePosition(&p);
-	//Vector3f pos = en.GetPosition();
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
-		if( towerList[i]->IsInRange(en.GetPosition()))
+		if( towerList[i]->IsInRange(en.GetPosition()) && en.HP > 0)
 		{
 		Vector3f pos = en.GetPosition();
-		towerList[i]->Shoot(&p, pos.x,pos.y,pos.z );
+		towerList[i]->Shoot(&p, &en );
 		}
-		else if(  towerList[i]->IsInRange(en2.GetPosition()))
+		else if(  towerList[i]->IsInRange(en2.GetPosition()) && en2.HP > 0)
 		{
 		Vector3f pos = en2.GetPosition();
-		towerList[i]->Shoot(&p, pos.x,pos.y,pos.z );
+		towerList[i]->Shoot(&p, &en2 );
 		}
 	}
-
-	/*if( tow->IsInRange(en.GetPosition()))
-	{
-		Vector3f pos = en.GetPosition();
-		tow->Shoot(&p, pos.x,pos.y,pos.z );
-	}
-	else if( tow->IsInRange(en2.GetPosition()))
-	{
-		Vector3f pos = en2.GetPosition();
-		tow->Shoot(&p, pos.x,pos.y,pos.z );
-	}
-
-	if( tow2->IsInRange(en.GetPosition()))
-	{
-		Vector3f pos = en.GetPosition();
-		tow2->Shoot(&p, pos.x,pos.y,pos.z );
-	}
-	else if( tow2->IsInRange(en2.GetPosition()))
-	{
-		Vector3f pos = en2.GetPosition();
-		tow2->Shoot(&p, pos.x,pos.y,pos.z );
-	}
-
-	if( tow3->IsInRange(en.GetPosition()))
-	{
-		Vector3f pos = en.GetPosition();
-		tow3->Shoot(&p, pos.x,pos.y,pos.z );
-	}
-	else if( tow3->IsInRange(en2.GetPosition()))
-	{
-		Vector3f pos = en2.GetPosition();
-		tow3->Shoot(&p, pos.x,pos.y,pos.z );
-	}*/
 
 
 	p.Scale(1, 1, 1);
@@ -374,21 +332,6 @@ int main( int argc, char * argv[] )
 		towerList[i]->LoadMissile("Models/missile.fbx");
 	}
 
-	//tow = new Tower(light,m_pEffect,Vector3f(100,0,100), terrain);		//y can be omitted
-	//tow->LoadModel("Models/firstTower.md5mesh");
-	//tow->LoadMissile("Models/missile.fbx");
-
-	//tow2 = new Tower(light,m_pEffect,Vector3f(350,0,350), terrain);
-	//tow2->LoadModel("Models/firstTower.md5mesh");
-	//tow2->LoadMissile("Models/missile.fbx");
-
-	//tow2 = new Tower(light,m_pEffect,Vector3f(350,0,350), terrain);
-	//tow2->LoadModel("Models/firstTower.md5mesh");
-	//tow2->LoadMissile("Models/missile.fbx");
-
-	//tow3 = new Tower(light,m_pEffect,Vector3f(-1000,0,-1500), terrain);
-	//tow3->LoadModel("Models/firstTower.md5mesh");
-	//tow3->LoadMissile("Models/missile.fbx");
 
 	glutTimerFunc(0, timer, 0);
 
