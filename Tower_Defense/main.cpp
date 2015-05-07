@@ -11,6 +11,7 @@
 //#include "Path.h"
 #include "Tower.h"
 #include "Enemy.h"
+#include <vector>
 
 
 /*Global variables -- temporary*/
@@ -32,6 +33,8 @@ DirectionalLight m_directionalLight;
 Tower* tow;
 Tower* tow2;
 Tower* tow3;
+
+vector<Tower*> towerList;
 
 Terrain* terrain;
 Path* path;
@@ -125,21 +128,41 @@ void Display()
 	terrain->Render();
 
 
-	tow->CalcAnimation();
+
+	for(int i = 0; i < towerList.size(); i++)
+	{
+		towerList[i]->CalcAnimation();
+		towerList[i]->Render(&p);
+	}
+	/*tow->CalcAnimation();
 	tow->Render(&p);
 
 	tow2->CalcAnimation();
 	tow2->Render(&p);
 
 	tow3->CalcAnimation();
-	tow3->Render(&p);
+	tow3->Render(&p);*/
 
 
 	en.UpdatePosition(&p);
 	en2.UpdatePosition(&p);
 	//Vector3f pos = en.GetPosition();
 
-	if( tow->IsInRange(en.GetPosition()))
+	for(int i = 0; i < towerList.size(); i++)
+	{
+		if( towerList[i]->IsInRange(en.GetPosition()))
+		{
+		Vector3f pos = en.GetPosition();
+		towerList[i]->Shoot(&p, pos.x,pos.y,pos.z );
+		}
+		else if(  towerList[i]->IsInRange(en2.GetPosition()))
+		{
+		Vector3f pos = en2.GetPosition();
+		towerList[i]->Shoot(&p, pos.x,pos.y,pos.z );
+		}
+	}
+
+	/*if( tow->IsInRange(en.GetPosition()))
 	{
 		Vector3f pos = en.GetPosition();
 		tow->Shoot(&p, pos.x,pos.y,pos.z );
@@ -170,7 +193,7 @@ void Display()
 	{
 		Vector3f pos = en2.GetPosition();
 		tow3->Shoot(&p, pos.x,pos.y,pos.z );
-	}
+	}*/
 
 
 	p.Scale(1, 1, 1);
@@ -341,21 +364,31 @@ int main( int argc, char * argv[] )
 	en2.path = path;
 	en2.pathIndex = 0;
 
-	tow = new Tower(light,m_pEffect,Vector3f(100,0,100), terrain);		//y can be omitted
-	tow->LoadModel("Models/firstTower.md5mesh");
-	tow->LoadMissile("Models/missile.fbx");
+	towerList.push_back(new Tower(light,m_pEffect,Vector3f(100,0,100), terrain));
+	towerList.push_back(new Tower(light,m_pEffect,Vector3f(350,0,350), terrain));
+	towerList.push_back(new Tower(light,m_pEffect,Vector3f(-100,0,-100), terrain));
 
-	tow2 = new Tower(light,m_pEffect,Vector3f(350,0,350), terrain);
-	tow2->LoadModel("Models/firstTower.md5mesh");
-	tow2->LoadMissile("Models/missile.fbx");
+	for(int i = 0; i < towerList.size(); i++)
+	{
+		towerList[i]->LoadModel("Models/firstTower.md5mesh");
+		towerList[i]->LoadMissile("Models/missile.fbx");
+	}
 
-	tow2 = new Tower(light,m_pEffect,Vector3f(350,0,350), terrain);
-	tow2->LoadModel("Models/firstTower.md5mesh");
-	tow2->LoadMissile("Models/missile.fbx");
+	//tow = new Tower(light,m_pEffect,Vector3f(100,0,100), terrain);		//y can be omitted
+	//tow->LoadModel("Models/firstTower.md5mesh");
+	//tow->LoadMissile("Models/missile.fbx");
 
-	tow3 = new Tower(light,m_pEffect,Vector3f(-1000,0,-1500), terrain);
-	tow3->LoadModel("Models/firstTower.md5mesh");
-	tow3->LoadMissile("Models/missile.fbx");
+	//tow2 = new Tower(light,m_pEffect,Vector3f(350,0,350), terrain);
+	//tow2->LoadModel("Models/firstTower.md5mesh");
+	//tow2->LoadMissile("Models/missile.fbx");
+
+	//tow2 = new Tower(light,m_pEffect,Vector3f(350,0,350), terrain);
+	//tow2->LoadModel("Models/firstTower.md5mesh");
+	//tow2->LoadMissile("Models/missile.fbx");
+
+	//tow3 = new Tower(light,m_pEffect,Vector3f(-1000,0,-1500), terrain);
+	//tow3->LoadModel("Models/firstTower.md5mesh");
+	//tow3->LoadMissile("Models/missile.fbx");
 
 	glutTimerFunc(0, timer, 0);
 
