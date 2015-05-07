@@ -6,7 +6,9 @@
 #include "math_3d.h"
 #include "Model.h"
 #include "basic_lighting.h"
-#include "Engine.h"
+#include "Path.h"
+#include "Terrain.h"
+#include "pipeline.h"
 
 
 class Enemy

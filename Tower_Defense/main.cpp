@@ -1,16 +1,8 @@
 #include <iostream>
 
 
-//#include "Model.h"
-//#include "Camera.h"
-//#include "basic_lighting.h"
-//#include "pipeline.h"
-//#include "skinning_technique.h"
-//#include "skinned_mesh.h"
-//#include "Terrain.h"
-//#include "Path.h"
 #include "Tower.h"
-#include "Enemy.h"
+#include "Camera.h"
 #include <vector>
 
 
@@ -26,13 +18,11 @@ Camera cam;
 
 Mesh* object; 
 
-BasicLightingTechnique* light;
+BasicLightingTechnique* light;		//use this shaders for static objects
+SkinningTechnique* m_pEffect;
 
 DirectionalLight m_directionalLight;
 
-Tower* tow;
-Tower* tow2;
-Tower* tow3;
 
 vector<Tower*> towerList;
 
@@ -40,12 +30,9 @@ Terrain* terrain;
 Path* path;
 
 
-SkinningTechnique* m_pEffect;
-
 Enemy en;
 Enemy en2;
 
-//SkinnedMesh m_mesh;
 
 void initGL() 
 {
@@ -56,52 +43,40 @@ void initGL()
 	glShadeModel(GL_SMOOTH);							// Enable smooth shading
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 	glEnable( GL_TEXTURE_2D );
-	
+
 	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-    m_directionalLight.AmbientIntensity = 1.0f;				//sila swiatla globalnego
+	m_directionalLight.AmbientIntensity = 0.8f;				//sila swiatla globalnego
 	m_directionalLight.DiffuseIntensity = 0.75f;
-    m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
+	m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 
 	cam.eyey = 200;//100;
 	cam.eyex = 256;//250;
 	cam.eyez = 0;
-	cam.centerx = 256;
-	cam.centerz = 256;
+	cam.centerx = 1;
+	cam.centerz = 1;
 	cam.centery = 0;
 
 
 }
-
-
-void camUpdate()
-{
-
-}
-
-
 
 // funkcja generuj¹ca scenê 3D
 void Display()
 {
 	m_frameCount++;
 
-    long long time = GetCurrentTimeMillis();
-    
-    if (time - m_frameTime >= 1000) {
-        m_frameTime = time;
-        m_fps = m_frameCount;
-        m_frameCount = 0;
-    }
+	long long time = GetCurrentTimeMillis();
 
-
-
-
+	if (time - m_frameTime >= 1000) {
+		m_frameTime = time;
+		m_fps = m_frameCount;
+		m_frameCount = 0;
+	}
 
 	cam.UpdateCamera();
 	glDisable(GL_LIGHTING);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
-	
+
 	PersProjInfo pers;
 	pers.FOV = 90;
 	pers.Height = 480;
@@ -110,16 +85,16 @@ void Display()
 	pers.zNear = 0.1f;
 	Pipeline p;
 	p.Scale(0.1f, 0.1f, 0.1f);
-    p.Rotate(0.0f,90.0f, 0.0f);
-    p.WorldPos(0.0f, 0.0f, 10.0f);
+	p.Rotate(0.0f,90.0f, 0.0f);
+	p.WorldPos(0.0f, 0.0f, 10.0f);
 	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez ), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	p.SetPerspectiveProj(pers);
 
-	
-    light->SetWVP(p.GetWVPTrans());
+
+	light->SetWVP(p.GetWVPTrans());
 	const Matrix4f& WorldTransformation = p.GetWorldTrans();
-    light->SetWorldMatrix(WorldTransformation);
-    light->SetDirectionalLight(m_directionalLight);
+	light->SetWorldMatrix(WorldTransformation);
+	light->SetDirectionalLight(m_directionalLight);
 
 	p.Scale(1.f, 1.f, 1.f);
 	p.Rotate(0.0f, 0.0f, 0.0f);
@@ -143,32 +118,30 @@ void Display()
 	{
 		if( towerList[i]->IsInRange(en.GetPosition()) && en.HP > 0)
 		{
-		Vector3f pos = en.GetPosition();
-		towerList[i]->Shoot(&p, &en );
+			Vector3f pos = en.GetPosition();
+			towerList[i]->Shoot(&p, &en );
 		}
 		else if(  towerList[i]->IsInRange(en2.GetPosition()) && en2.HP > 0)
 		{
-		Vector3f pos = en2.GetPosition();
-		towerList[i]->Shoot(&p, &en2 );
+			Vector3f pos = en2.GetPosition();
+			towerList[i]->Shoot(&p, &en2 );
 		}
 	}
 
 
-	p.Scale(1, 1, 1);
+	/*p.Scale(1, 1, 1);
 	p.WorldPos(256, 80, 256);
 	p.Rotate(0, 0, 0);
-	light->SetWVP(p.GetWVPTrans());
+	light->SetWVP(p.GetWVPTrans());*/
 	//object->Render();					//ten wielki nad map¹
 
-	
-	//glFlush();
 	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 
 
 	//cout << glGetError() << endl;
 }
 
-// zmiana wielkoœci okna
+// change window size
 void Reshape( int width, int height )
 {
 	// Compute aspect ratio of the new window
@@ -211,8 +184,7 @@ void Keyboard( unsigned char key, int x, int y )
 //Dzia³a nie tykaæ
 void SpecialKeys( int key, int x, int y )
 {
-	double movementSpeed = 150.0;
-	cam.STEP_SCALE = 10;
+	double movementSpeed = 10.0;
 
 	switch( key )
 	{
@@ -276,35 +248,26 @@ int main( int argc, char * argv[] )
 	object = new Mesh();
 
 	if (!light->Init()) {
-            printf("Error initializing the lighting technique\n");
-            return -1;
-        }
+		printf("Error initializing the lighting technique\n");
+		return -1;
+	}
 
-	 m_pEffect = new SkinningTechnique();
+	m_pEffect = new SkinningTechnique();
 
-        if (!m_pEffect->Init()) {
-            printf("Error initializing the lighting technique\n");
-            return false;
-        }
-
-
-	light->Enable();
-	m_pEffect->Enable();
-
-
-	
-
-	//tow.LoadMissile("Models/phoenix_ugv.md2");
-
+	if (!m_pEffect->Init()) {
+		printf("Error initializing the lighting technique\n");
+		return false;
+	}
 
 	light->Enable();
+
 	if( object->LoadMesh("Models/phoenix_ugv.md2") )
 	{
-		cout << "udalo sie wczytac" << endl;
+		cout << "Loaded successful " << endl;
 	}
 
 	terrain = new Terrain();
-	terrain->Init("Models/terrain1.bmp", 0.15f);	//1
+	terrain->Init("Models/terrain1.bmp", 0.15f);
 
 	path = new Path(terrain);
 	path->Init("Models/path1.bmp");

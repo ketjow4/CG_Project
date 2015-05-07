@@ -3,7 +3,7 @@
 
 Tower::Tower()
 {
-	//this->missileLife = 1000; //wartoœæ w milisekundach
+	
 }
 
 
@@ -21,7 +21,7 @@ Tower::Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect, Vector
 	towerPos.y += terrain->GetTerrainHeight(towerPos.x,towerPos.z);
 	missilePos = towerPos;
 	Range = 250;
-	missileLife = 0;
+	//missileLife = 0;
 	
 }
 
@@ -57,7 +57,7 @@ void Tower::Shoot(Pipeline * p, Enemy* en)
 	p->Scale(towerScale,towerScale,towerScale);		//temporary missile scale can be differen than tower scale
 	p->Rotate(0,0,0);
 	light->SetWVP(p->GetWVPTrans());
-	missileLife += 30;
+	//missileLife += 30;
 	Missile.Render();
 	
 }
@@ -75,25 +75,13 @@ void Tower::LoadMissile(string filename)
 }
 
 
-
-long long m_startTime;
-
-
-
-float GetRunningTime()
-{
- float RunningTime = (float)((double)GetCurrentTimeMillis() - (double)m_startTime) / 1000.0f;
-    return RunningTime;
-}
-
-
 void Tower::CalcAnimation()
 {
 	m_pEffect->Enable();
 	 
 	vector<Matrix4f> Transforms;
                
-    float RunningTime = GetRunningTime();
+    float RunningTime = Engine::GetRunningTime();
 
 	if( distance_to_target > Range)			//no animation playing when enemy is out of range
 	{
@@ -115,14 +103,6 @@ void Tower::Render(Pipeline *p)
 	m_pEffect->SetWVP(p->GetWVPTrans());
 	this->Model3D.Render();
 	
-	/*if(missileLife < 10000 && distance_to_target < Range)
-	{
-		this->Missile.Render();
-	}
-	else
-	{
-		missileLife = 0;
-	}*/
 }
 
 bool Tower::IsInRange(Vector3f enemyPos)

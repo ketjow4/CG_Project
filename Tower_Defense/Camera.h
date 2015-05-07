@@ -19,7 +19,7 @@ public:
 	GLdouble eyez;
 
 
-	// wspó³rzêdne punktu w którego kierunku jest zwrócony obserwator,
+	// normalized vector of camera view direction
 	GLdouble centerx;
 	GLdouble centery;
 	GLdouble centerz;

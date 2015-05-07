@@ -21,7 +21,7 @@ public:
 
 	SkinnedMesh Model3D;
 	Mesh Missile;
-	float missileLife;
+	//float missileLife; not used
 	double Range;
 	Vector3f missilePos;
 	Vector3f towerPos;
@@ -56,17 +56,6 @@ private:
 
 
 };
-
-
-
-
-
-
-
-
-
-
-
 
 
 #endif

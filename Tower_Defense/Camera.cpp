@@ -1,6 +1,5 @@
 #include "Camera.h"
 
-//#define TEST
 
 Camera::Camera()
 {
@@ -46,7 +45,7 @@ Camera::Camera()
 
 void Camera::UpdateCamera()
 {
-		const Vector3f Vaxis(0.0f, 1.0f, 0.0f);
+	const Vector3f Vaxis(0.0f, 1.0f, 0.0f);
 
     // Rotate the view vector by the horizontal angle around the vertical axis
     Vector3f View(1.0f, 0.0f, 0.0f);
@@ -89,16 +88,14 @@ void Camera::SetCenterPoint(double x, double y, double z)
 
 void Camera::MoveForward(double delta)
 {
-	eyex += (Vector3f(centerx,centery,centerz) * STEP_SCALE).x;
-	//eyey += (Vector3f(centerx,centery,centerz) * STEP_SCALE).y;
-	eyez += (Vector3f(centerx,centery,centerz) * STEP_SCALE).z;
+	eyex += (Vector3f(centerx,centery,centerz) * STEP_SCALE * delta).x;
+	eyez += (Vector3f(centerx,centery,centerz) * STEP_SCALE * delta).z;
 }
 
 void Camera::MoveBackward(double delta)
 {
-	eyex -= (Vector3f(centerx,centery,centerz) * STEP_SCALE).x;
-	//eyey += (Vector3f(centerx,centery,centerz) * STEP_SCALE).y;
-	eyez -= (Vector3f(centerx,centery,centerz) * STEP_SCALE).z;
+	eyex -= (Vector3f(centerx,centery,centerz) * STEP_SCALE * delta).x;
+	eyez -= (Vector3f(centerx,centery,centerz) * STEP_SCALE * delta).z;
 }
 
 void Camera::MoveLeft(double delta)
@@ -106,7 +103,7 @@ void Camera::MoveLeft(double delta)
 	Vector3f Left = Vector3f(centerx,centery,centerz).Cross(Vector3f(0,1,0));
 
 	Left.Normalize();
-	Left *= STEP_SCALE;
+	Left *= STEP_SCALE * delta;
 	eyex += Left.x;
 	eyey += Left.y;
 	eyez += Left.z;
@@ -117,7 +114,7 @@ void Camera::MoveRight(double delta)
 	Vector3f Right = Vector3f(0,1,0).Cross(Vector3f(centerx,centery,centerz));
 
 	Right.Normalize();
-	Right *= STEP_SCALE;
+	Right *= STEP_SCALE * delta;
 	eyex += Right.x;
 	eyey += Right.y;
 	eyez += Right.z;
