@@ -7,14 +7,22 @@ Tower::Tower()
 }
 
 
-Tower::Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect)
+
+Tower::Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect, Vector3f position, Terrain* ter)
 {
+	terrain = ter;
 	this->light = light;
 	this->m_pEffect = m_pEffect;
-	missilePos =  Vector3f(100,55,100);
-	towerPos = missilePos;
+	towerHeight = 55;			//only good when scale is 5
+	towerScale = 5;
+	towerPos = position;
+	this->LimitTowerPosition();
+	towerPos.y += towerHeight;
+	towerPos.y += terrain->GetTerrainHeight(towerPos.x,towerPos.z);
+	missilePos = towerPos;
 	Range = 250;
 	missileLife = 0;
+	
 }
 
 
@@ -42,7 +50,7 @@ void Tower::Shoot(Pipeline * p, float x, float y, float z)
 
 
 	p->WorldPos(v*x_dist+missilePos.x,v*y_dist+missilePos.y,v*z_dist+missilePos.z);
-	p->Scale(5,5,5);
+	p->Scale(towerScale,towerScale,towerScale);		//temporary missile scale can be differen than tower scale
 	p->Rotate(0,0,0);
 	light->SetWVP(p->GetWVPTrans());
 	missileLife += 30;
@@ -97,7 +105,7 @@ void Tower::CalcAnimation()
 
 void Tower::Render(Pipeline *p)
 {
-	p->Scale(5,5,5);
+	p->Scale(towerScale,towerScale,towerScale);
 	p->Rotate(0,90,-90);
 	p->WorldPos(towerPos);
 	m_pEffect->SetWVP(p->GetWVPTrans());
@@ -121,6 +129,32 @@ bool Tower::IsInRange(Vector3f enemyPos)
 	}
 	else
 	{
+		distance_to_target = Range + 1;		//hack to get no animation when there is no shooting
 		return false;
+	}
+}
+
+void Tower::LimitTowerPosition()
+{
+	double maxX = terrain->GetMaxX() -1;		//if the min is zero there is some problem with y simple fast solution
+	double minX = terrain->GetMinX() +1;
+	double maxZ = terrain->GetMaxZ() -1;
+	double minZ = terrain->GetMinZ() +1;
+
+	if(towerPos.x > maxX)
+	{
+		towerPos.x = maxX;
+	}
+	else if(towerPos.x < minX)
+	{
+		towerPos.x = minX;
+	}
+	if(towerPos.z > maxZ)
+	{
+		towerPos.z = maxZ;
+	}
+	else if(towerPos.z < minZ)
+	{
+		towerPos.z = minZ;
 	}
 }

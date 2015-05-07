@@ -23,6 +23,16 @@ public:
 	float GetTerrainHeight(float x, float z);
 	// Draws terrain
 	void Render();
+
+	//Get max verticies in X direction to limit area of tower building
+	double GetMaxX();
+
+	double GetMaxZ();
+
+	double GetMinX();
+
+	double GetMinZ();
+
 private:
 	float heightFactor;
 	int terrainList;

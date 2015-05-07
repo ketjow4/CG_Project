@@ -20,7 +20,7 @@ public:
 	~Tower();
 
 
-	Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect);
+	Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect, Vector3f position, Terrain* ter);
 
 	SkinnedMesh Model3D;
 	Mesh Missile;
@@ -29,9 +29,12 @@ public:
 	Vector3f missilePos;
 	Vector3f towerPos;
 	double distance_to_target;
+	double towerHeight;			//only good when scale is 5
+	double towerScale;
 
 	BasicLightingTechnique* light;
 	SkinningTechnique* m_pEffect;
+	Terrain* terrain;
 
 
 
@@ -49,6 +52,7 @@ public:
 
 private:
 
+	void LimitTowerPosition();
 
 
 };

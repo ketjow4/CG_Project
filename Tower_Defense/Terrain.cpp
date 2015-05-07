@@ -126,59 +126,59 @@ void Terrain::Init(char *filename, float heightFactor)
 		for (int j = 1; j < this->height; ++j)
 		{
 			Vertex t1BottomLeft
-			(
+				(
 				Vector3f( vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z ),
 				Vector2f( texCoordS, texCoordT ),
 				Vector3f( 0.0, 0.0, -1.0)
-			);
+				);
 			Vertices.push_back(t1BottomLeft);
 			AddThreeIndices(Indices, index);
-			
+
 			Vertex t1UpperLeft
-			(
+				(
 				Vector3f(vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT),
 				Vector3f(0.0, 0.0, -1.0)
-			);
+				);
 			Vertices.push_back(t1UpperLeft);
 			AddThreeIndices(Indices, index);
-			
+
 			Vertex t1UpperRight
-			(
+				(
 				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
 				Vector3f(0.0, 0.0, -1.0)
-			);
+				);
 			Vertices.push_back(t1UpperRight);
 			AddThreeIndices(Indices, index);
 
 			Vertex t2BottomLeft
-			(
+				(
 				Vector3f(vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z),
 				Vector2f(texCoordS, texCoordT),
 				Vector3f(0.0, 0.0, -1.0)
-			);
+				);
 			Vertices.push_back(t2BottomLeft);
 			AddThreeIndices(Indices, index);
 
 			Vertex t2UpperRight
-			(
+				(
 				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
 				Vector3f(0.0, 0.0, -1.0)
-			);
+				);
 			Vertices.push_back(t2UpperRight);
 			AddThreeIndices(Indices, index);
 
 			Vertex t2BottomRight
-			(
+				(
 				Vector3f(vertices[i - 1][j].x, vertices[i - 1][j].y, vertices[i - 1][j].z),
 				Vector2f(texCoordS, texCoordT + texCoordTStep),
 				Vector3f(0.0, 0.0, -1.0)
-			);
+				);
 			Vertices.push_back(t2BottomRight);
 			AddThreeIndices(Indices, index);
-			
+
 			texCoordT += texCoordTStep;
 		}
 		texCoordS += texCoordSStep;
@@ -252,4 +252,60 @@ void Terrain::AddThreeIndices(std::vector<unsigned int> &indicesVec, unsigned in
 	indicesVec.push_back(firstIndex++);
 	indicesVec.push_back(firstIndex++);
 	indicesVec.push_back(firstIndex++);
+}
+
+double Terrain::GetMaxX()
+{
+	double maxX = 0;
+	for(int  i = 0; i < this->width; i++)
+	{
+		for(int j = 0; j < this->height; j++)
+		{
+			if(vertices[i][j].x > maxX)
+				maxX = vertices[i][j].x;
+		}
+	}
+	return maxX;
+}
+
+double Terrain::GetMaxZ()
+{
+	double maxZ = 0;
+	for(int  i = 0; i < this->width; i++)
+	{
+		for(int j = 0; j < this->height; j++)
+		{
+			if(vertices[i][j].z > maxZ)
+				maxZ = vertices[i][j].z;
+		}
+	}
+	return maxZ;
+}
+
+double Terrain::GetMinX()
+{
+	double minX = vertices[0][0].x;
+	for(int  i = 0; i < this->width; i++)
+	{
+		for(int j = 0; j < this->height; j++)
+		{
+			if(vertices[i][j].x < minX)
+				minX = vertices[i][j].z;
+		}
+	}
+	return minX;
+}
+
+double Terrain::GetMinZ()
+{
+	double minZ = vertices[0][0].z;
+	for(int  i = 0; i < this->width; i++)
+	{
+		for(int j = 0; j < this->height; j++)
+		{
+			if(vertices[i][j].z < minZ)
+				minZ = vertices[i][j].z;
+		}
+	}
+	return minZ;
 }
