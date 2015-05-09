@@ -113,6 +113,7 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClCompile Include="util.cpp" />
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="technique.cpp" />
+    <ClCompile Include="Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -131,6 +132,7 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClInclude Include="types.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="technique.h" />
+    <ClInclude Include="Wave.h" />
     <ClInclude Include="WorldObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -49,6 +49,9 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Wave.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basic_lighting.h">
@@ -100,6 +103,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Wave.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

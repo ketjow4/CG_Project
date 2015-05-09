@@ -3,7 +3,7 @@
 
 #include "Tower.h"
 #include "Camera.h"
-#include <vector>
+#include "Wave.h"
 
 
 /*Global variables -- temporary*/
@@ -28,10 +28,12 @@ vector<Tower*> towerList;
 
 Terrain* terrain;
 Path* path;
+Wave * wave;
 
 
 Enemy en;
 Enemy en2;
+Enemy en3;
 
 
 void initGL() 
@@ -90,6 +92,7 @@ void Display()
 	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez ), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	p.SetPerspectiveProj(pers);
 
+	wave->p = &p;
 
 	light->SetWVP(p.GetWVPTrans());
 	const Matrix4f& WorldTransformation = p.GetWorldTrans();
@@ -111,20 +114,22 @@ void Display()
 	}
 
 
-	en.UpdatePosition(&p);
-	en2.UpdatePosition(&p);
+
+
+	//wave->ClearDead();
+	light->Enable();
+	wave->UpdatePosition();
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
-		if( towerList[i]->IsInRange(en.GetPosition()) && en.HP > 0)
+		for(int j = 0; j < wave->enemyList->size(); j++)
 		{
-			Vector3f pos = en.GetPosition();
-			towerList[i]->Shoot(&p, &en );
-		}
-		else if(  towerList[i]->IsInRange(en2.GetPosition()) && en2.HP > 0)
-		{
-			Vector3f pos = en2.GetPosition();
-			towerList[i]->Shoot(&p, &en2 );
+			if( towerList[i]->IsInRange(wave->enemyList->at(j)->GetPosition()) && wave->enemyList->at(j)->HP > 0)
+			{
+			Vector3f pos = wave->enemyList->at(j)->GetPosition();
+			towerList[i]->Shoot(&p, wave->enemyList->at(j) );
+			break;
+			}
 		}
 	}
 
@@ -284,6 +289,19 @@ int main( int argc, char * argv[] )
 	en2.terrain = terrain;
 	en2.path = path;
 	en2.pathIndex = 0;
+
+	en3.light = light;
+	en3.LoadModel("Models/phoenix_ugv.md2");
+	en3.terrain = terrain;
+	en3.path = path;
+	en3.pathIndex = 100;
+
+	vector<Enemy*> enList;
+	enList.push_back(&en);
+	enList.push_back(&en2);
+	enList.push_back(&en3);
+
+	wave = new Wave(&enList,NULL);
 
 	towerList.push_back(new Tower(light,m_pEffect,Vector3f(100,0,100), terrain));
 	towerList.push_back(new Tower(light,m_pEffect,Vector3f(350,0,350), terrain));
