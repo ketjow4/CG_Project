@@ -3,7 +3,7 @@
 Enemy::Enemy()
 {
 	pathIndex = 0;
-	HP = 100;
+	HP = 50;
 	Attack = 1;			//to use later when there will be player class
 }
 
@@ -23,10 +23,10 @@ void Enemy::UpdatePosition(Pipeline *p)
 
 	if(HP <= 0)			//in future delete enemy in this case
 	{
+		this->~Enemy();
 		return ;		
 	}
 
-	//static int pathIndex = 0;
 	p->Scale(0.1f, 0.1f, 0.1f);
 	float x = path->pathPoints[pathIndex].first;
 	float z = path->pathPoints[pathIndex].second;
@@ -39,7 +39,7 @@ void Enemy::UpdatePosition(Pipeline *p)
 	light->SetWVP(p->GetWVPTrans());
 	model.Render();
 
-	if (++pathIndex >= path->pathPoints.size() - 1)				//obiekt dotar³ do celu 
+	if (++pathIndex >= path->pathPoints.size() - 1)				//object arrived at end point		-- for now return to start 
 		pathIndex = 0;
 }
 

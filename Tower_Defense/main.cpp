@@ -116,7 +116,7 @@ void Display()
 
 
 
-	//wave->ClearDead();
+	wave->ClearDead();			
 	light->Enable();
 	wave->UpdatePosition();
 
@@ -131,14 +131,12 @@ void Display()
 			break;
 			}
 		}
+		if( wave->enemyList->size() == 0)
+		{
+			towerList[i]->distance_to_target = towerList[i]->Range + 1;		//stop shooting after all enemies are killed
+		}
 	}
 
-
-	/*p.Scale(1, 1, 1);
-	p.WorldPos(256, 80, 256);
-	p.Rotate(0, 0, 0);
-	light->SetWVP(p.GetWVPTrans());*/
-	//object->Render();					//ten wielki nad map¹
 
 	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 
@@ -282,7 +280,7 @@ int main( int argc, char * argv[] )
 	en.LoadModel("Models/phoenix_ugv.md2");
 	en.terrain = terrain;
 	en.path = path;
-	en.pathIndex = 50;
+	en.pathIndex = 0;
 
 	en2.light = light;
 	en2.LoadModel("Models/phoenix_ugv.md2");
@@ -294,7 +292,7 @@ int main( int argc, char * argv[] )
 	en3.LoadModel("Models/phoenix_ugv.md2");
 	en3.terrain = terrain;
 	en3.path = path;
-	en3.pathIndex = 100;
+	en3.pathIndex = 0;
 
 	vector<Enemy*> enList;
 	enList.push_back(&en);
@@ -302,6 +300,7 @@ int main( int argc, char * argv[] )
 	enList.push_back(&en3);
 
 	wave = new Wave(&enList,NULL);
+	wave->pathDifference = 50;
 
 	towerList.push_back(new Tower(light,m_pEffect,Vector3f(100,0,100), terrain));
 	towerList.push_back(new Tower(light,m_pEffect,Vector3f(350,0,350), terrain));

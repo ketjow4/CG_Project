@@ -41,6 +41,10 @@ void Tower::Shoot(Pipeline * p, Enemy* en)
 		v = 0;
 		enemy->HP -= 10;
 	}
+	if(enemy->pathIndex == 0)
+	{
+		return ;		//no shooting when enemy is not i wave
+	}
 	float x_dist = enemy->GetPosition().x - missilePos.x;
 	float y_dist = enemy->GetPosition().y -  missilePos.y;
 	float z_dist = enemy->GetPosition().z -  missilePos.z;
