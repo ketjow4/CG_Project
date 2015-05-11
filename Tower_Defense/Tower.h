@@ -29,7 +29,7 @@ public:
 	double towerHeight;			//only good when scale is 5
 	double towerScale;
 	Enemy* enemy;
-
+	int cost;		//how many money tower cost
 
 	BasicLightingTechnique* light;
 	SkinningTechnique* m_pEffect;

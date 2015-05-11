@@ -3,7 +3,7 @@
 Enemy::Enemy()
 {
 	pathIndex = 0;
-	HP = 50;
+	HP = 150;
 	Attack = 1;			//to use later when there will be player class
 }
 
