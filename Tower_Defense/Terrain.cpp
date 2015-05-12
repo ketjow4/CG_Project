@@ -254,58 +254,38 @@ void Terrain::AddThreeIndices(std::vector<unsigned int> &indicesVec, unsigned in
 	indicesVec.push_back(firstIndex++);
 }
 
-double Terrain::GetMaxX()
+float Terrain::GetMaxX()
 {
-	double maxX = 0;
-	for(int  i = 0; i < this->width; i++)
-	{
-		for(int j = 0; j < this->height; j++)
-		{
-			if(vertices[i][j].x > maxX)
-				maxX = vertices[i][j].x;
-		}
-	}
+	float maxX = vertices[0][0].x;
+	for (int i = 0; i < this->width; i++)
+		for (int j = 0; j < this->height; j++)
+			maxX = max(maxX, vertices[i][j].x);
 	return maxX;
 }
 
-double Terrain::GetMaxZ()
+float Terrain::GetMaxZ()
 {
-	double maxZ = 0;
-	for(int  i = 0; i < this->width; i++)
-	{
-		for(int j = 0; j < this->height; j++)
-		{
-			if(vertices[i][j].z > maxZ)
-				maxZ = vertices[i][j].z;
-		}
-	}
+	float maxZ = vertices[0][0].z;
+	for (int i = 0; i < this->width; i++)
+		for (int j = 0; j < this->height; j++)
+			maxZ = max(maxZ, vertices[i][j].z);
 	return maxZ;
 }
 
-double Terrain::GetMinX()
+float Terrain::GetMinX()
 {
-	double minX = vertices[0][0].x;
+	float minX = vertices[0][0].x;
 	for(int  i = 0; i < this->width; i++)
-	{
 		for(int j = 0; j < this->height; j++)
-		{
-			if(vertices[i][j].x < minX)
-				minX = vertices[i][j].z;
-		}
-	}
+			minX = min(minX, vertices[i][j].x);
 	return minX;
 }
 
-double Terrain::GetMinZ()
+float Terrain::GetMinZ()
 {
-	double minZ = vertices[0][0].z;
-	for(int  i = 0; i < this->width; i++)
-	{
-		for(int j = 0; j < this->height; j++)
-		{
-			if(vertices[i][j].z < minZ)
-				minZ = vertices[i][j].z;
-		}
-	}
+	float minZ = vertices[0][0].z;
+	for (int i = 0; i < this->width; i++)
+		for (int j = 0; j < this->height; j++)
+			minZ = min(minZ, vertices[i][j].z);
 	return minZ;
 }

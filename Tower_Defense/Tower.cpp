@@ -9,17 +9,13 @@ Tower::Tower()
 
 
 Tower::Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect, Vector3f position, Terrain* ter)
-	: light(light), m_pEffect(m_pEffect), towerPos(position), terrain(ter)
+	: light(light), m_pEffect(m_pEffect), towerPos(position), terrain(ter), reloading(0)
 {
 	towerHeight = 55;			//only good when scale is 5
 	towerScale = 5;
 	this->LimitTowerPosition();
-	towerPos.y += towerHeight;
-	towerPos.y += terrain->GetTerrainHeight(towerPos.x,towerPos.z);
-	missilePos = towerPos;
+	towerPos.y = terrain->GetTerrainHeight(towerPos.x, towerPos.z) + towerHeight;
 	Range = 250;
-	//missileLife = 0;
-	
 }
 
 
@@ -28,39 +24,63 @@ Tower::~Tower()
 }
 
 
-void Tower::Shoot(Pipeline * p, Enemy* en)
+void Tower::Shoot(Enemy* en)
 {
-	enemy = en;
-	static float v = 0;
-	v += 0.015;
-	if(v > 1)
+	const int reloadTime = 30;
+	if (reloading <= 0)
 	{
-		v = 0;
-		enemy->HP -= 10;
+		Vector3f missleDirection = (en->GetPosition() - towerPos).Normalize();
+		missiles.push_back(Missile(this->towerPos, missleDirection, 6.f, 200));
+		reloading = reloadTime;
 	}
-	if(enemy->pathIndex == 0)
+}
+
+void Tower::UpdateMissiles(Pipeline * p, list<Enemy> *enemies)
+{
+	std::list<Missile>::iterator it = missiles.begin();
+	while(it != missiles.end())
 	{
-		return ;		//no shooting when enemy is not i wave
+		UpdateMissile(p, &(*it), enemies);
+		if (it->lifetime <= 0)
+			it = missiles.erase(it);
+		else
+			++it;
 	}
-	float x_dist = enemy->GetPosition().x - missilePos.x;
-	float y_dist = enemy->GetPosition().y -  missilePos.y;
-	float z_dist = enemy->GetPosition().z -  missilePos.z;
+}
 
-	distance_to_target =  sqrt(pow(towerPos.x - enemy->GetPosition().x,2) + pow(towerPos.z - enemy->GetPosition().z, 2));
+void Tower::Reload()
+{
+	--reloading;
+}
 
-	if( distance_to_target > Range)
-	{
-		v = 0;
-	}
-
-
-	p->WorldPos(v*x_dist+missilePos.x,v*y_dist+missilePos.y,v*z_dist+missilePos.z);
-	p->Scale(towerScale,towerScale,towerScale);		//temporary missile scale can be differen than tower scale
-	p->Rotate(0,0,0);
-	light->SetWVP(p->GetWVPTrans());
-	//missileLife += 30;
-	Missile.Render();
+void Tower::UpdateMissile(Pipeline *p, Missile *missile, list<Enemy> *enemies)
+{
+	list<Enemy>::iterator it = enemies->begin();
+	for (; it != enemies->end(); ++it)
+		if (missile->Collide(&(*it)))
+		{
+			it->HP -= 30;
+			missile->lifetime = 0;
+			return;
+		}
 	
+	if (missile->Collide(terrain))
+	{
+		missile->lifetime = 0;
+		return;
+	}
+
+	missile->UpdateMissile();
+	RenderMissile(missile, p);
+}
+
+void Tower::RenderMissile(Missile *missile, Pipeline *p)
+{
+	p->WorldPos(missile->pos);
+	p->Scale(1, 1, 1);		//temporary missile scale can be differen than tower scale
+	p->Rotate(0, 0, 0);
+	light->SetWVP(p->GetWVPTrans());
+	MissileMesh.Render();
 }
 
 
@@ -72,7 +92,7 @@ void Tower::LoadModel(string filename)
 
 void Tower::LoadMissile(string filename)
 {
-	this->Missile.LoadMesh(filename);
+	this->MissileMesh.LoadMesh(filename);
 }
 
 
@@ -122,10 +142,10 @@ bool Tower::IsInRange(Vector3f enemyPos)
 
 void Tower::LimitTowerPosition()
 {
-	double maxX = terrain->GetMaxX() -1;		//if the min is zero there is some problem with y simple fast solution
-	double minX = terrain->GetMinX() +1;
-	double maxZ = terrain->GetMaxZ() -1;
-	double minZ = terrain->GetMinZ() +1;
+	float maxX = terrain->GetMaxX() -1;		//if the min is zero there is some problem with y simple fast solution
+	float minX = terrain->GetMinX() + 1;
+	float maxZ = terrain->GetMaxZ() - 1;
+	float minZ = terrain->GetMinZ() + 1;
 
 	if(towerPos.x > maxX)
 	{

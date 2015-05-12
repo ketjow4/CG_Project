@@ -4,6 +4,7 @@
 
 #include "Enemy.h"
 #include <vector>
+#include <list>
 
 class Wave
 {
@@ -11,9 +12,9 @@ public:
 	Wave();
 	~Wave();
 
-	Wave(vector<Enemy*>* list, Pipeline *p);
+	Wave(list<Enemy>* list, Pipeline *p);
 
-	vector<Enemy*>* enemyList;
+	list<Enemy>* enemyList;
 	//the differenc in path index between 2 enemies in wave
 	int pathDifference;
 

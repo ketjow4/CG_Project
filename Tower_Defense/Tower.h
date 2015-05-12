@@ -8,6 +8,8 @@
 #include "basic_lighting.h"
 #include "Engine.h"
 #include "Enemy.h"
+#include "Missile.h"
+#include <list>
 
 
 class Tower				//: public WorldObject
@@ -20,16 +22,17 @@ public:
 	Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect, Vector3f position, Terrain* ter);
 
 	SkinnedMesh Model3D;
-	Mesh Missile;
+	Mesh MissileMesh;
 	//float missileLife; not used
 	double Range;
-	Vector3f missilePos;
+	//Vector3f missilePos;
 	Vector3f towerPos;
 	double distance_to_target;
 	double towerHeight;			//only good when scale is 5
 	double towerScale;
-	Enemy* enemy;
+	list<Missile> missiles;
 	int cost;		//how many money tower cost
+	int reloading;
 
 	BasicLightingTechnique* light;
 	SkinningTechnique* m_pEffect;
@@ -38,7 +41,9 @@ public:
 
 
 
-	void Shoot(Pipeline * p, Enemy* en);
+	void Shoot(Enemy* en);
+	void UpdateMissiles(Pipeline * p, list<Enemy> *enemies);
+	void Reload();
 
 	void CalcAnimation();
 
@@ -50,8 +55,9 @@ public:
 
 	bool IsInRange(Vector3f enemyPos);
 
+	void RenderMissile(Missile *missile, Pipeline *p);
 private:
-
+	void UpdateMissile(Pipeline * p, Missile* missile, list<Enemy> *enemies);
 	void LimitTowerPosition();
 
 

@@ -106,7 +106,7 @@ void Display()
 	terrain->Render();
 
 	// Possible tower positions
-	std::vector<std::pair<float, float>> &towerPoints = path->possibleTowerPoints;
+	vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
 	for (int i = 0; i < towerPoints.size(); ++i)
 	{
 		float x = towerPoints[i].first;
@@ -129,19 +129,21 @@ void Display()
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
-		for(int j = 0; j < wave->enemyList->size(); j++)
+		list<Enemy>::iterator it = wave->enemyList->begin();
+		for (; it != wave->enemyList->end(); ++it)
 		{
-			if( towerList[i]->IsInRange(wave->enemyList->at(j)->GetPosition()) && wave->enemyList->at(j)->HP > 0)
+			if (towerList[i]->IsInRange(it->GetPosition()) && it->HP > 0 && it->pathIndex > 0)
 			{
-			Vector3f pos = wave->enemyList->at(j)->GetPosition();
-			towerList[i]->Shoot(&p, wave->enemyList->at(j) );
-			break;
+				towerList[i]->Shoot(&(*it));
+				break;
 			}
 		}
 		if( wave->enemyList->size() == 0)
 		{
 			towerList[i]->distance_to_target = towerList[i]->Range + 1;		//stop shooting after all enemies are killed
 		}
+		towerList[i]->UpdateMissiles(&p, wave->enemyList);
+		towerList[i]->Reload();
 	}
 
 
@@ -301,17 +303,21 @@ int main( int argc, char * argv[] )
 	en3.path = path;
 	en3.pathIndex = 0;
 
-	vector<Enemy*> enList;
-	enList.push_back(&en);
-	enList.push_back(&en2);
-	enList.push_back(&en3);
+	list<Enemy> enList;
+	enList.push_back(en);
+	enList.push_back(en2);
+	enList.push_back(en3);
 
 	wave = new Wave(&enList,NULL);
 	wave->pathDifference = 50;
 
-	towerList.push_back(new Tower(light,m_pEffect,Vector3f(100,0,100), terrain));
-	towerList.push_back(new Tower(light,m_pEffect,Vector3f(350,0,350), terrain));
-	towerList.push_back(new Tower(light,m_pEffect,Vector3f(-100,0,-100), terrain));
+	vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
+	for (int i = 0; i < towerPoints.size(); ++i)
+	{
+		float x = towerPoints[i].first;
+		float z = towerPoints[i].second;
+		towerList.push_back(new Tower(light, m_pEffect, Vector3f(x, 0, z), terrain));
+	}
 
 	for(int i = 0; i < towerList.size(); i++)
 	{

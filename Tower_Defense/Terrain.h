@@ -25,13 +25,10 @@ public:
 	void Render();
 
 	//Get max verticies in X direction to limit area of tower building
-	double GetMaxX();
-
-	double GetMaxZ();
-
-	double GetMinX();
-
-	double GetMinZ();
+	float GetMaxX();
+	float GetMaxZ();
+	float GetMinX();
+	float GetMinZ();
 
 private:
 	float heightFactor;

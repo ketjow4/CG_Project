@@ -102,6 +102,7 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math_3d.cpp" />
+    <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="basic_lighting.cpp" />
     <ClCompile Include="Path.cpp" />
@@ -120,6 +121,7 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Missile.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="basic_lighting.h" />
     <ClInclude Include="math_3d.h" />

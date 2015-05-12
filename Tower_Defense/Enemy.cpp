@@ -1,15 +1,11 @@
 #include "Enemy.h"
 
 Enemy::Enemy()
-{
-	pathIndex = 0;
-	HP = 150;
-	Attack = 1;			//to use later when there will be player class
-}
+	: pathIndex(0), HP(150), Attack(1)//to use later when there will be player class
+{}
 
 Enemy::~Enemy()
-{
-}
+{}
 
 void Enemy::LoadModel(string filename)
 {
