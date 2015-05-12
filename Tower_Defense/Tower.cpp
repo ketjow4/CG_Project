@@ -9,13 +9,10 @@ Tower::Tower()
 
 
 Tower::Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect, Vector3f position, Terrain* ter)
+	: light(light), m_pEffect(m_pEffect), towerPos(position), terrain(ter)
 {
-	terrain = ter;
-	this->light = light;
-	this->m_pEffect = m_pEffect;
 	towerHeight = 55;			//only good when scale is 5
 	towerScale = 5;
-	towerPos = position;
 	this->LimitTowerPosition();
 	towerPos.y += towerHeight;
 	towerPos.y += terrain->GetTerrainHeight(towerPos.x,towerPos.z);
@@ -94,9 +91,10 @@ void Tower::CalcAnimation()
 
 	Model3D.BoneTransform(RunningTime, Transforms);
         
-        for (uint i = 0 ; i < Transforms.size() ; i++) {
-            m_pEffect->SetBoneTransform(i, Transforms[i]);
-        }
+    for (uint i = 0 ; i < Transforms.size() ; i++)
+	{
+        m_pEffect->SetBoneTransform(i, Transforms[i]);
+    }
 }
 
 void Tower::Render(Pipeline *p)

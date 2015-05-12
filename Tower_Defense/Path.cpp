@@ -3,12 +3,15 @@
 const Path::RgbPoint Path::pathPoint(0, 0, 0);
 const Path::RgbPoint Path::beginPoint(0, 0, 255);
 const Path::RgbPoint Path::endPoint(255, 0, 0);
+const Path::RgbPoint Path::towerPoint(255, 0, 255);
 
-Path::Path(Terrain* terrain)
-	: terrain(terrain)
-{
-}
+//Path::Path(Terrain* terrain)
+//	: terrain(terrain)
+//{
+//}
 
+Path::Path()
+{}
 
 Path::~Path()
 {
@@ -22,24 +25,16 @@ void Path::Init(char *filename)
 Vector3f Path::GetRotation(const Vector3f &currentPos, int nextPathPointIndex) const
 {
 	Vector3f rotation(0.f, 0.f, 0.f);
-	const int dIndexForRotY = 40;
-	const int dIndexForRotX = 1;
+	const int dIndexForRotY = 25;
 	const float maxRotXValue = 30.f;
 	const float radToDeg = 180.0 / 3.141592;
 
 	float targetX = pathPoints[std::min(nextPathPointIndex + dIndexForRotY, (int)pathPoints.size() - 1)].first;
 	float targetZ = pathPoints[std::min(nextPathPointIndex + dIndexForRotY, (int)pathPoints.size() - 1)].second;
-	float targetY = terrain->GetTerrainHeight(targetX, targetZ);
-	Vector3f lookAt(targetX - currentPos.x, targetY - currentPos.y, targetZ - currentPos.z);
+
+	Vector3f lookAt(targetX - currentPos.x, currentPos.y, targetZ - currentPos.z);
 	lookAt = lookAt.Normalize();
 	rotation.y = 90.0 + atan2(lookAt.z, lookAt.x) * radToDeg;
-
-	//targetX = pathPoints[std::min(nextPathPointIndex + dIndexForRotX, (int)pathPoints.size() - 1)].first;
-	//targetZ = pathPoints[std::min(nextPathPointIndex + dIndexForRotX, (int)pathPoints.size() - 1)].second;
-	//targetY = terrain->GetTerrainHeight(targetX, targetZ);
-	//lookAt = Vector3f(targetX - currentPos.x, targetY - currentPos.y, targetZ - currentPos.z).Normalize();
-	//rotation.x = atan2(lookAt.y, sqrt(lookAt.x * lookAt.x + lookAt.z * lookAt.z)) * radToDeg;
-	//rotation.x = std::max(std::min(rotation.x, maxRotXValue),-maxRotXValue);
 	
 	return rotation;
 }
@@ -70,25 +65,35 @@ void Path::LoadPathMap(char *filename)
 		map[i] = new char[height+2];
 
 	// Set map
-	//std::vector<RgbPoint> diffrentPoints;
+
+//#define CHECK_POINTS
+#ifdef CHECK_POINTS
+	std::vector<RgbPoint> diffrentPoints;
+#endif
 	for (int j = 1, pdI = 0; j <= height; ++j)
 	{
 		for (int i = 1; i <= width; ++i, pdI += 3)
 		{
-			map[i][width - j + 1] = RgbToPointChar(RgbPoint(pathData[pdI + 2], pathData[pdI + 1], pathData[pdI]));
-			//auto newP = RgbPoint(pathData[pdI + 2], pathData[pdI + 1], pathData[pdI]);
-			//bool hasIt = false;
-			//for (auto p : diffrentPoints)
-			//	if (p == newP)
-			//		hasIt = true;
-			//if (!hasIt)
-			//	diffrentPoints.push_back(newP);
+			RgbPoint currentPoint = RgbPoint(pathData[pdI + 2], pathData[pdI + 1], pathData[pdI]);
+			char currentPointChar = RgbToPointChar(currentPoint);
+			map[i][j/*width - j + 1*/] = currentPointChar;
+			if (currentPointChar == towerPointChar)
+				possibleTowerPoints.push_back(std::make_pair(i, j/*width - j*/));
+#ifdef CHECK_POINTS
+			bool hasIt = false;
+			for (auto p : diffrentPoints)
+				if (p == currentPoint)
+					hasIt = true;
+			if (!hasIt)
+				diffrentPoints.push_back(currentPoint);
+#endif
 		}
 	}
 	delete pathData;
-
-	//for (auto p : diffrentPoints)
-		//printf("%d %d %d\n", p.r, p.g, p.b);
+#ifdef CHECK_POINTS
+	for (auto p : diffrentPoints)
+		printf("%d %d %d -> '%c'\n", p.r, p.g, p.b, RgbToPointChar(RgbPoint(p.r, p.g, p.g)));
+#endif
 
 	CalculatePathPoints(map);
 	for (int i = 0; i < width+2; ++i)
@@ -158,5 +163,7 @@ char Path::RgbToPointChar(const RgbPoint &rgbPoint) const
 		return Path::beginPointChar;
 	if (rgbPoint == Path::endPoint)
 		return Path::endPointChar;
+	if (rgbPoint == Path::towerPoint)
+		return Path::towerPointChar;
 	return defaultPointChar;
 }

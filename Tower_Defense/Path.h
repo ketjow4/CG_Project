@@ -11,9 +11,11 @@ class Path
 {
 public:
 	std::vector<std::pair<float, float>> pathPoints;
-	Terrain* terrain;
+	std::vector<std::pair<float, float>> possibleTowerPoints;
+	//Terrain* terrain;
 
-	Path(Terrain* terrain);
+	//Path(Terrain* terrain);
+	Path();
 	~Path();
 	void Init(char *filename);
 	Vector3f GetRotation(const Vector3f &currentPos, int nextPathPointIndex) const;
@@ -41,6 +43,9 @@ private:
 	// Red (255,0,0)
 	const static RgbPoint endPoint;
 	const static char endPointChar = 'e';
+	// Magenta (255,0,255)
+	const static RgbPoint towerPoint;
+	const static char towerPointChar = 't';
 	// Default
 	const static char defaultPointChar = '-';
 

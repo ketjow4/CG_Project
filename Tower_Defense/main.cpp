@@ -16,7 +16,7 @@ int m_fps;
 
 Camera cam;
 
-Mesh* object; 
+Mesh* testObject; 
 
 BasicLightingTechnique* light;		//use this shaders for static objects
 SkinningTechnique* m_pEffect;
@@ -51,7 +51,7 @@ void initGL()
 	m_directionalLight.DiffuseIntensity = 0.75f;
 	m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 
-	cam.eyey = 200;//100;
+	cam.eyey = 100;//100;
 	cam.eyex = 256;//250;
 	cam.eyez = 0;
 	cam.centerx = 1;
@@ -105,6 +105,16 @@ void Display()
 	light->SetWVP(p.GetWVPTrans());
 	terrain->Render();
 
+	std::vector<std::pair<float, float>> &towerPoints = path->possibleTowerPoints;
+	for (int i = 0; i < towerPoints.size(); ++i)
+	{
+		float x = towerPoints[i].first;
+		float z = towerPoints[i].second;
+		p.Scale(0.5f, 1.f, 0.1f);
+		p.WorldPos(x, terrain->GetTerrainHeight(x, z), z);
+		light->SetWVP(p.GetWVPTrans());
+		testObject->Render();
+	}
 
 
 	for(int i = 0; i < towerList.size(); i++)
@@ -248,7 +258,6 @@ int main( int argc, char * argv[] )
 
 
 	light = new BasicLightingTechnique();
-	object = new Mesh();
 
 	if (!light->Init()) {
 		printf("Error initializing the lighting technique\n");
@@ -258,21 +267,22 @@ int main( int argc, char * argv[] )
 	m_pEffect = new SkinningTechnique();
 
 	if (!m_pEffect->Init()) {
-		printf("Error initializing the lighting technique\n");
-		return false;
+		printf("Error initializing the skinning technique\n");
+		//return -1;
 	}
 
 	light->Enable();
 
-	if( object->LoadMesh("Models/phoenix_ugv.md2") )
+	testObject = new Mesh();
+	if (testObject->LoadMesh("Models/phoenix_ugv.md2"))
 	{
-		cout << "Loaded successful " << endl;
+		cout << "Test object loaded successful " << endl;
 	}
 
 	terrain = new Terrain();
-	terrain->Init("Models/terrain1.bmp", 0.15f);
+	terrain->Init("Models/terrain1.bmp", 0.3f);
 
-	path = new Path(terrain);
+	path = new Path();
 	path->Init("Models/path1.bmp");
 
 	//enemy 
@@ -319,7 +329,7 @@ int main( int argc, char * argv[] )
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
 
-	delete object;
+	delete testObject;
 
 	return 0;
 }
