@@ -357,6 +357,14 @@ int main( int argc, char * argv[] )
 	glutMainLoop();
 
 	delete testObject;
+	delete terrain;
+	delete light;
+	delete m_pEffect;
+	delete text;
+	delete path;
+	delete wave;
+	for(int i = 0; i < towerList.size(); i++)
+		delete towerList[i];
 
 	return 0;
 }
