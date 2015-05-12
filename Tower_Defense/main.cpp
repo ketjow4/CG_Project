@@ -52,7 +52,7 @@ void initGL()
 	m_directionalLight.DiffuseIntensity = 0.75f;
 	m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
 
-	cam.eyey = 100;//100;
+	cam.eyey = 200;//100;
 	cam.eyex = 256;//250;
 	cam.eyez = 0;
 	cam.centerx = 1;
