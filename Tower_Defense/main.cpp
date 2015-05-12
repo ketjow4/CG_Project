@@ -105,6 +105,7 @@ void Display()
 	light->SetWVP(p.GetWVPTrans());
 	terrain->Render();
 
+	// Possible tower positions
 	std::vector<std::pair<float, float>> &towerPoints = path->possibleTowerPoints;
 	for (int i = 0; i < towerPoints.size(); ++i)
 	{
@@ -116,15 +117,11 @@ void Display()
 		testObject->Render();
 	}
 
-
 	for(int i = 0; i < towerList.size(); i++)
 	{
 		towerList[i]->CalcAnimation();
 		towerList[i]->Render(&p);
 	}
-
-
-
 
 	wave->ClearDead();			
 	light->Enable();

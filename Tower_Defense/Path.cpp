@@ -20,6 +20,7 @@ Path::~Path()
 void Path::Init(char *filename)
 {
 	LoadPathMap(filename);
+	SmoothPath();
 }
 
 Vector3f Path::GetRotation(const Vector3f &currentPos, int nextPathPointIndex) const
@@ -99,6 +100,32 @@ void Path::LoadPathMap(char *filename)
 	for (int i = 0; i < width+2; ++i)
 		delete[] map[i];
 	delete [] map;
+}
+
+void Path::SmoothPath()
+{
+	const int groupSize = 5;
+	const float divFactor = (float)groupSize;
+	float x = 0.f;
+	float z = 0.f;
+	for (int i = 0; i < groupSize; ++i)
+	{
+		x += pathPoints[0].first;
+		z += pathPoints[0].second;
+	}
+
+	std::vector<std::pair<float, float>> smoothedPath;
+	smoothedPath.push_back(pathPoints[0]);
+	for (int i = 1; i < pathPoints.size(); ++i)
+	{
+		x -= pathPoints[std::max(i - groupSize, 0)].first;
+		z -= pathPoints[std::max(i - groupSize, 0)].second;
+		x += pathPoints[i].first;
+		z += pathPoints[i].second;
+		smoothedPath.push_back(std::make_pair(x / divFactor, z / divFactor));
+	}
+	//smoothedPath.shrink_to_fit();
+	pathPoints = smoothedPath;
 }
 
 void Path::CalculatePathPoints(char **map)

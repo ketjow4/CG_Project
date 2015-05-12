@@ -49,6 +49,7 @@ private:
 	// Default
 	const static char defaultPointChar = '-';
 
+	void SmoothPath();
 	void LoadPathMap(char *filename);
 	void CalculatePathPoints(char **map);
 	char RgbToPointChar(const RgbPoint &rgbPoint) const;
