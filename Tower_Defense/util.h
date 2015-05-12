@@ -1,6 +1,4 @@
-#ifndef OGLDEV_UTIL_H
-#define	OGLDEV_UTIL_H
-
+#pragma once
 #ifndef WIN32
 #include <unistd.h>
 #endif
@@ -52,6 +50,4 @@ float fmax(float a, float b);
 #define GLCheckError() (glGetError() == GL_NO_ERROR)
 
 long long GetCurrentTimeMillis();
-
-#endif
 

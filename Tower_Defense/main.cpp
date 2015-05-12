@@ -5,6 +5,8 @@
 #include "Camera.h"
 #include "Wave.h"
 #include "Text.h"
+#include "Mouse.h"
+#include <sstream>
 
 /*Global variables -- temporary*/
 int refreshMills = 30;        // refresh interval in milliseconds
@@ -31,10 +33,13 @@ Terrain* terrain;
 Path* path;
 Wave * wave;
 
+Mouse mouse;
 
 Enemy en;
 Enemy en2;
 Enemy en3;
+
+string displayedText = "Tower Defense alpha 0.1";
 
 
 void initGL() 
@@ -107,8 +112,18 @@ void Display()
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
 	light->SetWVP(p.GetWVPTrans());
-	
+
 	terrain->Render();
+
+	if (mouse.click)
+	{
+		mouse.CalculatePos3d();
+		ostringstream ss;
+		ss << " x: " << mouse.pos3d.x << " y: " << mouse.pos3d.y << " z: " << mouse.pos3d.z;
+		displayedText = ss.str();
+		mouse.click = false;
+		
+	}
 
 	// Possible tower positions
 	vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
@@ -161,7 +176,7 @@ void Display()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
-	text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
+	text->RenderText(displayedText,10,10,1,glm::vec3(1,1,1));
 	
 	
 	glDisable(GL_BLEND);
@@ -190,6 +205,8 @@ void Reshape( int width, int height )
 	glLoadIdentity();             // Reset
 	// Enable perspective projection with fovy, aspect, zNear and zFar
 	gluPerspective(90.0f, aspect, 0.1f, 1000.0f);		//kat widzenia, aspect ratio, zNear, zFar
+
+	mouse.SetWindowSize(width, height);
 }
 
 
@@ -243,7 +260,16 @@ void SpecialKeys( int key, int x, int y )
 	Reshape( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
 }
 
+void MouseFunc(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON || state == GLUT_UP)
+		mouse.MouseClick(x, y);
+}
 
+void MotionFunc(int x, int y)
+{
+	mouse.MouseMove(x, y);
+}
 
 
 int main( int argc, char * argv[] )
@@ -257,6 +283,7 @@ int main( int argc, char * argv[] )
 
 	// rozmiary g³ównego okna programu
 	glutInitWindowSize( 640, 480 );
+	mouse.SetWindowSize(640, 480);
 
 	// utworzenie g³ównego okna programu
 	glutCreateWindow( "Tower Defense" );
@@ -273,10 +300,12 @@ int main( int argc, char * argv[] )
 	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
 	glutSpecialFunc( SpecialKeys );
 
+	glutMouseFunc(MouseFunc);
+	glutMotionFunc(MotionFunc);
+
 	initGL(); 
 
 	glewInit();
-
 
 	light = new BasicLightingTechnique();
 

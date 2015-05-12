@@ -59,6 +59,18 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PickingTechnique.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PickingTexture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PickingTexture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basic_lighting.h">
@@ -122,6 +134,18 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Text.h" />
+    <ClInclude Include="Mouse.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PickingTechnique.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PickingTexture.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderCallbacks.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
