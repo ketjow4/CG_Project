@@ -64,11 +64,11 @@ void Tower::UpdateMissile(Pipeline *p, Missile *missile, list<Enemy> *enemies)
 			return;
 		}
 	
-	if (missile->Collide(terrain))
+	/*if (missile->Collide(terrain))
 	{
 		missile->lifetime = 0;
 		return;
-	}
+	}*/
 
 	missile->UpdateMissile();
 	RenderMissile(missile, p);
