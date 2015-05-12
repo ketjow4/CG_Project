@@ -27,9 +27,6 @@ public:
 	Text(int fontSize);
 	~Text();
 
-	
-	std::map<GLchar, Character> Characters;
-	GLuint VAO, VBO;
 
 	float screenWidth, screenHeight;
 	int fontSize;
@@ -38,6 +35,8 @@ public:
 
 
 private:
+	std::map<GLchar, Character> Characters;
+	GLuint VAO, VBO;
 
 };
 
