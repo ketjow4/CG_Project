@@ -26,6 +26,7 @@ Tower::~Tower()
 
 void Tower::Shoot(Enemy* en)
 {
+	distance_to_target =  sqrt(pow(towerPos.x - en->GetPosition().x,2) + pow(towerPos.z - en->GetPosition().z, 2));
 	const int reloadTime = 30;
 	if (reloading <= 0)
 	{
