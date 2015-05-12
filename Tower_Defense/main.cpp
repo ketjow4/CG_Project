@@ -4,7 +4,7 @@
 #include "Tower.h"
 #include "Camera.h"
 #include "Wave.h"
-
+#include "Text.h"
 
 /*Global variables -- temporary*/
 int refreshMills = 30;        // refresh interval in milliseconds
@@ -23,6 +23,7 @@ SkinningTechnique* m_pEffect;
 
 DirectionalLight m_directionalLight;
 
+Text* text;
 
 vector<Tower*> towerList;
 
@@ -78,6 +79,7 @@ void Display()
 	glDisable(GL_LIGHTING);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
+	//start of 3d Drawing
 
 	PersProjInfo pers;
 	pers.FOV = 90;
@@ -94,6 +96,8 @@ void Display()
 
 	wave->p = &p;
 
+	light->Enable();
+
 	light->SetWVP(p.GetWVPTrans());
 	const Matrix4f& WorldTransformation = p.GetWorldTrans();
 	light->SetWorldMatrix(WorldTransformation);
@@ -103,6 +107,7 @@ void Display()
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
 	light->SetWVP(p.GetWVPTrans());
+	
 	terrain->Render();
 
 	// Possible tower positions
@@ -116,6 +121,7 @@ void Display()
 		light->SetWVP(p.GetWVPTrans());
 		testObject->Render();
 	}
+
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
@@ -146,6 +152,22 @@ void Display()
 		towerList[i]->Reload();
 	}
 
+
+	//----- end 3D drawing 
+
+	// ---- 2D drawing on screen eg. menu text etc.
+	glDepthMask(GL_FALSE);  // disable writes to Z-Buffer
+	glDisable(GL_DEPTH_TEST);  // disable depth-testing
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+
+	text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
+	
+	
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
+	//end of 2D drawing
 
 	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 
@@ -325,6 +347,8 @@ int main( int argc, char * argv[] )
 		towerList[i]->LoadMissile("Models/missile.fbx");
 	}
 
+
+	text = new Text(24);
 
 	glutTimerFunc(0, timer, 0);
 

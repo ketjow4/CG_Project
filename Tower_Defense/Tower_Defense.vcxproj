@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\glut;..\ImageMagick-6\ImageMagick-6;..\glew\include;..\assimp-3.1.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\glut;..\ImageMagick-6;..\glew;..\assimp-3.1.1;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\FreeType\include;..\glut;..\ImageMagick-6\ImageMagick-6;..\glew\include;..\assimp-3.1.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\glut;..\FreeType;..\ImageMagick-6;..\glew;..\assimp-3.1.1;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -61,14 +61,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp.lib;glew32.lib;CORE_DB_Magick++_.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp.lib;glew32.lib;CORE_DB_Magick++_.lib;glut32.lib;freetype255.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)\DLL\*.dll" "$(ProjectDir)..\Debug\" /i /y
 xcopy "$(ProjectDir)\Shaders\*.*" "$(ProjectDir)..\Debug\Shaders\" /i /y
-xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
+xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y
+xcopy "$(ProjectDir)\fonts\*.*" "$(ProjectDir)..\Debug\fonts\" /i /y</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -110,6 +111,7 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClCompile Include="skinned_mesh.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="skinning_technique.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="Tower.cpp" />
     <ClCompile Include="util.cpp" />
@@ -131,6 +133,7 @@ xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y</Command>
     <ClInclude Include="pipeline.h" />
     <ClInclude Include="skinning_technique.h" />
     <ClInclude Include="Terrain.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="Tower.h" />
     <ClInclude Include="types.h" />
