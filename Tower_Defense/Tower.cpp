@@ -29,7 +29,7 @@ void Tower::Shoot(Enemy* en)
 	const int reloadTime = 30;
 	if (reloading <= 0)
 	{
-		Vector3f missleDirection = (en->GetPosition() - towerPos).Normalize();
+		Vector3f missleDirection = (en->GetFuturePosition(10) - towerPos).Normalize();
 		missiles.push_back(Missile(this->towerPos, missleDirection, 6.f, 200));
 		reloading = reloadTime;
 	}
@@ -64,11 +64,11 @@ void Tower::UpdateMissile(Pipeline *p, Missile *missile, list<Enemy> *enemies)
 			return;
 		}
 	
-	/*if (missile->Collide(terrain))
+	if (missile->Collide(terrain))
 	{
 		missile->lifetime = 0;
 		return;
-	}*/
+	}
 
 	missile->UpdateMissile();
 	RenderMissile(missile, p);
@@ -142,10 +142,10 @@ bool Tower::IsInRange(Vector3f enemyPos)
 
 void Tower::LimitTowerPosition()
 {
-	float maxX = terrain->GetMaxX() -1;		//if the min is zero there is some problem with y simple fast solution
-	float minX = terrain->GetMinX() + 1;
-	float maxZ = terrain->GetMaxZ() - 1;
-	float minZ = terrain->GetMinZ() + 1;
+	float maxX = terrain->MaxX -1;		//if the min is zero there is some problem with y simple fast solution
+	float minX = terrain->MinX + 1;
+	float maxZ = terrain->MaxZ - 1;
+	float minZ = terrain->MinZ + 1;
 
 	if(towerPos.x > maxX)
 	{

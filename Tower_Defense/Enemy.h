@@ -32,7 +32,7 @@ public:
 	void UpdatePosition(Pipeline *p);
 
 	Vector3f GetPosition();
-
+	Vector3f GetFuturePosition(int steps);
 
 private:
 

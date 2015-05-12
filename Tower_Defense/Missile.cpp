@@ -30,8 +30,8 @@ bool Missile::Collide(Enemy *enemy) const
 
 bool Missile::Collide(Terrain *terrain) const
 {
-	if (pos.x < terrain->GetMinX() || terrain->GetMaxX() < pos.x ||
-		pos.z < terrain->GetMinZ() || terrain->GetMaxZ() < pos.z)
+	if (pos.x < terrain->MinX || terrain->MaxX < pos.x ||
+		pos.z < terrain->MinZ || terrain->MaxZ < pos.z)
 		return true;
 	float terrainY = terrain->GetTerrainHeight(pos.x, pos.z);
 	if (pos.y <= terrainY)

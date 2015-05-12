@@ -25,10 +25,10 @@ public:
 	void Render();
 
 	//Get max verticies in X direction to limit area of tower building
-	float GetMaxX();
-	float GetMaxZ();
-	float GetMinX();
-	float GetMinZ();
+	float MaxX;
+	float MaxZ;
+	float MinX;
+	float MinZ;
 
 private:
 	float heightFactor;
@@ -46,5 +46,10 @@ private:
 	// Calculates normal to plane of triangle
 	Vector3f GetNormal(const Triangle& triangle);
 	void AddThreeIndices(std::vector<unsigned int> &indicesVec, unsigned int &firstIndex);
+
+	void SetMaxX();
+	void SetMaxZ();
+	void SetMinX();
+	void SetMinZ();
 };
 

@@ -203,6 +203,10 @@ void Terrain::Init(char *filename, float heightFactor)
 		printf("Loaded texture '%s'\n", "Models/terrain1texture.bmp");
 	}
 
+	SetMaxX();
+	SetMaxZ();
+	SetMinX();
+	SetMinZ();
 }
 
 
@@ -254,38 +258,38 @@ void Terrain::AddThreeIndices(std::vector<unsigned int> &indicesVec, unsigned in
 	indicesVec.push_back(firstIndex++);
 }
 
-float Terrain::GetMaxX()
+void Terrain::SetMaxX()
 {
 	float maxX = vertices[0][0].x;
 	for (int i = 0; i < this->width; i++)
 		for (int j = 0; j < this->height; j++)
 			maxX = max(maxX, vertices[i][j].x);
-	return maxX;
+	MaxX = maxX;
 }
 
-float Terrain::GetMaxZ()
+void Terrain::SetMaxZ()
 {
 	float maxZ = vertices[0][0].z;
 	for (int i = 0; i < this->width; i++)
 		for (int j = 0; j < this->height; j++)
 			maxZ = max(maxZ, vertices[i][j].z);
-	return maxZ;
+	MaxZ = maxZ;
 }
 
-float Terrain::GetMinX()
+void Terrain::SetMinX()
 {
 	float minX = vertices[0][0].x;
 	for(int  i = 0; i < this->width; i++)
 		for(int j = 0; j < this->height; j++)
 			minX = min(minX, vertices[i][j].x);
-	return minX;
+	MinX = minX;
 }
 
-float Terrain::GetMinZ()
+void Terrain::SetMinZ()
 {
 	float minZ = vertices[0][0].z;
 	for (int i = 0; i < this->width; i++)
 		for (int j = 0; j < this->height; j++)
 			minZ = min(minZ, vertices[i][j].z);
-	return minZ;
+	MinZ = minZ;
 }

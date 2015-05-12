@@ -44,3 +44,12 @@ Vector3f Enemy::GetPosition()
 {
 	return position;
 }
+
+Vector3f Enemy::GetFuturePosition(int steps)
+{
+	int futurePathIndex = min(pathIndex + steps, (int)path->pathPoints.size() - 1);
+	float x = path->pathPoints[futurePathIndex].first;
+	float z = path->pathPoints[futurePathIndex].second;
+	float y = terrain->GetTerrainHeight(x, z);
+	return Vector3f(x, y, z);
+}

@@ -58,6 +58,7 @@
     <ClCompile Include="Missile.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basic_lighting.h">
@@ -120,6 +121,7 @@
     <ClInclude Include="Missile.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Text.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
