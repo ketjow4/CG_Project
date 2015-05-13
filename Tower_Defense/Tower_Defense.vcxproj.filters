@@ -73,6 +73,9 @@
     <ClCompile Include="SkinningTechnique.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="ModelsContainer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -145,6 +148,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="SkinningTechnique.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelsContainer.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

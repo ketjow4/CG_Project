@@ -381,21 +381,21 @@ int main( int argc, char * argv[] )
 
 	Enemy *en = new Enemy();
 	en->light = light;
-	en->LoadModel("Models/phoenix_ugv.md2");
+	en->LoadModel(1, "Models/phoenix_ugv.md2");
 	en->terrain = terrain;
 	en->path = path;
 	enList.push_back(en);
 	
 	en = new Enemy();
 	en->light = light;
-	en->LoadModel("Models/phoenix_ugv.md2");
+	en->LoadModel(1, "Models/phoenix_ugv.md2");
 	en->terrain = terrain;
 	en->path = path;
 	enList.push_back(en);
 
 	en = new Enemy();
 	en->light = light;
-	en->LoadModel("Models/phoenix_ugv.md2");
+	en->LoadModel(1, "Models/phoenix_ugv.md2");
 	en->terrain = terrain;
 	en->path = path;
 	enList.push_back(en);
@@ -436,6 +436,7 @@ int main( int argc, char * argv[] )
 	delete m_pickingTexture;
 	delete m_pEffect;
 	delete light;
+	ModelsContainer::FreeResources();
 
 	return 0;
 }

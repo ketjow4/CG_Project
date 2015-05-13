@@ -106,6 +106,7 @@ xcopy "$(ProjectDir)\fonts\*.*" "$(ProjectDir)..\Debug\fonts\" /i /y</Command>
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="BasicLighting.cpp" />
+    <ClCompile Include="ModelsContainer.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="PickingTechnique.cpp" />
@@ -130,6 +131,7 @@ xcopy "$(ProjectDir)\fonts\*.*" "$(ProjectDir)..\Debug\fonts\" /i /y</Command>
     <ClInclude Include="Model.h" />
     <ClInclude Include="BasicLighting.h" />
     <ClInclude Include="math_3d.h" />
+    <ClInclude Include="ModelsContainer.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="PickingTechnique.h" />
