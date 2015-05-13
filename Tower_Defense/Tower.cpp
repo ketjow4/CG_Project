@@ -30,7 +30,7 @@ void Tower::Shoot(Enemy* en)
 	const int reloadTime = 30;
 	if (reloading <= 0)
 	{
-		Vector3f missleDirection = (en->GetFuturePosition(10) - towerPos).Normalize();
+		Vector3f missleDirection = (en->GetFuturePosition(20) - towerPos).Normalize();
 		missiles.push_back(Missile(this->towerPos, missleDirection, 6.f, 200));
 		reloading = reloadTime;
 	}

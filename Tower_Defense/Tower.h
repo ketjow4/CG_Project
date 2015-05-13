@@ -2,9 +2,9 @@
 
 #include "Model.h"
 //#include "WorldObject.h"
-#include "skinned_mesh.h"
-#include "skinning_technique.h"
-#include "basic_lighting.h"
+#include "SkinnedMesh.h"
+#include "SkinningTechnique.h"
+#include "BasicLighting.h"
 #include "Engine.h"
 #include "Enemy.h"
 #include "Missile.h"

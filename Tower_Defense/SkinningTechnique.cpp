@@ -2,7 +2,7 @@
 #include <string>
 #include <assert.h>
 
-#include "skinning_technique.h"
+#include "SkinningTechnique.h"
 #include "util.h"
 
 using namespace std;

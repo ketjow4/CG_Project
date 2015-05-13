@@ -138,7 +138,7 @@ void Display()
 			displayedText = ss.str();
 		}
 		else
-			displayedText = "Not a tower possible position";
+			displayedText = "Not a possible tower position";
 	}
 
 	light->Enable();

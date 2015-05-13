@@ -13,12 +13,6 @@
     <ClCompile Include="technique.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="skinning_technique.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="skinned_mesh.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="pipeline.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -32,9 +26,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="basic_lighting.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Tower.cpp">
@@ -58,7 +49,6 @@
     <ClCompile Include="Missile.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Mouse.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -71,11 +61,20 @@
     <ClCompile Include="PickingTexture.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicLighting.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMesh.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinningTechnique.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="basic_lighting.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -86,12 +85,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="pipeline.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="skinned_mesh.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="skinning_technique.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="technique.h">
@@ -133,7 +126,6 @@
     <ClInclude Include="Missile.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Text.h" />
     <ClInclude Include="Mouse.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -141,6 +133,18 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="PickingTexture.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicLighting.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMesh.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinningTechnique.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
