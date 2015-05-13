@@ -22,6 +22,7 @@
 #include "util.h"
 #include "math_3d.h"
 #include "texture.h"
+#include "Renderable.h"
 
 
 struct Vertex
@@ -40,9 +41,9 @@ struct Vertex
     }
 };
 
- struct MeshEntry {
+ struct MeshEntry
+ {
         MeshEntry();
-
         ~MeshEntry();
 
         void Init(const std::vector<Vertex>& Vertices,
@@ -55,7 +56,7 @@ struct Vertex
     };
 
 
-class Mesh
+class Mesh : public Renderable
 {
 public:
     Mesh();

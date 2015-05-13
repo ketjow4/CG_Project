@@ -137,6 +137,7 @@ xcopy "$(ProjectDir)\fonts\*.*" "$(ProjectDir)..\Debug\fonts\" /i /y</Command>
     <ClInclude Include="PickingTechnique.h" />
     <ClInclude Include="PickingTexture.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Renderable.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="pipeline.h" />
     <ClInclude Include="SkinningTechnique.h" />

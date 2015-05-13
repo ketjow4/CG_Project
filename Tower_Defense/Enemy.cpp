@@ -10,7 +10,7 @@ Enemy::~Enemy()
 void Enemy::LoadModel(int id, const string &filename)
 {
 	modelId = id;
-	ModelsContainer::Load(id, filename);
+	ModelsContainer::LoadMesh(id, new Mesh,filename);
 }
 
 
