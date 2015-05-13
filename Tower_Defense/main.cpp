@@ -344,34 +344,11 @@ int main( int argc, char * argv[] )
 
 	glewInit();
 
-	light = new BasicLightingTechnique();
-	if (!light->Init())
-	{
-		printf("Error initializing the lighting technique\n");
-		return -1;
-	}
 
-	m_pEffect = new SkinningTechnique();
-	if (!m_pEffect->Init())
-	{
-		printf("Error initializing the skinning technique\n");
-		//return -1;
-	}
-
-	m_pickingTexture = new PickingTexture();
-	if (!m_pickingTexture->Init(640, 480))
-	{
-		printf("Error initializing the picking texture\n");
-		return -1;
-	}
-
-	m_pickingEffect = new PickingTechnique();
-	if (!m_pickingEffect->Init())
-	{
-		printf("Error initializing the picking technique\n");
-		return -1;
-	}
-
+	light = Engine::getEngine().getLight();
+	m_pEffect = Engine::getEngine().getEffect();
+	m_pickingTexture = Engine::getEngine().getpickingTexture();
+	m_pickingEffect = Engine::getEngine().getpickingEffect();
 
 	light->Enable();
 
