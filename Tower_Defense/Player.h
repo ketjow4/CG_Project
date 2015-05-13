@@ -6,11 +6,11 @@
 class Player
 {
 public:
-	Player();
+
 	~Player();
 
-	int Lives;
-	int money;
+	static int Lives;
+	static int money;
 
 	void AddMoneyWaveCompleted(int howMany);
 
@@ -18,8 +18,18 @@ public:
 
 	void LooseLive();
 
-private:
+	static Player getPlayer()
+	{
+		static Player p;
+		return p;
+	}
 
+
+private:
+	Player();
+	Player(const Player &p);
+
+	
 };
 
 

@@ -34,7 +34,10 @@ void Enemy::UpdatePosition(Pipeline *p)
 	ModelsContainer::Get(modelId)->Render();
 
 	if (++pathIndex >= path->pathPoints.size() - 1)				//object arrived at end point		-- for now return to start 
+	{
 		pathIndex = 0;
+		//Player::getPlayer().LooseLive();
+	}
 }
 
 

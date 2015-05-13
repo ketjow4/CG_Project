@@ -23,3 +23,5 @@ void Player::LooseLive()
 {
 	this->Lives -= 1;
 }
+	int Player::Lives = 10;
+	int Player::money = 0;

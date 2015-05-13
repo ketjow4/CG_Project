@@ -35,6 +35,7 @@ void Wave::ClearDead()
 	{
 		if ((*it)->HP <= 0)
 			delete *it,it = enemyList->erase(it);
+
 		else
 			++it;
 	}
