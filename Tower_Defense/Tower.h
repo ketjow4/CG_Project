@@ -1,5 +1,4 @@
-#ifndef TOWER_H
-#define TOWER_H
+#pragma once
 
 #include "Model.h"
 //#include "WorldObject.h"
@@ -23,9 +22,7 @@ public:
 
 	SkinnedMesh Model3D;
 	Mesh MissileMesh;
-	//float missileLife; not used
 	double Range;
-	//Vector3f missilePos;
 	Vector3f towerPos;
 	double distance_to_target;
 	double towerHeight;			//only good when scale is 5
@@ -42,7 +39,7 @@ public:
 
 
 	void Shoot(Enemy* en);
-	void UpdateMissiles(Pipeline * p, list<Enemy> *enemies);
+	void UpdateMissiles(Pipeline * p, list<Enemy*> *enemies);
 	void Reload();
 
 	void CalcAnimation();
@@ -57,11 +54,8 @@ public:
 
 	void RenderMissile(Missile *missile, Pipeline *p);
 private:
-	void UpdateMissile(Pipeline * p, Missile* missile, list<Enemy> *enemies);
+	void UpdateMissile(Pipeline * p, Missile* missile, list<Enemy*> *enemies);
 	void LimitTowerPosition();
 
 
 };
-
-
-#endif

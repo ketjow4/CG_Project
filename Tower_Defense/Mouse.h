@@ -1,5 +1,6 @@
 #pragma once
 #include "math_3d.h"
+#include <vector>
 
 class Mouse
 {
@@ -15,6 +16,10 @@ public:
 	void MouseMove(int x, int y);
 	void SetPos3d(float x, float y, float z);
 	void SetWindowSize(int w, int h);
+
+	float DistToClosest(const vector <pair<float, float>> &pointsXZ, pair<float, float> &closestXZ);
 private:
 	int winW, winH;
+
+	float DistToPointXZ(const pair<float, float> &p);
 };

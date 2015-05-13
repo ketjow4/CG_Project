@@ -40,10 +40,6 @@ Wave * wave;
 
 Mouse mouse;
 
-Enemy en;
-Enemy en2;
-Enemy en3;
-
 string displayedText = "Tower Defense alpha 0.1";
 
 
@@ -128,12 +124,21 @@ void Display()
 
 	if (mouse.click)
 	{
+		mouse.click = false;
+
 		PickingTexture::PixelInfo Pixel = m_pickingTexture->ReadPixel(mouse.pos2d.x, mouse.pos2d.y);
 		mouse.SetPos3d(Pixel.x, Pixel.y, Pixel.z);
-		ostringstream ss;
-		ss << " x: " << mouse.pos3d.x << " y: " << mouse.pos3d.y << " z: " << mouse.pos3d.z;
-		displayedText = ss.str();
-		mouse.click = false;
+		pair<float, float> closest;
+		if (mouse.DistToClosest(path->possibleTowerPoints, closest) < 20.f)
+		{
+			ostringstream ss;
+			ss << " x: " << closest.first <<
+				" y: " << terrain->GetTerrainHeight(closest.first, closest.second) <<
+				" z: " << closest.second;
+			displayedText = ss.str();
+		}
+		else
+			displayedText = "Not a tower possible position";
 	}
 
 	light->Enable();
@@ -168,12 +173,12 @@ void Display()
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
-		list<Enemy>::iterator it = wave->enemyList->begin();
+		list<Enemy*>::iterator it = wave->enemyList->begin();
 		for (; it != wave->enemyList->end(); ++it)
 		{
-			if (towerList[i]->IsInRange(it->GetPosition()) && it->HP > 0 && it->pathIndex > 0)
+			if (towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->pathIndex > 0)
 			{
-				towerList[i]->Shoot(&(*it));
+				towerList[i]->Shoot(*it);
 				break;
 			}
 		}
@@ -368,32 +373,34 @@ int main( int argc, char * argv[] )
 	path = new Path();
 	path->Init("Models/path1.bmp");
 
-	//enemy 
-	en.light = light;
-	en.LoadModel("Models/phoenix_ugv.md2");
-	en.terrain = terrain;
-	en.path = path;
-	en.pathIndex = 0;
+	//enemies
+	list<Enemy*> enList;
 
-	en2.light = light;
-	en2.LoadModel("Models/phoenix_ugv.md2");
-	en2.terrain = terrain;
-	en2.path = path;
-	en2.pathIndex = 0;
-
-	en3.light = light;
-	en3.LoadModel("Models/phoenix_ugv.md2");
-	en3.terrain = terrain;
-	en3.path = path;
-	en3.pathIndex = 0;
-
-	list<Enemy> enList;
+	Enemy *en = new Enemy();
+	en->light = light;
+	en->LoadModel("Models/phoenix_ugv.md2");
+	en->terrain = terrain;
+	en->path = path;
+	en->pathIndex = 0;
 	enList.push_back(en);
-	enList.push_back(en2);
-	enList.push_back(en3);
+	
+	en = new Enemy();
+	en->light = light;
+	en->LoadModel("Models/phoenix_ugv.md2");
+	en->terrain = terrain;
+	en->path = path;
+	en->pathIndex = 0;
+	enList.push_back(en);
 
-	wave = new Wave(&enList,NULL);
-	wave->pathDifference = 50;
+	en = new Enemy();
+	en->light = light;
+	en->LoadModel("Models/phoenix_ugv.md2");
+	en->terrain = terrain;
+	en->path = path;
+	en->pathIndex = 0;
+	enList.push_back(en);
+
+	wave = new Wave(&enList, 0, 50);
 
 	vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
 	for (int i = 0; i < towerPoints.size(); ++i)

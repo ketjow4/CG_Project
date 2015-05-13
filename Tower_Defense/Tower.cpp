@@ -36,7 +36,7 @@ void Tower::Shoot(Enemy* en)
 	}
 }
 
-void Tower::UpdateMissiles(Pipeline * p, list<Enemy> *enemies)
+void Tower::UpdateMissiles(Pipeline * p, list<Enemy*> *enemies)
 {
 	std::list<Missile>::iterator it = missiles.begin();
 	while(it != missiles.end())
@@ -54,13 +54,13 @@ void Tower::Reload()
 	--reloading;
 }
 
-void Tower::UpdateMissile(Pipeline *p, Missile *missile, list<Enemy> *enemies)
+void Tower::UpdateMissile(Pipeline *p, Missile *missile, list<Enemy*> *enemies)
 {
-	list<Enemy>::iterator it = enemies->begin();
+	list<Enemy*>::iterator it = enemies->begin();
 	for (; it != enemies->end(); ++it)
-		if (missile->Collide(&(*it)))
+		if (missile->Collide(*it))
 		{
-			it->HP -= 30;
+			(*it)->HP -= 30;
 			missile->lifetime = 0;
 			return;
 		}
