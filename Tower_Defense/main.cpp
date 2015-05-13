@@ -146,7 +146,7 @@ void Display()
 				" z: " << closest.second;
 			displayedText = ss.str();
 
-			Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), terrain);
+			Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
 			tower->LoadModel(11);
 			tower->LoadMissile(21);
 			towerList.push_back(tower);
