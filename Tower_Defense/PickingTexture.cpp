@@ -3,30 +3,32 @@
 #include "util.h"
 
 PickingTexture::PickingTexture()
-{
-    m_fbo = 0;
-    m_pickingTexture = 0;
-    m_depthTexture = 0;
-}
+	: m_fbo(0), m_pickingTexture(0), m_depthTexture(0)
+{}
 
 PickingTexture::~PickingTexture()
 {
-    if (m_fbo != 0) {
-        glDeleteFramebuffers(1, &m_fbo);
-    }
+	FreeResources();
+}
 
-    if (m_pickingTexture != 0) {
-        glDeleteTextures(1, &m_pickingTexture);
-    }
-    
-    if (m_depthTexture != 0) {
-        glDeleteTextures(1, &m_depthTexture);
-    }
+void PickingTexture::FreeResources()
+{
+	if (m_fbo != 0)
+		glDeleteFramebuffers(1, &m_fbo);
+
+	if (m_pickingTexture != 0)
+		glDeleteTextures(1, &m_pickingTexture);
+
+	if (m_depthTexture != 0)
+		glDeleteTextures(1, &m_depthTexture);
 }
 
 
 bool PickingTexture::Init(unsigned int WindowWidth, unsigned int WindowHeight)
 {
+	// Clean for reinit
+	FreeResources();
+
     // Create the FBO
     glGenFramebuffers(1, &m_fbo);    
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
@@ -49,7 +51,8 @@ bool PickingTexture::Init(unsigned int WindowWidth, unsigned int WindowHeight)
     // Verify that the FBO is correct
     GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
-    if (Status != GL_FRAMEBUFFER_COMPLETE) {
+    if (Status != GL_FRAMEBUFFER_COMPLETE)
+	{
         printf("FB error, status: 0x%x\n", Status);
         return false;
     }

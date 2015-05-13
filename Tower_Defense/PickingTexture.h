@@ -27,5 +27,7 @@ private:
     GLuint m_fbo;
     GLuint m_pickingTexture;
     GLuint m_depthTexture;
+
+	void FreeResources();
 };
 

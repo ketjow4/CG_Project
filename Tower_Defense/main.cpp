@@ -122,9 +122,9 @@ void Display()
 
 	m_pickingTexture->DisableWriting();
 
-	if (mouse.click)
+	if (mouse.leftClick)
 	{
-		mouse.click = false;
+		mouse.leftClick = false;
 
 		PickingTexture::PixelInfo Pixel = m_pickingTexture->ReadPixel(mouse.pos2d.x, mouse.pos2d.y);
 		mouse.SetPos3d(Pixel.x, Pixel.y, Pixel.z);
@@ -230,6 +230,7 @@ void Reshape( int width, int height )
 	gluPerspective(90.0f, aspect, 0.1f, 1000.0f);		//kat widzenia, aspect ratio, zNear, zFar
 
 	mouse.SetWindowSize(width, height);
+	m_pickingTexture->Init(width, height);
 }
 
 
@@ -286,7 +287,9 @@ void SpecialKeys( int key, int x, int y )
 void MouseFunc(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON || state == GLUT_UP)
-		mouse.MouseClick(x, y);
+		mouse.MouseLeftClick(x, y);
+	else if (button == GLUT_RIGHT_BUTTON || state == GLUT_UP)
+		mouse.MouseRightClick(x, y);
 }
 
 void MotionFunc(int x, int y)

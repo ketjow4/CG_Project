@@ -6,10 +6,16 @@ Mouse::Mouse()
 Mouse::~Mouse()
 {}
 
-void Mouse::MouseClick(int x, int y)
+void Mouse::MouseLeftClick(int x, int y)
 {
 	MouseMove(x, y);
-	click = true;
+	leftClick = true;
+}
+
+void Mouse::MouseRightClick(int x, int y)
+{
+	MouseMove(x, y);
+	rightClick = true;
 }
 
 void Mouse::MouseMove(int x, int y)
