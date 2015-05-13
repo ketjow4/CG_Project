@@ -21,6 +21,7 @@ public:
 private:
 	//the differenc in path index between 2 enemies in wave
 	int pathDifference;
+	int j;	//to proper position update TODO: name it better
 };
 
 

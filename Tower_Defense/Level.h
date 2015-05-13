@@ -14,9 +14,15 @@ public:
 
 	Terrain* terrain;
 	Path* path;
-	Wave * wave;
+	Wave * currentWave;
+	
+	list<Wave*> waveList;
+
+	void AdvanceToNextWave();
 
 	void Load();
+
+	void LoadFromFile(string filename);
 
 private:
 

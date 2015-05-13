@@ -41,7 +41,7 @@ vector<Tower*> towerList;
 
 //Terrain* terrain;
 //Path* path;
-//Wave * wave;
+//Wave * currentWave;
 
 Level* lvl;
 
@@ -109,7 +109,7 @@ void Display()
 	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	p.SetPerspectiveProj(pers);
 
-	lvl->wave->p = &p;
+	lvl->currentWave->p = &p;
 
 	light->Enable();
 
@@ -171,14 +171,14 @@ void Display()
 		towerList[i]->Render(&p);
 	}
 
-	lvl->wave->ClearDead();			
+	lvl->currentWave->ClearDead();			
 	light->Enable();
-	lvl->wave->UpdatePosition();
+	lvl->currentWave->UpdatePosition();
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
-		list<Enemy*>::iterator it = lvl->wave->enemyList->begin();
-		for (; it != lvl->wave->enemyList->end(); ++it)
+		list<Enemy*>::iterator it = lvl->currentWave->enemyList->begin();
+		for (; it != lvl->currentWave->enemyList->end(); ++it)
 		{
 			if (towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->pathIndex > 0)
 			{
@@ -186,14 +186,15 @@ void Display()
 				break;
 			}
 		}
-		if( lvl->wave->enemyList->size() == 0)
+		if( lvl->currentWave->enemyList->size() == 0)
 		{
 			towerList[i]->distance_to_target = towerList[i]->Range + 1;		//stop shooting after all enemies are killed
 		}
-		towerList[i]->UpdateMissiles(&p, lvl->wave->enemyList);
+		towerList[i]->UpdateMissiles(&p, lvl->currentWave->enemyList);
 		towerList[i]->Reload();
 	}
 
+	lvl->AdvanceToNextWave();
 
 	//----- end 3D drawing 
 
@@ -207,7 +208,7 @@ void Display()
 	//text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
 	text->RenderText("lives: " + to_string(Player::getPlayer().lives),10,460,1,glm::vec3(1,1,1));
 	text->RenderText("Money: " + to_string(Player::getPlayer().money),10,440,1,glm::vec3(1,1,1));
-	text->RenderText("Enemies: " + to_string(lvl->wave->enemyList->size()),500,460,1,glm::vec3(1,1,1));
+	text->RenderText("Enemies: " + to_string(lvl->currentWave->enemyList->size()),500,460,1,glm::vec3(1,1,1));
 
 	if(Player::getPlayer().lives == 0)
 	{
@@ -393,7 +394,7 @@ int main( int argc, char * argv[] )
 	en->path = path;
 	enList.push_back(en);
 
-	wave = new Wave(&enList, 0, 50);*/
+	currentWave = new Wave(&enList, 0, 50);*/
 	lvl = new Level();
 	lvl->Load();
 

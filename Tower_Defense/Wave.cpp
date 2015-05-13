@@ -8,14 +8,12 @@ Wave::~Wave()
 }
 
 Wave::Wave(list<Enemy*>* list, Pipeline *p, int pathDifference)
-	: enemyList(list), p(p), pathDifference(pathDifference)
+	: enemyList(list), p(p), pathDifference(pathDifference), j(0)
 {}
 
 
 void Wave::UpdatePosition()
 {
-	static int j = 0;
-
 	std::list<Enemy*>::iterator it = enemyList->begin();
 	for (int i = 0; it != enemyList->end(); ++it, ++i)
 	{

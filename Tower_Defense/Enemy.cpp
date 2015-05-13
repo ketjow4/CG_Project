@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
 Enemy::Enemy()
-	: pathIndex(0), HP(2500), Attack(1)//to use later when there will be player class
+	: pathIndex(0), HP(1000), Attack(1)
 {}
 
 Enemy::~Enemy()
