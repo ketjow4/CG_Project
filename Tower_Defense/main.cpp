@@ -153,6 +153,7 @@ void Display()
 	terrain->Render();
 
 	// Possible tower positions
+	/*
 	vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
 	for (int i = 0; i < towerPoints.size(); ++i)
 	{
@@ -163,6 +164,7 @@ void Display()
 		light->SetWVP(p.GetWVPTrans());
 		testObject->Render();
 	}
+	*/
 
 
 	for(int i = 0; i < towerList.size(); i++)
