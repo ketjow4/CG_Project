@@ -16,20 +16,12 @@ void Wave::UpdatePosition()
 {
 	static int j = 0;
 
-	if( j >= enemyList->size())
-	{
-		j = enemyList->size() - 1;
-	}
-
 	std::list<Enemy*>::iterator it = enemyList->begin();
 	for (int i = 0; it != enemyList->end(); ++it, ++i)
 	{
-		if((*it)->pathIndex > pathDifference && j < enemyList->size() - 1)
-		{
+		if(i == j && (*it)->pathIndex > pathDifference)
 			j++;
-			break;
-		}
-		if( i > j)
+		if(i > j)
 			break;
 		(*it)->UpdatePosition(p);
 	}

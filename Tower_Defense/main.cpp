@@ -54,9 +54,9 @@ void initGL()
 	glEnable( GL_TEXTURE_2D );
 
 	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-	m_directionalLight.AmbientIntensity = 0.8f;				//sila swiatla globalnego
-	m_directionalLight.DiffuseIntensity = 0.75f;
-	m_directionalLight.Direction = Vector3f(0.0f, -1.0, 0.0);
+	m_directionalLight.AmbientIntensity = 0.5f;				//sila swiatla globalnego
+	m_directionalLight.DiffuseIntensity = 0.5f;
+	m_directionalLight.Direction = Vector3f(1.0f, 1.0, 1.0).Normalize();
 
 	cam.eyey = 200;//100;
 	cam.eyex = 256;//250;
@@ -384,7 +384,6 @@ int main( int argc, char * argv[] )
 	en->LoadModel("Models/phoenix_ugv.md2");
 	en->terrain = terrain;
 	en->path = path;
-	en->pathIndex = 0;
 	enList.push_back(en);
 	
 	en = new Enemy();
@@ -392,7 +391,6 @@ int main( int argc, char * argv[] )
 	en->LoadModel("Models/phoenix_ugv.md2");
 	en->terrain = terrain;
 	en->path = path;
-	en->pathIndex = 0;
 	enList.push_back(en);
 
 	en = new Enemy();
@@ -400,7 +398,6 @@ int main( int argc, char * argv[] )
 	en->LoadModel("Models/phoenix_ugv.md2");
 	en->terrain = terrain;
 	en->path = path;
-	en->pathIndex = 0;
 	enList.push_back(en);
 
 	wave = new Wave(&enList, 0, 50);

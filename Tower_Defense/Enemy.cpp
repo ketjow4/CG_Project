@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
 Enemy::Enemy()
-	: pathIndex(0), HP(150), Attack(1)//to use later when there will be player class
+	: pathIndex(0), HP(500), Attack(1)//to use later when there will be player class
 {}
 
 Enemy::~Enemy()
@@ -18,12 +18,9 @@ void Enemy::UpdatePosition(Pipeline *p)
 	light->Enable();
 
 	if(HP <= 0)			//in future delete enemy in this case
-	{
-		//this->~Enemy();
 		return ;		
-	}
 
-	p->Scale(0.1f, 0.1f, 0.1f);
+	p->Scale(0.3f, 0.3f, 0.3f);
 	float x = path->pathPoints[pathIndex].first;
 	float z = path->pathPoints[pathIndex].second;
 	float y = terrain->GetTerrainHeight(x, z);
