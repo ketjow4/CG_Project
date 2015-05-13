@@ -8,7 +8,7 @@ public:
 
 	~Player() {}
 
-	static int Lives;
+	static int lives;
 	static int money;
 
 	void AddMoneyWaveCompleted(int howMany);
@@ -16,6 +16,8 @@ public:
 	void TowerBuy();
 
 	void LooseLive(int attackStrengh);
+
+	void Init(int lives, int money);
 
 	static Player getPlayer()
 	{

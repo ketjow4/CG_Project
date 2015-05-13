@@ -150,6 +150,7 @@
     <ClInclude Include="WorldObject.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="ModelsContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

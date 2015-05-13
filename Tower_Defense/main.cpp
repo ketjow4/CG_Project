@@ -152,26 +152,12 @@ void Display()
 	}
 
 
-
 	light->Enable();
 	p.Scale(1.f, 1.f, 1.f);
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
 	light->SetWVP(p.GetWVPTrans());
 	terrain->Render();
-
-	// Possible tower positions
-	/*vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
-	for (int i = 0; i < towerPoints.size(); ++i)
-	{
-		float x = towerPoints[i].first;
-		float z = towerPoints[i].second;
-		p.Scale(0.5f, 1.f, 0.1f);
-		p.WorldPos(x, terrain->GetTerrainHeight(x, z), z);
-		light->SetWVP(p.GetWVPTrans());
-		testObject->Render();
-	}*/
-
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
@@ -213,10 +199,11 @@ void Display()
 
 
 	//text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
-	text->RenderText("Lives: " + to_string(Player::getPlayer().Lives),10,460,1,glm::vec3(1,1,1));
+	text->RenderText("lives: " + to_string(Player::getPlayer().lives),10,460,1,glm::vec3(1,1,1));
 	text->RenderText("Money: " + to_string(Player::getPlayer().money),10,440,1,glm::vec3(1,1,1));
+	text->RenderText("Enemies: " + to_string(wave->enemyList->size()),550,460,1,glm::vec3(1,1,1));
 
-	if(Player::getPlayer().Lives == 0)
+	if(Player::getPlayer().lives == 0)
 	{
 		text->RenderText("GAME OVER",280,240,1,glm::vec3(1,0,0));		//add some function to exit to menu
 	}
@@ -425,27 +412,12 @@ int main( int argc, char * argv[] )
 
 	wave = new Wave(&enList, 0, 50);
 
-	/*vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
-	for (int i = 0; i < towerPoints.size(); ++i)
-	{
-		float x = towerPoints[i].first;
-		float z = towerPoints[i].second;
-		towerList.push_back(new Tower(light, m_pEffect, Vector3f(x, 0, z), terrain));
-	}*/
-
-	/*for(int i = 0; i < towerList.size(); i++)
-	{
-		towerList[i]->LoadModel("Models/firstTower.md5mesh");
-		towerList[i]->LoadMissile("Models/missile.fbx");
-	}*/
-
-
 	text = new Text(24);
 
 	glutTimerFunc(0, timer, 0);
 
-	Player::getPlayer().Lives = 5;
-	Player::getPlayer().money = 100;
+	Player::getPlayer().Init(5,100);
+	
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();

@@ -14,10 +14,16 @@ void Player::TowerBuy()
 
 void Player::LooseLive(int attackStrengh)
 {
-	this->Lives -= attackStrengh;
-	if(Lives < 0)
-		Lives = 0;
+	this->lives -= attackStrengh;
+	if(lives < 0)
+		lives = 0;
 }
 
-int Player::Lives = 10;
+void Player::Init(int lives, int money)
+{
+	this->lives = lives;
+	this->money = money;
+}
+
+int Player::lives = 0;
 int Player::money = 0;
