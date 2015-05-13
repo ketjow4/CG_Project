@@ -3,7 +3,7 @@
 
 #include "Tower.h"
 #include "Camera.h"
-#include "Wave.h"
+//#include "Wave.h"
 #include "Text.h"
 
 #include "Player.h"
@@ -13,6 +13,7 @@
 #include "PickingTechnique.h"
 #include <sstream>
 
+#include "Level.h"
 
 /*Global variables -- temporary*/
 int refreshMills = 30;        // refresh interval in milliseconds
@@ -38,11 +39,15 @@ Text* text;
 
 vector<Tower*> towerList;
 
-Terrain* terrain;
-Path* path;
-Wave * wave;
+//Terrain* terrain;
+//Path* path;
+//Wave * wave;
+
+Level* lvl;
 
 Mouse mouse;
+
+
 
 string displayedText = "Tower Defense alpha 0.1";
 
@@ -104,7 +109,7 @@ void Display()
 	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	p.SetPerspectiveProj(pers);
 
-	wave->p = &p;
+	lvl->wave->p = &p;
 
 	light->Enable();
 	
@@ -122,7 +127,7 @@ void Display()
 	p.WorldPos(0.f, 0.f, 0.f);
 	light->SetWVP(p.GetWVPTrans());
 	m_pickingEffect->SetWVP(p.GetWVPTrans());
-	terrain->Render();
+	lvl->terrain->Render();
 
 	m_pickingTexture->DisableWriting();
 
@@ -133,11 +138,11 @@ void Display()
 		PickingTexture::PixelInfo Pixel = m_pickingTexture->ReadPixel(mouse.pos2d.x, mouse.pos2d.y);
 		mouse.SetPos3d(Pixel.x, Pixel.y, Pixel.z);
 		pair<float, float> closest;
-		if (mouse.DistToClosest(path->possibleTowerPoints, closest) < 20.f)
+		if (mouse.DistToClosest(lvl->path->possibleTowerPoints, closest) < 20.f)
 		{
 			ostringstream ss;
 			ss << " x: " << closest.first <<
-				" y: " << terrain->GetTerrainHeight(closest.first, closest.second) <<
+				" y: " << lvl->terrain->GetTerrainHeight(closest.first, closest.second) <<
 				" z: " << closest.second;
 			displayedText = ss.str();
 
@@ -156,7 +161,7 @@ void Display()
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
 	light->SetWVP(p.GetWVPTrans());
-	terrain->Render();
+	lvl->terrain->Render();
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
@@ -169,8 +174,8 @@ void Display()
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
-		list<Enemy*>::iterator it = wave->enemyList->begin();
-		for (; it != wave->enemyList->end(); ++it)
+		list<Enemy*>::iterator it = lvl->wave->enemyList->begin();
+		for (; it != lvl->wave->enemyList->end(); ++it)
 		{
 			if (towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->pathIndex > 0)
 			{
@@ -178,11 +183,11 @@ void Display()
 				break;
 			}
 		}
-		if( wave->enemyList->size() == 0)
+		if( lvl->wave->enemyList->size() == 0)
 		{
 			towerList[i]->distance_to_target = towerList[i]->Range + 1;		//stop shooting after all enemies are killed
 		}
-		towerList[i]->UpdateMissiles(&p, wave->enemyList);
+		towerList[i]->UpdateMissiles(&p, lvl->wave->enemyList);
 		towerList[i]->Reload();
 	}
 
@@ -199,7 +204,7 @@ void Display()
 	//text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
 	text->RenderText("lives: " + to_string(Player::getPlayer().lives),10,460,1,glm::vec3(1,1,1));
 	text->RenderText("Money: " + to_string(Player::getPlayer().money),10,440,1,glm::vec3(1,1,1));
-	text->RenderText("Enemies: " + to_string(wave->enemyList->size()),500,460,1,glm::vec3(1,1,1));
+	text->RenderText("Enemies: " + to_string(lvl->wave->enemyList->size()),500,460,1,glm::vec3(1,1,1));
 
 	if(Player::getPlayer().lives == 0)
 	{
@@ -359,14 +364,14 @@ int main( int argc, char * argv[] )
 		cout << "Test object loaded successful " << endl;
 	}
 
-	terrain = new Terrain();
+	/*terrain = new Terrain();
 	terrain->Init("Models/terrain1.bmp", 0.3f);
 
 	path = new Path();
-	path->Init("Models/path1.bmp");
+	path->Init("Models/path1.bmp");*/
 
 	//enemies
-	list<Enemy*> enList;
+	/*list<Enemy*> enList;
 
 	Enemy *en = new Enemy();
 	en->light = light;
@@ -389,7 +394,9 @@ int main( int argc, char * argv[] )
 	en->path = path;
 	enList.push_back(en);
 
-	wave = new Wave(&enList, 0, 50);
+	wave = new Wave(&enList, 0, 50);*/
+	lvl = new Level();
+	lvl->Load();
 
 	text = new Text(24);
 
@@ -404,9 +411,6 @@ int main( int argc, char * argv[] )
 	delete text;
 	for (int i = 0; i < towerList.size(); i++)
 		delete towerList[i];
-	delete wave;
-	delete path;
-	delete terrain;
 	delete testObject;
 	delete m_pickingEffect;
 	delete m_pickingTexture;
