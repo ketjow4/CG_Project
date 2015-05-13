@@ -2,12 +2,11 @@
 #define PLAYER_H
 
 
-
 class Player
 {
 public:
 
-	~Player();
+	~Player() {}
 
 	static int Lives;
 	static int money;
@@ -16,7 +15,7 @@ public:
 
 	void TowerBuy();
 
-	void LooseLive();
+	void LooseLive(int attackStrengh);
 
 	static Player getPlayer()
 	{
@@ -26,8 +25,8 @@ public:
 
 
 private:
-	Player();
-	Player(const Player &p);
+	Player() {}
+	Player(const Player &p) {}
 
 	
 };

@@ -4,6 +4,8 @@
 void Text::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
 {
     // Activate corresponding render state	
+
+	//Create ortographic projection matrix
 	Matrix4f mat = Matrix4f(2.0/(screenWidth-0.0),0,0,-(screenWidth+0.0)/(screenWidth-0.0),0,2.0/(screenHeight-0.0),0,-(screenHeight+0)/(screenHeight-0),0,0,-2.0/(1.0+1.0),-(1.0-1.0)/(1.0+1.0),0,0,0,1);
 
 

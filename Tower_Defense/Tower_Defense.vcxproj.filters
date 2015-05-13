@@ -1,37 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="util.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="texture.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="technique.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="pipeline.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="math_3d.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="BasicLighting.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Tower.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Path.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
@@ -40,16 +13,22 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Wave.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="math_3d.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Missile.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Mouse.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="PickingTechnique.cpp">
@@ -58,16 +37,37 @@
     <ClCompile Include="PickingTexture.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="PickingTexture.cpp">
+    <ClCompile Include="pipeline.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMesh.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinningTechnique.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="technique.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Text.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="BasicLighting.cpp">
+    <ClCompile Include="texture.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="SkinnedMesh.cpp">
+    <ClCompile Include="Tower.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Wave.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="SkinningTechnique.cpp">
@@ -78,58 +78,31 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicLighting.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="math_3d.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="technique.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="texture.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="types.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="util.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Tower.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Path.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldObject.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Wave.h">
+    <ClInclude Include="Engine.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="math_3d.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Missile.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Mouse.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="PickingTechnique.h">
@@ -138,10 +111,10 @@
     <ClInclude Include="PickingTexture.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Text.h">
+    <ClInclude Include="pipeline.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="BasicLighting.h">
+    <ClInclude Include="Player.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="SkinnedMesh.h">
@@ -150,7 +123,31 @@
     <ClInclude Include="SkinningTechnique.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="ModelsContainer.h">
+    <ClInclude Include="technique.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Tower.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="types.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Wave.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldObject.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Renderable.h">
@@ -159,7 +156,10 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
-      <UniqueIdentifier>{d76577ae-3dfd-4352-9dc9-245970fbbd47}</UniqueIdentifier>
+      <UniqueIdentifier>{019bc8e1-be33-45ab-97c9-94590073c43b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{08414141-d254-4997-af47-311b550a86cb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{53b9705f-ab3c-470e-937d-3a9223b167b4}</UniqueIdentifier>
