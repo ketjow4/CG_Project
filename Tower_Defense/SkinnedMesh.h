@@ -14,10 +14,11 @@
 #include "util.h"
 #include "math_3d.h"
 #include "texture.h"
+#include "Renderable.h"
 
 using namespace std;
 
-class SkinnedMesh
+class SkinnedMesh : public Renderable
 {
 public:
     SkinnedMesh();

@@ -151,6 +151,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="ModelsContainer.h" />
+    <ClInclude Include="Renderable.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

@@ -159,6 +159,8 @@ void Display()
 	light->SetWVP(p.GetWVPTrans());
 	terrain->Render();
 
+	vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
+	*/
 	for(int i = 0; i < towerList.size(); i++)
 	{
 		towerList[i]->CalcAnimation();
