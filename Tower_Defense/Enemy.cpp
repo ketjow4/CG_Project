@@ -19,7 +19,7 @@ void Enemy::UpdatePosition(Pipeline *p)
 
 	if(HP <= 0)			//in future delete enemy in this case
 	{
-		this->~Enemy();
+		//this->~Enemy();
 		return ;		
 	}
 

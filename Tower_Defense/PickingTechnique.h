@@ -2,28 +2,16 @@
 
 #include "technique.h"
 #include "math_3d.h"
-#include "RenderCallbacks.h"
 #include "types.h"
 
-class PickingTechnique : public Technique, public IRenderCallbacks
+class PickingTechnique : public Technique
 {
 public:
-
     PickingTechnique();
-
     virtual bool Init();
-
-    void SetWVP(const Matrix4f& WVP);
-
-    void SetObjectIndex(uint ObjectIndex);
-    
-    void DrawStartCB(uint DrawIndex);
-    
+    void SetWVP(const Matrix4f& WVP);  
 private:
-    
     GLuint m_WVPLocation;
-    GLuint m_drawIndexLocation;
-    GLuint m_objectIndexLocation;
 };
 
 

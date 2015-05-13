@@ -1,11 +1,9 @@
-#version 330                                                                        
-                                                                                                                                                                                                                                                        
-uniform uint gDrawIndex;                                                            
-uniform uint gObjectIndex;                                                          
-                                                                                    
+#version 330                                                        
+
+varying vec3 vVertexPosition;
 out vec3 FragColor;
 
 void main()                                                                         
-{                                                                                   
-   FragColor = vec3(float(gObjectIndex), float(gDrawIndex),float(gl_PrimitiveID + 1));                 
+{     
+    FragColor = vVertexPosition;                                                                              
 }

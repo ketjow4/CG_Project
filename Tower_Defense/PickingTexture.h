@@ -5,26 +5,20 @@ class PickingTexture
 {
 public:
     PickingTexture();
-
     ~PickingTexture();
-
     bool Init(unsigned int WindowWidth, unsigned int WindowHeight);
-
     void EnableWriting();
-    
     void DisableWriting();
     
-    struct PixelInfo {
-        float ObjectID;
-        float DrawID;
-        float PrimID;
+    struct PixelInfo
+	{
+        float x;
+        float y;
+        float z;
         
         PixelInfo()
-        {
-            ObjectID = 0.0f;
-            DrawID = 0.0f;
-            PrimID = 0.0f;
-        }
+			: x(0.f), y(0.f), z(0.f)
+        {}
     };
 
     PixelInfo ReadPixel(unsigned int x, unsigned int y);

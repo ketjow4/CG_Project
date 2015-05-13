@@ -17,7 +17,7 @@ void Mouse::MouseMove(int x, int y)
 	if (pos2d.x == x && pos2d.y == y)
 		return;
 	pos2d.x = x;
-	pos2d.y = y;
+	pos2d.y = winH - y - 1;
 }
 
 void Mouse::SetWindowSize(int w, int h)
@@ -26,7 +26,9 @@ void Mouse::SetWindowSize(int w, int h)
 	winH = h;
 }
 
-void Mouse::CalculatePos3d()
+void Mouse::SetPos3d(float x, float y, float z)
 {
-	//TODO
+	pos3d.x = x;
+	pos3d.y = y;
+	pos3d.z = z;
 }

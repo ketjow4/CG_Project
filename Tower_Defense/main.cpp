@@ -101,7 +101,7 @@ void Display()
 	p.Scale(0.1f, 0.1f, 0.1f);
 	p.Rotate(0.0f,90.0f, 0.0f);
 	p.WorldPos(0.0f, 0.0f, 10.0f);
-	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez ), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
+	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	p.SetPerspectiveProj(pers);
 
 	wave->p = &p;
@@ -113,22 +113,35 @@ void Display()
 	light->SetWorldMatrix(WorldTransformation);
 	light->SetDirectionalLight(m_directionalLight);
 
+	m_pickingTexture->EnableWriting();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	m_pickingEffect->Enable();
+
 	p.Scale(1.f, 1.f, 1.f);
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
 	light->SetWVP(p.GetWVPTrans());
-
+	m_pickingEffect->SetWVP(p.GetWVPTrans());
 	terrain->Render();
+
+	m_pickingTexture->DisableWriting();
 
 	if (mouse.click)
 	{
-		mouse.CalculatePos3d();
+		PickingTexture::PixelInfo Pixel = m_pickingTexture->ReadPixel(mouse.pos2d.x, mouse.pos2d.y);
+		mouse.SetPos3d(Pixel.x, Pixel.y, Pixel.z);
 		ostringstream ss;
 		ss << " x: " << mouse.pos3d.x << " y: " << mouse.pos3d.y << " z: " << mouse.pos3d.z;
 		displayedText = ss.str();
 		mouse.click = false;
-		
 	}
+
+	light->Enable();
+	p.Scale(1.f, 1.f, 1.f);
+	p.Rotate(0.0f, 0.0f, 0.0f);
+	p.WorldPos(0.f, 0.f, 0.f);
+	light->SetWVP(p.GetWVPTrans());
+	terrain->Render();
 
 	// Possible tower positions
 	vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;

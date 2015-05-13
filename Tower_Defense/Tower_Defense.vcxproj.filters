@@ -143,9 +143,6 @@
     <ClInclude Include="PickingTexture.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="RenderCallbacks.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

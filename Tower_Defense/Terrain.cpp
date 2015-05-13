@@ -193,13 +193,15 @@ void Terrain::Init(char *filename, float heightFactor)
 	m_Textures[0] = NULL;
 	m_Textures[0] = new Texture(GL_TEXTURE_2D, "Models/terrain1texture.bmp");
 
-	if (!m_Textures[0]->Load()) {
+	if (!m_Textures[0]->Load())
+	{
 		printf("Error loading texture '%s'\n", "Models/terrain1texture.bmp");
 		delete m_Textures[0];
 		m_Textures[0] = NULL;
 
 	}
-	else {
+	else 
+	{
 		printf("Loaded texture '%s'\n", "Models/terrain1texture.bmp");
 	}
 
@@ -229,7 +231,8 @@ void Terrain::Render()
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 
-	for (unsigned int i = 0; i < m_Entries.size(); i++) {
+	for (unsigned int i = 0; i < m_Entries.size(); i++)
+	{
 		glBindBuffer(GL_ARRAY_BUFFER, m_Entries[i].VB);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
@@ -239,7 +242,8 @@ void Terrain::Render()
 
 		const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
 
-		if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
+		if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex])
+		{
 			m_Textures[MaterialIndex]->Bind(GL_TEXTURE0);
 		}
 

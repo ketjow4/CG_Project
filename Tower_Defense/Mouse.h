@@ -13,7 +13,7 @@ public:
 
 	void MouseClick(int x, int y);
 	void MouseMove(int x, int y);
-	void CalculatePos3d();
+	void SetPos3d(float x, float y, float z);
 	void SetWindowSize(int w, int h);
 private:
 	int winW, winH;
