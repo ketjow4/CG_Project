@@ -141,17 +141,15 @@ void Display()
 				" z: " << closest.second;
 			displayedText = ss.str();
 
-
-			towerList.push_back(new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), terrain));
-			towerList[towerList.size()-1]->LoadModel("Models/firstTower.md5mesh");
-			towerList[towerList.size()-1]->LoadMissile("Models/missile.fbx");
+			Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), terrain);
+			tower->LoadModel(11);
+			tower->LoadMissile(21);
+			towerList.push_back(tower);
 			Player::getPlayer().TowerBuy();
 		}
 		else
 			displayedText = "Not a possible tower position";
 	}
-
-
 
 	light->Enable();
 	p.Scale(1.f, 1.f, 1.f);
@@ -160,30 +158,14 @@ void Display()
 	light->SetWVP(p.GetWVPTrans());
 	terrain->Render();
 
-	// Possible tower positions
-	/*
-	vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
-	for (int i = 0; i < towerPoints.size(); ++i)
-	{
-		float x = towerPoints[i].first;
-		float z = towerPoints[i].second;
-		p.Scale(0.5f, 1.f, 0.1f);
-		p.WorldPos(x, terrain->GetTerrainHeight(x, z), z);
-		light->SetWVP(p.GetWVPTrans());
-		testObject->Render();
-	}
-	*/
-
-
 	for(int i = 0; i < towerList.size(); i++)
 	{
-		towerList[i]->CalcAnimation();
 		towerList[i]->Render(&p);
 	}
 
 	wave->ClearDead();			
-	light->Enable();
 	wave->UpdatePosition();
+	light->Enable();
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
@@ -358,6 +340,10 @@ int main( int argc, char * argv[] )
 
 	glewInit();
 
+	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
+	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
+	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
+
 	light = new BasicLightingTechnique();
 	if (!light->Init())
 	{
@@ -369,7 +355,7 @@ int main( int argc, char * argv[] )
 	if (!m_pEffect->Init())
 	{
 		printf("Error initializing the skinning technique\n");
-		//return -1;
+		return -1;
 	}
 
 	m_pickingTexture = new PickingTexture();
@@ -406,41 +392,26 @@ int main( int argc, char * argv[] )
 
 	Enemy *en = new Enemy();
 	en->light = light;
-	en->LoadModel(1, "Models/phoenix_ugv.md2");
+	en->LoadModel(1);
 	en->terrain = terrain;
 	en->path = path;
 	enList.push_back(en);
 	
 	en = new Enemy();
 	en->light = light;
-	en->LoadModel(1, "Models/phoenix_ugv.md2");
+	en->LoadModel(1);
 	en->terrain = terrain;
 	en->path = path;
 	enList.push_back(en);
 
 	en = new Enemy();
 	en->light = light;
-	en->LoadModel(1, "Models/phoenix_ugv.md2");
+	en->LoadModel(1);
 	en->terrain = terrain;
 	en->path = path;
 	enList.push_back(en);
 
 	wave = new Wave(&enList, 0, 50);
-
-	/*vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
-	for (int i = 0; i < towerPoints.size(); ++i)
-	{
-		float x = towerPoints[i].first;
-		float z = towerPoints[i].second;
-		towerList.push_back(new Tower(light, m_pEffect, Vector3f(x, 0, z), terrain));
-	}*/
-
-	/*for(int i = 0; i < towerList.size(); i++)
-	{
-		towerList[i]->LoadModel("Models/firstTower.md5mesh");
-		towerList[i]->LoadMissile("Models/missile.fbx");
-	}*/
-
 
 	text = new Text(24);
 
