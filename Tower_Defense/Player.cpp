@@ -1,13 +1,6 @@
 #include "Player.h"
 
 
-Player::Player()
-{
-}
-
-Player::~Player()
-{
-}
 
 void Player::AddMoneyWaveCompleted(int howMany)
 {
@@ -16,12 +9,15 @@ void Player::AddMoneyWaveCompleted(int howMany)
 
 void Player::TowerBuy()
 {
-	;		//implement later
+	money -= 10;
 }
 
-void Player::LooseLive()
+void Player::LooseLive(int attackStrengh)
 {
-	this->Lives -= 1;
+	this->Lives -= attackStrengh;
+	if(Lives < 0)
+		Lives = 0;
 }
-	int Player::Lives = 10;
-	int Player::money = 0;
+
+int Player::Lives = 10;
+int Player::money = 0;

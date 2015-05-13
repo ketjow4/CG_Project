@@ -34,8 +34,10 @@ void Wave::ClearDead()
 	while(it != enemyList->end())
 	{
 		if ((*it)->HP <= 0)
+		{
 			delete *it,it = enemyList->erase(it);
-
+			Player::getPlayer().money += 10;	
+		}
 		else
 			++it;
 	}

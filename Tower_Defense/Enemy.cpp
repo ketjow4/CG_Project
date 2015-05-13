@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
 Enemy::Enemy()
-	: pathIndex(0), HP(500), Attack(1)//to use later when there will be player class
+	: pathIndex(0), HP(2500), Attack(1)//to use later when there will be player class
 {}
 
 Enemy::~Enemy()
@@ -35,7 +35,7 @@ void Enemy::UpdatePosition(Pipeline *p)
 	if (++pathIndex >= path->pathPoints.size() - 1)				//object arrived at end point		-- for now return to start 
 	{
 		pathIndex = 0;
-		//Player::getPlayer().LooseLive();
+		Player::getPlayer().LooseLive(Attack);
 	}
 }
 
