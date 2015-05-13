@@ -37,13 +37,11 @@ DirectionalLight m_directionalLight;
 
 Text* text;
 
-vector<Tower*> towerList;
+//vector<Tower*> towerList;
 
-//Terrain* terrain;
-//Path* path;
-//Wave * currentWave;
 
 Level* lvl;
+Level* lvl2;
 
 Mouse mouse;
 
@@ -151,7 +149,7 @@ void Display()
 			Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
 			tower->LoadModel(11);
 			tower->LoadMissile(21);
-			towerList.push_back(tower);
+			lvl->towerList.push_back(tower);
 			Player::getPlayer().TowerBuy();
 			}
 		}
@@ -166,32 +164,32 @@ void Display()
 	light->SetWVP(p.GetWVPTrans());
 	lvl->terrain->Render();
 
-	for(int i = 0; i < towerList.size(); i++)
+	for(int i = 0; i < lvl->towerList.size(); i++)
 	{
-		towerList[i]->Render(&p);
+		lvl->towerList[i]->Render(&p);
 	}
 
 	lvl->currentWave->ClearDead();			
 	light->Enable();
 	lvl->currentWave->UpdatePosition();
 
-	for(int i = 0; i < towerList.size(); i++)
+	for(int i = 0; i < lvl->towerList.size(); i++)
 	{
 		list<Enemy*>::iterator it = lvl->currentWave->enemyList->begin();
 		for (; it != lvl->currentWave->enemyList->end(); ++it)
 		{
-			if (towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->pathIndex > 0)
+			if (lvl->towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->pathIndex > 0)
 			{
-				towerList[i]->Shoot(*it);
+				lvl->towerList[i]->Shoot(*it);
 				break;
 			}
 		}
 		if( lvl->currentWave->enemyList->size() == 0)
 		{
-			towerList[i]->distance_to_target = towerList[i]->Range + 1;		//stop shooting after all enemies are killed
+			lvl->towerList[i]->distance_to_target = lvl->towerList[i]->Range + 1;		//stop shooting after all enemies are killed
 		}
-		towerList[i]->UpdateMissiles(&p, lvl->currentWave->enemyList);
-		towerList[i]->Reload();
+		lvl->towerList[i]->UpdateMissiles(&p, lvl->currentWave->enemyList);
+		lvl->towerList[i]->Reload();
 	}
 
 	lvl->AdvanceToNextWave();
@@ -213,6 +211,11 @@ void Display()
 	if(Player::getPlayer().lives == 0)
 	{
 		text->RenderText("GAME OVER",280,240,1,glm::vec3(1,0,0));		//add some function to exit to menu
+	}
+	if(lvl->IsWon())
+	{
+		text->RenderText("CONGRATULATION YOU WON",150,240,1,glm::vec3(0,1,0));		//add some function to advance to next
+		text->RenderText("Click 'n' and wait",200,200,1,glm::vec3(1,1,1));		//add some function to advance to next
 	}
 
 	text->RenderText(displayedText,10,10,1,glm::vec3(1,1,1));
@@ -267,6 +270,13 @@ void Keyboard( unsigned char key, int x, int y )
 	if( key == 'x')
 	{
 		cam.Rotate(angle);	//kat_obrotu -= 5;
+	}
+	if( key == 'n' && lvl->IsWon())
+	{
+		lvl->towerList.clear();
+		lvl2 = new Level();
+		lvl2->LoadFromFile("level2.txt");
+		lvl = lvl2;
 	}
 
 	// odrysowanie okna
@@ -350,6 +360,8 @@ int main( int argc, char * argv[] )
 
 	glewInit();
 
+
+
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
 	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
@@ -368,39 +380,10 @@ int main( int argc, char * argv[] )
 		cout << "Test object loaded successful " << endl;
 	}
 
-	/*terrain = new Terrain();
-	terrain->Init("Models/terrain1.bmp", 0.3f);
-
-	path = new Path();
-	path->Init("Models/path1.bmp");*/
-
-	//enemies
-	/*list<Enemy*> enList;
-
-	Enemy *en = new Enemy();
-	en->light = light;
-	en->LoadModel(1);
-	en->terrain = terrain;
-	en->path = path;
-	enList.push_back(en);
-	
-	en = new Enemy();
-	en->light = light;
-	en->LoadModel(1);
-	en->terrain = terrain;
-	en->path = path;
-	enList.push_back(en);
-
-	en = new Enemy();
-	en->light = light;
-	en->LoadModel(1);
-	en->terrain = terrain;
-	en->path = path;
-	enList.push_back(en);
-
-	currentWave = new Wave(&enList, 0, 50);*/
+	//lvl = new Level();
+	//lvl->Load();
 	lvl = new Level();
-	lvl->Load();
+	lvl->LoadFromFile("level.txt");
 
 	text = new Text(24);
 
@@ -413,8 +396,8 @@ int main( int argc, char * argv[] )
 	glutMainLoop();
 
 	delete text;
-	for (int i = 0; i < towerList.size(); i++)
-		delete towerList[i];
+	for (int i = 0; i < lvl->towerList.size(); i++)
+		delete lvl->towerList[i];
 	delete testObject;
 	delete m_pickingEffect;
 	delete m_pickingTexture;
