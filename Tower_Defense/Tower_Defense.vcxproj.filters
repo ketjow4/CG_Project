@@ -70,6 +70,12 @@
     <ClCompile Include="Wave.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="SkinningTechnique.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelsContainer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicLighting.h">
@@ -151,6 +157,9 @@
     </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{08414141-d254-4997-af47-311b550a86cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{53b9705f-ab3c-470e-937d-3a9223b167b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

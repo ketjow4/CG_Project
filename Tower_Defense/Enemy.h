@@ -3,12 +3,15 @@
 
 
 #include <iostream>
+#include <map>
+
 #include "math_3d.h"
 #include "Model.h"
 #include "BasicLighting.h"
 #include "Path.h"
 #include "Terrain.h"
 #include "pipeline.h"
+#include "ModelsContainer.h"
 #include "Player.h"
 
 
@@ -19,7 +22,6 @@ public:
 	~Enemy();
 
 	Vector3f position;
-	Mesh  model;
 	BasicLightingTechnique* light;
 	Path* path;
 	Terrain* terrain;
@@ -27,8 +29,7 @@ public:
 	double HP;
 	double Attack;
 
-	void LoadModel(string filename);
-
+	void LoadModel(int id, const string &filename);
 
 	void UpdatePosition(Pipeline *p);
 
@@ -36,10 +37,7 @@ public:
 	Vector3f GetFuturePosition(int steps);
 
 private:
-
+	int modelId;
 };
-
-
-
 
 #endif
