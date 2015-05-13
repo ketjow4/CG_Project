@@ -5,14 +5,14 @@
 #include "Camera.h"
 #include "Wave.h"
 #include "Text.h"
-<<<<<<< HEAD
+
 #include "Player.h"
-=======
+
 #include "Mouse.h"
 #include "PickingTexture.h"
 #include "PickingTechnique.h"
 #include <sstream>
->>>>>>> origin/master
+
 
 /*Global variables -- temporary*/
 int refreshMills = 30;        // refresh interval in milliseconds
@@ -203,13 +203,13 @@ void Display()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
-<<<<<<< HEAD
-	text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
+
+	//text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
 	//text->RenderText("Lives: " + Player::getPlayer().Lives ,10,470,1,glm::vec3(1,1,1));
 	//text->RenderText("Money" + Player::getPlayer().money,10,440,1,glm::vec3(1,1,1));
-=======
+
 	text->RenderText(displayedText,10,10,1,glm::vec3(1,1,1));
->>>>>>> origin/master
+
 	
 	
 	glDisable(GL_BLEND);

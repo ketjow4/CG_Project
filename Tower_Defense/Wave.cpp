@@ -33,16 +33,9 @@ void Wave::ClearDead()
 	std::list<Enemy*>::iterator it = enemyList->begin();
 	while(it != enemyList->end())
 	{
-<<<<<<< HEAD
-		if (it->HP <= 0)
-		{
-			it = enemyList->erase(it);
-			//Player::getPlayer().money += 10;
-		}
-=======
 		if ((*it)->HP <= 0)
 			delete *it,it = enemyList->erase(it);
->>>>>>> origin/master
+
 		else
 			++it;
 	}
