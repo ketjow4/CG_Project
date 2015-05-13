@@ -11,11 +11,11 @@ bool PickingTechnique::Init()
         return false;
     }
 
-    if (!AddShader(GL_VERTEX_SHADER, "picking.vs")) {
+    if (!AddShader(GL_VERTEX_SHADER, "Shaders/picking.vs")) {
         return false;
     }
 
-    if (!AddShader(GL_FRAGMENT_SHADER, "picking.fs")) {
+    if (!AddShader(GL_FRAGMENT_SHADER, "Shaders/picking.fs")) {
         return false;
     }
     

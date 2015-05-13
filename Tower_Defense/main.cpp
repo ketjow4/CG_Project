@@ -6,6 +6,8 @@
 #include "Wave.h"
 #include "Text.h"
 #include "Mouse.h"
+#include "PickingTexture.h"
+#include "PickingTechnique.h"
 #include <sstream>
 
 /*Global variables -- temporary*/
@@ -22,6 +24,9 @@ Mesh* testObject;
 
 BasicLightingTechnique* light;		//use this shaders for static objects
 SkinningTechnique* m_pEffect;
+PickingTexture* m_pickingTexture;
+PickingTechnique* m_pickingEffect;
+
 
 DirectionalLight m_directionalLight;
 
@@ -55,7 +60,7 @@ void initGL()
 	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
 	m_directionalLight.AmbientIntensity = 0.8f;				//sila swiatla globalnego
 	m_directionalLight.DiffuseIntensity = 0.75f;
-	m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
+	m_directionalLight.Direction = Vector3f(0.0f, -1.0, 0.0);
 
 	cam.eyey = 200;//100;
 	cam.eyex = 256;//250;
@@ -308,18 +313,33 @@ int main( int argc, char * argv[] )
 	glewInit();
 
 	light = new BasicLightingTechnique();
-
-	if (!light->Init()) {
+	if (!light->Init())
+	{
 		printf("Error initializing the lighting technique\n");
 		return -1;
 	}
 
 	m_pEffect = new SkinningTechnique();
-
-	if (!m_pEffect->Init()) {
+	if (!m_pEffect->Init())
+	{
 		printf("Error initializing the skinning technique\n");
 		//return -1;
 	}
+
+	m_pickingTexture = new PickingTexture();
+	if (!m_pickingTexture->Init(640, 480))
+	{
+		printf("Error initializing the picking texture\n");
+		return -1;
+	}
+
+	m_pickingEffect = new PickingTechnique();
+	if (!m_pickingEffect->Init())
+	{
+		printf("Error initializing the picking technique\n");
+		return -1;
+	}
+
 
 	light->Enable();
 
@@ -385,15 +405,17 @@ int main( int argc, char * argv[] )
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
 
-	delete testObject;
-	delete terrain;
-	delete light;
-	delete m_pEffect;
 	delete text;
-	delete path;
-	delete wave;
-	for(int i = 0; i < towerList.size(); i++)
+	for (int i = 0; i < towerList.size(); i++)
 		delete towerList[i];
+	delete wave;
+	delete path;
+	delete terrain;
+	delete testObject;
+	delete m_pickingEffect;
+	delete m_pickingTexture;
+	delete m_pEffect;
+	delete light;
 
 	return 0;
 }
