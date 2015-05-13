@@ -197,10 +197,11 @@ void Display()
 
 
 	//text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
-	text->RenderText("Lives: " + to_string(Player::getPlayer().Lives),10,460,1,glm::vec3(1,1,1));
+	text->RenderText("lives: " + to_string(Player::getPlayer().lives),10,460,1,glm::vec3(1,1,1));
 	text->RenderText("Money: " + to_string(Player::getPlayer().money),10,440,1,glm::vec3(1,1,1));
+	text->RenderText("Enemies: " + to_string(wave->enemyList->size()),500,460,1,glm::vec3(1,1,1));
 
-	if(Player::getPlayer().Lives == 0)
+	if(Player::getPlayer().lives == 0)
 	{
 		text->RenderText("GAME OVER",280,240,1,glm::vec3(1,0,0));		//add some function to exit to menu
 	}
@@ -344,34 +345,11 @@ int main( int argc, char * argv[] )
 	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
 
-	light = new BasicLightingTechnique();
-	if (!light->Init())
-	{
-		printf("Error initializing the lighting technique\n");
-		return -1;
-	}
 
-	m_pEffect = new SkinningTechnique();
-	if (!m_pEffect->Init())
-	{
-		printf("Error initializing the skinning technique\n");
-		return -1;
-	}
-
-	m_pickingTexture = new PickingTexture();
-	if (!m_pickingTexture->Init(640, 480))
-	{
-		printf("Error initializing the picking texture\n");
-		return -1;
-	}
-
-	m_pickingEffect = new PickingTechnique();
-	if (!m_pickingEffect->Init())
-	{
-		printf("Error initializing the picking technique\n");
-		return -1;
-	}
-
+	light = Engine::getEngine().getLight();
+	m_pEffect = Engine::getEngine().getEffect();
+	m_pickingTexture = Engine::getEngine().getpickingTexture();
+	m_pickingEffect = Engine::getEngine().getpickingEffect();
 
 	light->Enable();
 
@@ -417,8 +395,8 @@ int main( int argc, char * argv[] )
 
 	glutTimerFunc(0, timer, 0);
 
-	Player::getPlayer().Lives = 5;
-	Player::getPlayer().money = 100;
+	Player::getPlayer().Init(5,100);
+	
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
