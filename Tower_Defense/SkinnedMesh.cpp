@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "skinned_mesh.h"
+#include "SkinnedMesh.h"
 
 #define POSITION_LOCATION    0
 #define TEX_COORD_LOCATION   1

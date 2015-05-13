@@ -5,7 +5,7 @@
 #include <iostream>
 #include "math_3d.h"
 #include "Model.h"
-#include "basic_lighting.h"
+#include "BasicLighting.h"
 #include "Path.h"
 #include "Terrain.h"
 #include "pipeline.h"
@@ -33,7 +33,7 @@ public:
 	void UpdatePosition(Pipeline *p);
 
 	Vector3f GetPosition();
-
+	Vector3f GetFuturePosition(int steps);
 
 private:
 

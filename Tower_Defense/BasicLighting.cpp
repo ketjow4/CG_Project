@@ -3,7 +3,7 @@
 
 #include "math_3d.h"
 #include "util.h"
-#include "basic_lighting.h"
+#include "BasicLighting.h"
 
 
 BasicLightingTechnique::BasicLightingTechnique()

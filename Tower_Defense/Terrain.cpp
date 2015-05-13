@@ -125,11 +125,17 @@ void Terrain::Init(char *filename, float heightFactor)
 		float texCoordT = 0.0;
 		for (int j = 1; j < this->height; ++j)
 		{
+			Triangle triangle;
+			triangle.vertices[0] = Vector3f(vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z);
+			triangle.vertices[1] = Vector3f(vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z);
+			triangle.vertices[2] = Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z);
+			Vector3f triangleNormal = GetNormal(triangle);
+
 			Vertex t1BottomLeft
 				(
 				Vector3f( vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z ),
 				Vector2f( texCoordS, texCoordT ),
-				Vector3f( 0.0, 0.0, -1.0)
+				triangleNormal//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1BottomLeft);
 			AddThreeIndices(Indices, index);
@@ -138,7 +144,7 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f(vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT),
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1UpperLeft);
 			AddThreeIndices(Indices, index);
@@ -147,7 +153,7 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1UpperRight);
 			AddThreeIndices(Indices, index);
@@ -156,7 +162,7 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f(vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z),
 				Vector2f(texCoordS, texCoordT),
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2BottomLeft);
 			AddThreeIndices(Indices, index);
@@ -165,7 +171,7 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2UpperRight);
 			AddThreeIndices(Indices, index);
@@ -174,7 +180,7 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f(vertices[i - 1][j].x, vertices[i - 1][j].y, vertices[i - 1][j].z),
 				Vector2f(texCoordS, texCoordT + texCoordTStep),
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2BottomRight);
 			AddThreeIndices(Indices, index);
@@ -184,7 +190,6 @@ void Terrain::Init(char *filename, float heightFactor)
 		texCoordS += texCoordSStep;
 	}
 
-
 	m_Entries.resize(1);
 	m_Entries[0].Init(Vertices, Indices);
 	m_Entries[0].MaterialIndex = 0;
@@ -193,16 +198,22 @@ void Terrain::Init(char *filename, float heightFactor)
 	m_Textures[0] = NULL;
 	m_Textures[0] = new Texture(GL_TEXTURE_2D, "Models/terrain1texture.bmp");
 
-	if (!m_Textures[0]->Load()) {
+	if (!m_Textures[0]->Load())
+	{
 		printf("Error loading texture '%s'\n", "Models/terrain1texture.bmp");
 		delete m_Textures[0];
 		m_Textures[0] = NULL;
 
 	}
-	else {
+	else 
+	{
 		printf("Loaded texture '%s'\n", "Models/terrain1texture.bmp");
 	}
 
+	SetMaxX();
+	SetMaxZ();
+	SetMinX();
+	SetMinZ();
 }
 
 
@@ -225,7 +236,8 @@ void Terrain::Render()
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 
-	for (unsigned int i = 0; i < m_Entries.size(); i++) {
+	for (unsigned int i = 0; i < m_Entries.size(); i++)
+	{
 		glBindBuffer(GL_ARRAY_BUFFER, m_Entries[i].VB);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
@@ -235,7 +247,8 @@ void Terrain::Render()
 
 		const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
 
-		if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
+		if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex])
+		{
 			m_Textures[MaterialIndex]->Bind(GL_TEXTURE0);
 		}
 
@@ -254,38 +267,38 @@ void Terrain::AddThreeIndices(std::vector<unsigned int> &indicesVec, unsigned in
 	indicesVec.push_back(firstIndex++);
 }
 
-float Terrain::GetMaxX()
+void Terrain::SetMaxX()
 {
 	float maxX = vertices[0][0].x;
 	for (int i = 0; i < this->width; i++)
 		for (int j = 0; j < this->height; j++)
 			maxX = max(maxX, vertices[i][j].x);
-	return maxX;
+	MaxX = maxX;
 }
 
-float Terrain::GetMaxZ()
+void Terrain::SetMaxZ()
 {
 	float maxZ = vertices[0][0].z;
 	for (int i = 0; i < this->width; i++)
 		for (int j = 0; j < this->height; j++)
 			maxZ = max(maxZ, vertices[i][j].z);
-	return maxZ;
+	MaxZ = maxZ;
 }
 
-float Terrain::GetMinX()
+void Terrain::SetMinX()
 {
 	float minX = vertices[0][0].x;
 	for(int  i = 0; i < this->width; i++)
 		for(int j = 0; j < this->height; j++)
 			minX = min(minX, vertices[i][j].x);
-	return minX;
+	MinX = minX;
 }
 
-float Terrain::GetMinZ()
+void Terrain::SetMinZ()
 {
 	float minZ = vertices[0][0].z;
 	for (int i = 0; i < this->width; i++)
 		for (int j = 0; j < this->height; j++)
 			minZ = min(minZ, vertices[i][j].z);
-	return minZ;
+	MinZ = minZ;
 }

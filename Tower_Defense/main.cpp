@@ -5,7 +5,14 @@
 #include "Camera.h"
 #include "Wave.h"
 #include "Text.h"
+<<<<<<< HEAD
 #include "Player.h"
+=======
+#include "Mouse.h"
+#include "PickingTexture.h"
+#include "PickingTechnique.h"
+#include <sstream>
+>>>>>>> origin/master
 
 /*Global variables -- temporary*/
 int refreshMills = 30;        // refresh interval in milliseconds
@@ -21,6 +28,9 @@ Mesh* testObject;
 
 BasicLightingTechnique* light;		//use this shaders for static objects
 SkinningTechnique* m_pEffect;
+PickingTexture* m_pickingTexture;
+PickingTechnique* m_pickingEffect;
+
 
 DirectionalLight m_directionalLight;
 
@@ -32,10 +42,9 @@ Terrain* terrain;
 Path* path;
 Wave * wave;
 
+Mouse mouse;
 
-Enemy en;
-Enemy en2;
-Enemy en3;
+string displayedText = "Tower Defense alpha 0.1";
 
 
 void initGL() 
@@ -49,9 +58,9 @@ void initGL()
 	glEnable( GL_TEXTURE_2D );
 
 	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-	m_directionalLight.AmbientIntensity = 0.8f;				//sila swiatla globalnego
-	m_directionalLight.DiffuseIntensity = 0.75f;
-	m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
+	m_directionalLight.AmbientIntensity = 0.5f;				//sila swiatla globalnego
+	m_directionalLight.DiffuseIntensity = 0.5f;
+	m_directionalLight.Direction = Vector3f(1.0f, 1.0, 1.0).Normalize();
 
 	cam.eyey = 200;//100;
 	cam.eyex = 256;//250;
@@ -92,7 +101,7 @@ void Display()
 	p.Scale(0.1f, 0.1f, 0.1f);
 	p.Rotate(0.0f,90.0f, 0.0f);
 	p.WorldPos(0.0f, 0.0f, 10.0f);
-	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez ), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
+	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	p.SetPerspectiveProj(pers);
 
 	wave->p = &p;
@@ -104,11 +113,43 @@ void Display()
 	light->SetWorldMatrix(WorldTransformation);
 	light->SetDirectionalLight(m_directionalLight);
 
+	m_pickingTexture->EnableWriting();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	m_pickingEffect->Enable();
+
 	p.Scale(1.f, 1.f, 1.f);
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
 	light->SetWVP(p.GetWVPTrans());
-	
+	m_pickingEffect->SetWVP(p.GetWVPTrans());
+	terrain->Render();
+
+	m_pickingTexture->DisableWriting();
+
+	if (mouse.leftClick)
+	{
+		mouse.leftClick = false;
+
+		PickingTexture::PixelInfo Pixel = m_pickingTexture->ReadPixel(mouse.pos2d.x, mouse.pos2d.y);
+		mouse.SetPos3d(Pixel.x, Pixel.y, Pixel.z);
+		pair<float, float> closest;
+		if (mouse.DistToClosest(path->possibleTowerPoints, closest) < 20.f)
+		{
+			ostringstream ss;
+			ss << " x: " << closest.first <<
+				" y: " << terrain->GetTerrainHeight(closest.first, closest.second) <<
+				" z: " << closest.second;
+			displayedText = ss.str();
+		}
+		else
+			displayedText = "Not a possible tower position";
+	}
+
+	light->Enable();
+	p.Scale(1.f, 1.f, 1.f);
+	p.Rotate(0.0f, 0.0f, 0.0f);
+	p.WorldPos(0.f, 0.f, 0.f);
+	light->SetWVP(p.GetWVPTrans());
 	terrain->Render();
 
 	// Possible tower positions
@@ -136,12 +177,12 @@ void Display()
 
 	for(int i = 0; i < towerList.size(); i++)
 	{
-		list<Enemy>::iterator it = wave->enemyList->begin();
+		list<Enemy*>::iterator it = wave->enemyList->begin();
 		for (; it != wave->enemyList->end(); ++it)
 		{
-			if (towerList[i]->IsInRange(it->GetPosition()) && it->HP > 0 && it->pathIndex > 0)
+			if (towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->pathIndex > 0)
 			{
-				towerList[i]->Shoot(&(*it));
+				towerList[i]->Shoot(*it);
 				break;
 			}
 		}
@@ -162,9 +203,13 @@ void Display()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
+<<<<<<< HEAD
 	text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
 	//text->RenderText("Lives: " + Player::getPlayer().Lives ,10,470,1,glm::vec3(1,1,1));
 	//text->RenderText("Money" + Player::getPlayer().money,10,440,1,glm::vec3(1,1,1));
+=======
+	text->RenderText(displayedText,10,10,1,glm::vec3(1,1,1));
+>>>>>>> origin/master
 	
 	
 	glDisable(GL_BLEND);
@@ -193,6 +238,9 @@ void Reshape( int width, int height )
 	glLoadIdentity();             // Reset
 	// Enable perspective projection with fovy, aspect, zNear and zFar
 	gluPerspective(90.0f, aspect, 0.1f, 1000.0f);		//kat widzenia, aspect ratio, zNear, zFar
+
+	mouse.SetWindowSize(width, height);
+	m_pickingTexture->Init(width, height);
 }
 
 
@@ -246,7 +294,18 @@ void SpecialKeys( int key, int x, int y )
 	Reshape( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
 }
 
+void MouseFunc(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON || state == GLUT_UP)
+		mouse.MouseLeftClick(x, y);
+	else if (button == GLUT_RIGHT_BUTTON || state == GLUT_UP)
+		mouse.MouseRightClick(x, y);
+}
 
+void MotionFunc(int x, int y)
+{
+	mouse.MouseMove(x, y);
+}
 
 
 int main( int argc, char * argv[] )
@@ -260,6 +319,7 @@ int main( int argc, char * argv[] )
 
 	// rozmiary g³ównego okna programu
 	glutInitWindowSize( 640, 480 );
+	mouse.SetWindowSize(640, 480);
 
 	// utworzenie g³ównego okna programu
 	glutCreateWindow( "Tower Defense" );
@@ -276,24 +336,41 @@ int main( int argc, char * argv[] )
 	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
 	glutSpecialFunc( SpecialKeys );
 
+	glutMouseFunc(MouseFunc);
+	glutMotionFunc(MotionFunc);
+
 	initGL(); 
 
 	glewInit();
 
-
 	light = new BasicLightingTechnique();
-
-	if (!light->Init()) {
+	if (!light->Init())
+	{
 		printf("Error initializing the lighting technique\n");
 		return -1;
 	}
 
 	m_pEffect = new SkinningTechnique();
-
-	if (!m_pEffect->Init()) {
+	if (!m_pEffect->Init())
+	{
 		printf("Error initializing the skinning technique\n");
 		//return -1;
 	}
+
+	m_pickingTexture = new PickingTexture();
+	if (!m_pickingTexture->Init(640, 480))
+	{
+		printf("Error initializing the picking texture\n");
+		return -1;
+	}
+
+	m_pickingEffect = new PickingTechnique();
+	if (!m_pickingEffect->Init())
+	{
+		printf("Error initializing the picking technique\n");
+		return -1;
+	}
+
 
 	light->Enable();
 
@@ -309,32 +386,31 @@ int main( int argc, char * argv[] )
 	path = new Path();
 	path->Init("Models/path1.bmp");
 
-	//enemy 
-	en.light = light;
-	en.LoadModel("Models/phoenix_ugv.md2");
-	en.terrain = terrain;
-	en.path = path;
-	en.pathIndex = 0;
+	//enemies
+	list<Enemy*> enList;
 
-	en2.light = light;
-	en2.LoadModel("Models/phoenix_ugv.md2");
-	en2.terrain = terrain;
-	en2.path = path;
-	en2.pathIndex = 0;
-
-	en3.light = light;
-	en3.LoadModel("Models/phoenix_ugv.md2");
-	en3.terrain = terrain;
-	en3.path = path;
-	en3.pathIndex = 0;
-
-	list<Enemy> enList;
+	Enemy *en = new Enemy();
+	en->light = light;
+	en->LoadModel("Models/phoenix_ugv.md2");
+	en->terrain = terrain;
+	en->path = path;
 	enList.push_back(en);
-	enList.push_back(en2);
-	enList.push_back(en3);
+	
+	en = new Enemy();
+	en->light = light;
+	en->LoadModel("Models/phoenix_ugv.md2");
+	en->terrain = terrain;
+	en->path = path;
+	enList.push_back(en);
 
-	wave = new Wave(&enList,NULL);
-	wave->pathDifference = 50;
+	en = new Enemy();
+	en->light = light;
+	en->LoadModel("Models/phoenix_ugv.md2");
+	en->terrain = terrain;
+	en->path = path;
+	enList.push_back(en);
+
+	wave = new Wave(&enList, 0, 50);
 
 	vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
 	for (int i = 0; i < towerPoints.size(); ++i)
@@ -361,15 +437,17 @@ int main( int argc, char * argv[] )
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
 
-	delete testObject;
-	delete terrain;
-	delete light;
-	delete m_pEffect;
 	delete text;
-	delete path;
-	delete wave;
-	for(int i = 0; i < towerList.size(); i++)
+	for (int i = 0; i < towerList.size(); i++)
 		delete towerList[i];
+	delete wave;
+	delete path;
+	delete terrain;
+	delete testObject;
+	delete m_pickingEffect;
+	delete m_pickingTexture;
+	delete m_pEffect;
+	delete light;
 
 	return 0;
 }

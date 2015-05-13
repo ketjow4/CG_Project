@@ -1,6 +1,4 @@
-#ifndef OGLDEV_UTIL_H
-#define	OGLDEV_UTIL_H
-
+#pragma once
 #ifndef WIN32
 #include <unistd.h>
 #endif
@@ -14,11 +12,11 @@ using namespace std;
 
 bool ReadFile(const char* fileName, string& outFile);
 
-void OgldevError(const char* pFileName, uint line, const char* pError);
-void OgldevFileError(const char* pFileName, uint line, const char* pFileError);
+void cgError(const char* pFileName, uint line, const char* pError);
+void cgFileError(const char* pFileName, uint line, const char* pFileError);
 
-#define OGLDEV_ERROR(Error) OgldevError(__FILE__, __LINE__, Error);
-#define OGLDEV_FILE_ERROR(FileError) OgldevFileError(__FILE__, __LINE__, FileError);
+#define cgERROR(Error) cgError(__FILE__, __LINE__, Error);
+#define cgFILE_ERROR(FileError) cgFileError(__FILE__, __LINE__, FileError);
 
 #define ZERO_MEM(a) memset(a, 0, sizeof(a))
 #define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))
@@ -52,6 +50,4 @@ float fmax(float a, float b);
 #define GLCheckError() (glGetError() == GL_NO_ERROR)
 
 long long GetCurrentTimeMillis();
-
-#endif
 

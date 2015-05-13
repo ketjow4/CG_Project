@@ -25,16 +25,18 @@ void main()
                                                                                     
     vec4 DiffuseColor;                                                              
                                                                                     
-    if (DiffuseFactor > 0) {                                                        
+    if (DiffuseFactor > 0)
+    {                                                        
         DiffuseColor = vec4(gDirectionalLight.Color, 1.0f) *                        
                        gDirectionalLight.DiffuseIntensity *                         
                        DiffuseFactor;                                               
     }                                                                               
-    else {                                                                          
+    else
+    {                                                                          
         DiffuseColor = vec4(0, 0, 0, 0);                                            
     }                                                                               
                                                                                     
     FragColor = texture2D(gSampler, TexCoord0.xy) *                                 
-                (AmbientColor + DiffuseColor);                                      
+                min(AmbientColor + DiffuseColor,1);                                      
 
 }

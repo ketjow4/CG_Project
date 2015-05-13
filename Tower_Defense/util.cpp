@@ -14,9 +14,11 @@ bool ReadFile(const char* pFileName, string& outFile)
     
     bool ret = false;
     
-    if (f.is_open()) {
+    if (f.is_open())
+	{
         string line;
-        while (getline(f, line)) {
+        while (getline(f, line))
+		{
             outFile.append(line);
             outFile.append("\n");
         }
@@ -25,14 +27,15 @@ bool ReadFile(const char* pFileName, string& outFile)
         
         ret = true;
     }
-    else {
-        OGLDEV_FILE_ERROR(pFileName);
+    else 
+	{
+		cgFILE_ERROR(pFileName);
     }
     
     return ret;
 }
 
-void OgldevError(const char* pFileName, uint line, const char* pError)
+void cgError(const char* pFileName, uint line, const char* pError)
 {
 #ifdef WIN32
     char msg[1000];
@@ -44,7 +47,7 @@ void OgldevError(const char* pFileName, uint line, const char* pError)
 }
 
 
-void OgldevFileError(const char* pFileName, uint line, const char* pFileError)
+void cgFileError(const char* pFileName, uint line, const char* pFileError)
 {
 #ifdef WIN32
     char msg[1000];

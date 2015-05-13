@@ -10,23 +10,17 @@
 class Wave
 {
 public:
-	Wave();
-	~Wave();
-
-	Wave(list<Enemy>* list, Pipeline *p);
-
-	list<Enemy>* enemyList;
-	//the differenc in path index between 2 enemies in wave
-	int pathDifference;
-
+	list<Enemy*>* enemyList;
 	Pipeline *p;
 
+	Wave(list<Enemy*>* list, Pipeline *p, int pathDifference);
+	~Wave();
 	void UpdatePosition();
-
 	void ClearDead();
 
 private:
-
+	//the differenc in path index between 2 enemies in wave
+	int pathDifference;
 };
 
 
