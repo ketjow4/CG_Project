@@ -29,7 +29,7 @@ public:
 	double HP;
 	double Attack;
 
-	void LoadModel(int id, const string &filename);
+	void LoadModel(int id);
 
 	void UpdatePosition(Pipeline *p);
 
@@ -37,7 +37,7 @@ public:
 	Vector3f GetFuturePosition(int steps);
 
 private:
-	int modelId;
+	Mesh *model;
 };
 
 #endif

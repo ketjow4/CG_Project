@@ -112,7 +112,7 @@ void Display()
 	lvl->currentWave->p = &p;
 
 	light->Enable();
-
+	
 	light->SetWVP(p.GetWVPTrans());
 	const Matrix4f& WorldTransformation = p.GetWorldTrans();
 	light->SetWorldMatrix(WorldTransformation);
@@ -146,16 +146,15 @@ void Display()
 				" z: " << closest.second;
 			displayedText = ss.str();
 
-
-			towerList.push_back(new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain));
-			towerList[towerList.size()-1]->LoadModel("Models/firstTower.md5mesh");
-			towerList[towerList.size()-1]->LoadMissile("Models/missile.fbx");
+			Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), terrain);
+			tower->LoadModel(11);
+			tower->LoadMissile(21);
+			towerList.push_back(tower);
 			Player::getPlayer().TowerBuy();
 		}
 		else
 			displayedText = "Not a possible tower position";
 	}
-
 
 	light->Enable();
 	p.Scale(1.f, 1.f, 1.f);
@@ -164,10 +163,8 @@ void Display()
 	light->SetWVP(p.GetWVPTrans());
 	lvl->terrain->Render();
 
-
 	for(int i = 0; i < towerList.size(); i++)
 	{
-		towerList[i]->CalcAnimation();
 		towerList[i]->Render(&p);
 	}
 
@@ -217,8 +214,8 @@ void Display()
 
 	text->RenderText(displayedText,10,10,1,glm::vec3(1,1,1));
 
-
-
+	
+	
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
@@ -350,6 +347,10 @@ int main( int argc, char * argv[] )
 
 	glewInit();
 
+	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
+	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
+	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
+
 
 	light = Engine::getEngine().getLight();
 	m_pEffect = Engine::getEngine().getEffect();
@@ -375,21 +376,21 @@ int main( int argc, char * argv[] )
 
 	Enemy *en = new Enemy();
 	en->light = light;
-	en->LoadModel(1, "Models/phoenix_ugv.md2");
+	en->LoadModel(1);
+	en->terrain = terrain;
+	en->path = path;
+	enList.push_back(en);
+	
+	en = new Enemy();
+	en->light = light;
+	en->LoadModel(1);
 	en->terrain = terrain;
 	en->path = path;
 	enList.push_back(en);
 
 	en = new Enemy();
 	en->light = light;
-	en->LoadModel(1, "Models/phoenix_ugv.md2");
-	en->terrain = terrain;
-	en->path = path;
-	enList.push_back(en);
-
-	en = new Enemy();
-	en->light = light;
-	en->LoadModel(1, "Models/phoenix_ugv.md2");
+	en->LoadModel(1);
 	en->terrain = terrain;
 	en->path = path;
 	enList.push_back(en);
@@ -403,7 +404,7 @@ int main( int argc, char * argv[] )
 	glutTimerFunc(0, timer, 0);
 
 	Player::getPlayer().Init(5,100);
-
+	
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();

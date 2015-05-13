@@ -7,12 +7,10 @@ Enemy::Enemy()
 Enemy::~Enemy()
 {}
 
-void Enemy::LoadModel(int id, const string &filename)
+void Enemy::LoadModel(int id)
 {
-	modelId = id;
-	ModelsContainer::LoadMesh(id, new Mesh,filename);
+	model = (Mesh*)ModelsContainer::Get(id);
 }
-
 
 void Enemy::UpdatePosition(Pipeline *p)
 {
@@ -31,7 +29,7 @@ void Enemy::UpdatePosition(Pipeline *p)
 	position = Vector3f(x, y + 1, z);
 
 	light->SetWVP(p->GetWVPTrans());
-	ModelsContainer::Get(modelId)->Render();
+	model->Render();
 
 	if (++pathIndex >= path->pathPoints.size() - 1)				//object arrived at end point		-- for now return to start 
 	{

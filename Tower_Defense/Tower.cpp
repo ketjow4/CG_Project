@@ -27,7 +27,7 @@ Tower::~Tower()
 void Tower::Shoot(Enemy* en)
 {
 	distance_to_target =  sqrt(pow(towerPos.x - en->GetPosition().x,2) + pow(towerPos.z - en->GetPosition().z, 2));
-	const int reloadTime = 30;
+	const int reloadTime = 50;
 	if (reloading <= 0)
 	{
 		Vector3f missleDirection = (en->GetFuturePosition(20) - towerPos).Normalize();
@@ -51,7 +51,8 @@ void Tower::UpdateMissiles(Pipeline * p, list<Enemy*> *enemies)
 
 void Tower::Reload()
 {
-	--reloading;
+	if (reloading > 0)
+		--reloading;
 }
 
 void Tower::UpdateMissile(Pipeline *p, Missile *missile, list<Enemy*> *enemies)
@@ -78,22 +79,22 @@ void Tower::UpdateMissile(Pipeline *p, Missile *missile, list<Enemy*> *enemies)
 void Tower::RenderMissile(Missile *missile, Pipeline *p)
 {
 	p->WorldPos(missile->pos);
-	p->Scale(1, 1, 1);		//temporary missile scale can be differen than tower scale
+	p->Scale(5, 5, 5);		//temporary missile scale can be differen than tower scale
 	p->Rotate(0, 0, 0);
 	light->SetWVP(p->GetWVPTrans());
-	MissileMesh.Render();
+	missileModel->Render();
 }
 
 
-void Tower::LoadModel(string filename)
+void Tower::LoadModel(int key)
 {
-	this->Model3D.LoadMesh(filename);
+	model = (SkinnedMesh*)ModelsContainer::Get(key);
 }
 
 
-void Tower::LoadMissile(string filename)
+void Tower::LoadMissile(int key)
 {
-	this->MissileMesh.LoadMesh(filename);
+	missileModel = (Mesh*)ModelsContainer::Get(key);
 }
 
 
@@ -103,14 +104,14 @@ void Tower::CalcAnimation()
 	 
 	vector<Matrix4f> Transforms;
                
-    float RunningTime = Engine::GetRunningTime();
+    //float RunningTime = Engine::GetRunningTime();
 
-	if( distance_to_target > Range)			//no animation playing when enemy is out of range
-	{
-		RunningTime = 0.1;
-	}
+	//if( distance_to_target > Range)			//no animation playing when enemy is out of range
+	//	RunningTime = 0.1;
 
-	Model3D.BoneTransform(RunningTime, Transforms);
+	float RunningTime = reloading / 25.f;
+
+	model->BoneTransform(RunningTime, Transforms);
         
     for (uint i = 0 ; i < Transforms.size() ; i++)
 	{
@@ -120,11 +121,12 @@ void Tower::CalcAnimation()
 
 void Tower::Render(Pipeline *p)
 {
+	CalcAnimation();
 	p->Scale(towerScale,towerScale,towerScale);
 	p->Rotate(0,90,-90);
 	p->WorldPos(towerPos);
 	m_pEffect->SetWVP(p->GetWVPTrans());
-	this->Model3D.Render();
+	model->Render();
 	
 }
 
