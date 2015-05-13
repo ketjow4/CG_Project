@@ -167,3 +167,6 @@ void Tower::LimitTowerPosition()
 		towerPos.z = minZ;
 	}
 }
+
+
+int Tower::cost = 10;

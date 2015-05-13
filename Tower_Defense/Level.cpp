@@ -39,7 +39,7 @@ void Level::Load()
 	list<Enemy*> *enList2;		//remember to add destructor
 	enList2 = new list<Enemy*>();
 	
-	for(int i = 0; i < 15; i++)
+	for(int i = 0; i < 5; i++)
 	{
 		enList = new list<Enemy*>();
 		Enemy *en = new Enemy();

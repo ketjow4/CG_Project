@@ -27,7 +27,7 @@ public:
 	double towerHeight;			//only good when scale is 5
 	double towerScale;
 	list<Missile> missiles;
-	int cost;		//how much money tower costs :p jkjk
+	static int cost;		//how much money tower costs :p jkjk
 	int reloading;
 
 	BasicLightingTechnique* light;
@@ -54,3 +54,4 @@ private:
 	void UpdateMissile(Pipeline * p, Missile* missile, list<Enemy*> *enemies);
 	void LimitTowerPosition();
 };
+

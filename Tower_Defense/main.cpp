@@ -146,11 +146,14 @@ void Display()
 				" z: " << closest.second;
 			displayedText = ss.str();
 
+			if(Player::getPlayer().money >= Tower::cost)
+			{
 			Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
 			tower->LoadModel(11);
 			tower->LoadMissile(21);
 			towerList.push_back(tower);
 			Player::getPlayer().TowerBuy();
+			}
 		}
 		else
 			displayedText = "Not a possible tower position";
