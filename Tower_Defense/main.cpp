@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Wave.h"
 #include "Text.h"
+#include "Player.h"
 
 /*Global variables -- temporary*/
 int refreshMills = 30;        // refresh interval in milliseconds
@@ -97,7 +98,7 @@ void Display()
 	wave->p = &p;
 
 	light->Enable();
-
+	
 	light->SetWVP(p.GetWVPTrans());
 	const Matrix4f& WorldTransformation = p.GetWorldTrans();
 	light->SetWorldMatrix(WorldTransformation);
@@ -162,6 +163,8 @@ void Display()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
 	text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
+	//text->RenderText("Lives: " + Player::getPlayer().Lives ,10,470,1,glm::vec3(1,1,1));
+	//text->RenderText("Money" + Player::getPlayer().money,10,440,1,glm::vec3(1,1,1));
 	
 	
 	glDisable(GL_BLEND);
@@ -352,6 +355,8 @@ int main( int argc, char * argv[] )
 
 	glutTimerFunc(0, timer, 0);
 
+	//Player::getPlayer().Lives = 10;
+	//Player::getPlayer().money = 0;
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();

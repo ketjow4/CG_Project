@@ -9,6 +9,7 @@
 #include "Path.h"
 #include "Terrain.h"
 #include "pipeline.h"
+#include "Player.h"
 
 
 class Enemy

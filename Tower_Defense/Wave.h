@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include <vector>
 #include <list>
+#include "Player.h"
 
 class Wave
 {
