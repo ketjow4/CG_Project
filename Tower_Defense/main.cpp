@@ -159,8 +159,7 @@ void Display()
 	light->SetWVP(p.GetWVPTrans());
 	terrain->Render();
 
-	vector<pair<float, float>> &towerPoints = path->possibleTowerPoints;
-	*/
+
 	for(int i = 0; i < towerList.size(); i++)
 	{
 		towerList[i]->CalcAnimation();
@@ -203,7 +202,7 @@ void Display()
 	//text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
 	text->RenderText("lives: " + to_string(Player::getPlayer().lives),10,460,1,glm::vec3(1,1,1));
 	text->RenderText("Money: " + to_string(Player::getPlayer().money),10,440,1,glm::vec3(1,1,1));
-	text->RenderText("Enemies: " + to_string(wave->enemyList->size()),550,460,1,glm::vec3(1,1,1));
+	text->RenderText("Enemies: " + to_string(wave->enemyList->size()),500,460,1,glm::vec3(1,1,1));
 
 	if(Player::getPlayer().lives == 0)
 	{
