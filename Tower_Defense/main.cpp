@@ -46,8 +46,13 @@ Level* lvl2;
 Mouse mouse;
 
 
+string displayedText = "Tower Defense alpha 0.2";
 
-string displayedText = "Tower Defense alpha 0.1";
+float m_scale = 0;
+	static const float FieldDepth = 400.0f;
+	static const float FieldWidth = 400.0f;
+
+
 
 
 void initGL() 
@@ -62,16 +67,15 @@ void initGL()
 
 	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
 	m_directionalLight.AmbientIntensity = 0.4f;				//sila swiatla globalnego
-	m_directionalLight.DiffuseIntensity = 0.5f;
+	m_directionalLight.DiffuseIntensity = 0.4f;
 	m_directionalLight.Direction = Vector3f(1.0f, 1.0, 1.0).Normalize();
 
 	cam.eyey = 200;//100;
-	cam.eyex = 256;//250;
+	cam.eyex = 256;//256;
 	cam.eyez = 0;
 	cam.centerx = 1;
 	cam.centerz = 1;
 	cam.centery = 0;
-
 
 }
 
@@ -89,10 +93,21 @@ void Display()
 	}
 
 	cam.UpdateCamera();
-	glDisable(GL_LIGHTING);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-
+	light->Enable();
 	//start of 3d Drawing
+
+	m_scale += 0.057;
+	PointLight pl[2];
+	for (int i = 0; i < 2; i++)
+	{
+		pl[i].DiffuseIntensity = 0.5f;
+		pl[i].AmbientIntensity = 1.8;
+		pl[i].Color = Vector3f(0.8f*i, 0.3f*i, 1.0f);
+		pl[i].Position = Vector3f(-150.0f*i, 1.0f, FieldDepth * (cosf(m_scale) + 1.0f) / 2.0f);
+		pl[i].Attenuation.Linear = 0.05f;
+	}
+    light->SetPointLights(2, pl);
 
 	PersProjInfo pers;
 	pers.FOV = 90;
@@ -101,9 +116,9 @@ void Display()
 	pers.zFar = 1000.0f;
 	pers.zNear = 0.1f;
 	Pipeline p;
-	p.Scale(0.1f, 0.1f, 0.1f);
+	//p.Scale(0.1f, 0.1f, 0.1f);
 	p.Rotate(0.0f,90.0f, 0.0f);
-	p.WorldPos(0.0f, 0.0f, 10.0f);
+	p.WorldPos(0.0f, 0.0f, 1.0f);
 	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	p.SetPerspectiveProj(pers);
 
@@ -129,6 +144,7 @@ void Display()
 	light->SetWVP(p.GetWVPTrans());
 	m_pickingEffect->SetWVP(p.GetWVPTrans());
 	lvl->terrain->Render();
+
 
 	m_pickingTexture->DisableWriting();
 
@@ -200,6 +216,7 @@ void Display()
 	//----- end 3D drawing 
 
 	// ---- 2D drawing on screen eg. menu text etc.
+	
 	glDepthMask(GL_FALSE);  // disable writes to Z-Buffer
 	glDisable(GL_DEPTH_TEST);  // disable depth-testing
 	glEnable(GL_BLEND);
@@ -228,6 +245,7 @@ void Display()
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
+
 	//end of 2D drawing
 
 	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
