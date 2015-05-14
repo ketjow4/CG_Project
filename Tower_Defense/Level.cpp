@@ -61,6 +61,10 @@ void Level::LoadFromFile(string filename)
 	if(file.good())
 	{
 		string temp;
+		string levelNum;
+		file >> levelNum;
+		levelNumber = stoi(levelNum);
+		getline(file,temp);			//get rid of comment
 		string terrainFile;
 		string terrainElevation;
 		file >> terrainFile;

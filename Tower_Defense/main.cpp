@@ -61,7 +61,7 @@ void initGL()
 	glEnable( GL_TEXTURE_2D );
 
 	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-	m_directionalLight.AmbientIntensity = 0.5f;				//sila swiatla globalnego
+	m_directionalLight.AmbientIntensity = 0.4f;				//sila swiatla globalnego
 	m_directionalLight.DiffuseIntensity = 0.5f;
 	m_directionalLight.Direction = Vector3f(1.0f, 1.0, 1.0).Normalize();
 
@@ -115,6 +115,9 @@ void Display()
 	const Matrix4f& WorldTransformation = p.GetWorldTrans();
 	light->SetWorldMatrix(WorldTransformation);
 	light->SetDirectionalLight(m_directionalLight);
+	light->SetEyeWorldPos(Vector3f(cam.eyex, cam.eyey, cam.eyez));
+    light->SetMatSpecularIntensity(0.5f);
+    light->SetMatSpecularPower(2);
 
 	m_pickingTexture->EnableWriting();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -275,7 +278,7 @@ void Keyboard( unsigned char key, int x, int y )
 	{
 		lvl->towerList.clear();
 		lvl2 = new Level();
-		lvl2->LoadFromFile("level2.txt");
+		lvl2->LoadFromFile("Levels/level2.txt");
 		lvl = lvl2;
 	}
 
@@ -380,10 +383,8 @@ int main( int argc, char * argv[] )
 		cout << "Test object loaded successful " << endl;
 	}
 
-	//lvl = new Level();
-	//lvl->Load();
 	lvl = new Level();
-	lvl->LoadFromFile("level.txt");
+	lvl->LoadFromFile("Levels/level.txt");
 
 	text = new Text(24);
 

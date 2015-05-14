@@ -69,7 +69,8 @@
       <Command>xcopy "$(ProjectDir)\DLL\*.dll" "$(ProjectDir)..\Debug\" /i /y
 xcopy "$(ProjectDir)\Shaders\*.*" "$(ProjectDir)..\Debug\Shaders\" /i /y
 xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y
-xcopy "$(ProjectDir)\fonts\*.*" "$(ProjectDir)..\Debug\fonts\" /i /y</Command>
+xcopy "$(ProjectDir)\fonts\*.*" "$(ProjectDir)..\Debug\fonts\" /i /y
+xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>

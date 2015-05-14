@@ -21,6 +21,7 @@ public:
 	vector<Tower*> towerList;	//tower list for actual level
 	
 	list<Wave*> waveList;
+	int levelNumber;		//to chceck if this is last level
 
 	void AdvanceToNextWave();
 
