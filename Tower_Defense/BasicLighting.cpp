@@ -36,6 +36,8 @@ bool BasicLightingTechnique::Init()
     m_dirLightLocation.AmbientIntensity = GetUniformLocation("gDirectionalLight.AmbientIntensity");
     m_dirLightLocation.Direction = GetUniformLocation("gDirectionalLight.Direction");
     m_dirLightLocation.DiffuseIntensity = GetUniformLocation("gDirectionalLight.DiffuseIntensity");
+	m_matSpecularIntensityLocation = GetUniformLocation("gMatSpecularIntensity");
+    m_matSpecularPowerLocation = GetUniformLocation("gSpecularPower");
 
     return true;
 }
@@ -64,4 +66,19 @@ void BasicLightingTechnique::SetDirectionalLight(const DirectionalLight& Light)
     Direction.Normalize();
     glUniform3f(m_dirLightLocation.Direction, Direction.x, Direction.y, Direction.z);
     glUniform1f(m_dirLightLocation.DiffuseIntensity, Light.DiffuseIntensity);
+}
+
+void BasicLightingTechnique::SetEyeWorldPos(const Vector3f& EyeWorldPos)
+{
+    glUniform3f(m_eyeWorldPosLocation, EyeWorldPos.x, EyeWorldPos.y, EyeWorldPos.z);
+}
+
+void BasicLightingTechnique::SetMatSpecularIntensity(float Intensity)
+{
+    glUniform1f(m_matSpecularIntensityLocation, Intensity);
+}
+
+void BasicLightingTechnique::SetMatSpecularPower(float Power)
+{
+    glUniform1f(m_matSpecularPowerLocation, Power);
 }

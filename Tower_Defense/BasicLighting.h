@@ -27,12 +27,18 @@ public:
 	void SetWorldMatrix(const Matrix4f& WVP);
 	void SetTextureUnit(unsigned int TextureUnit);
     void SetDirectionalLight(const DirectionalLight& Light);
+	void SetEyeWorldPos(const Vector3f& EyeWorldPos);
+    void SetMatSpecularIntensity(float Intensity);
+    void SetMatSpecularPower(float Power);		//TODO change in future to get power from model material
 
 private:
 
     GLuint m_WVPLocation;
     GLuint m_samplerLocation;
     GLuint m_WorldMatrixLocation;
+	GLuint m_eyeWorldPosLocation;
+    GLuint m_matSpecularIntensityLocation;
+    GLuint m_matSpecularPowerLocation;
     
 	struct {
         GLuint Color;
