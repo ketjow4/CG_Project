@@ -16,17 +16,17 @@ GameHUD::~GameHUD()
 void GameHUD::Draw(const int &enemiesLeft)
 {
 	// ---- 2D drawing on screen eg. menu text etc.
-	glDepthMask(GL_FALSE);  // disable writes to Z-Buffer
-	glDisable(GL_DEPTH_TEST);  // disable depth-testing
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+	//glDepthMask(GL_FALSE);  // disable writes to Z-Buffer
+	//glDisable(GL_DEPTH_TEST);  // disable depth-testing
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
 	this->DrawGameInfo(enemiesLeft);
 	this->DrawTextButtons();
 
-	glDisable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
+	//glDisable(GL_BLEND);
+	//glEnable(GL_DEPTH_TEST);
+	//glDepthMask(GL_TRUE);
 	//end of 2D drawing
 }
 

@@ -58,7 +58,7 @@ float m_scale = 0;
 
 bool gameIsRunning = false;
 bool gameInProgress = false;
-bool showHud = false;
+bool showHud = true;
 
 GameMenu *menu;
 GameHUD *hud;
@@ -235,8 +235,6 @@ void NewGame()
 
 	text->RenderText(displayedText, 10, 10, 1, glm::vec3(1, 1, 1));
 
-
-
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
@@ -260,11 +258,13 @@ void Display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	light->Enable();
 	//start of 3d Drawing
+
 	if (gameIsRunning)
 	{
 		gameInProgress = true;
 		NewGame();
 	}
+
 	//----- end 3D drawing 
 
 	// ---- 2D drawing menu 
@@ -384,8 +384,10 @@ void HandleUserCommand(int menuOption)
 	case RESUME_GAME:
 		if (gameInProgress)
 			gameIsRunning = true;
+		break;
 	case SHOW_HIDE_HUD:
 		showHud = !showHud;
+		break;
 	}
 }
 
