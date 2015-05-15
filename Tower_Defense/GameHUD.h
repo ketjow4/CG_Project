@@ -18,8 +18,8 @@ public:
 
 private:
 
-	int mouseHover = 0;
-	int textButtonHover = DO_NOTHING;
+	int mouseHover;
+	int textButtonHover;
 
 	Text *text;
 

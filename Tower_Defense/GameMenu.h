@@ -16,9 +16,9 @@ public:
 
 private:
 
-	int mouseHover = 0;
-	int textButtonHover = DO_NOTHING;
-	bool gameInProgress = false;
+	int mouseHover;
+	int textButtonHover;
+	bool gameInProgress;
 
 	Text *text;
 
@@ -26,9 +26,9 @@ private:
 	Texture *BackgroundImg;
 
 	// The text controls of the different entries.
-	const std::string NewGameText = "New Game";
-	const std::string ExitText = "Exit";
-	const std::string ResumeGameText = "Resume";
+	std::string NewGameText;// = "New Game";
+	std::string ExitText;// = "Exit";
+	std::string ResumeGameText;// = "Resume";
 
 
 	void DrawTextButtons();

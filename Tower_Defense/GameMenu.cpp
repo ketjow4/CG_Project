@@ -3,6 +3,14 @@
 
 GameMenu::GameMenu()
 {
+	mouseHover = 0;
+	textButtonHover = DO_NOTHING;
+	gameInProgress = false;
+
+	NewGameText = "New Game";
+	ExitText = "Exit";
+	ResumeGameText = "Resume";
+
 	this->text = new Text(24);
 	BackgroundImg = new Texture(GL_TEXTURE_2D, "Menu/background.bmp");
 	if (!BackgroundImg->Load())

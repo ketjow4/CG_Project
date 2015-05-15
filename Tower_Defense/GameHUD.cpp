@@ -3,6 +3,8 @@
 
 GameHUD::GameHUD()
 {
+	mouseHover = 0;
+	textButtonHover = DO_NOTHING;
 	this->text = new Text(15);
 }
 
