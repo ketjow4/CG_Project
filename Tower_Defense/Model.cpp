@@ -33,18 +33,36 @@ void MeshEntry::Init(const std::vector<Vertex>& Vertices,
     glGenBuffers(1, &IB);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * NumIndices, &Indices[0], GL_STATIC_DRAW);
+
+	
+	vector<Vertex>::const_iterator it = Vertices.begin();
+	Vector3f min(it->m_pos.x, it->m_pos.y, it->m_pos.z);
+	Vector3f max(min);
+	++it;
+	for (; it != Vertices.end(); ++it)
+	{
+		const Vector3f &p = it->m_pos;
+		if (p.x < min.x) min.x = p.x;
+		else if (p.x > max.x) max.x = p.x;
+		if (p.y < min.y) min.y = p.y;
+		else if (p.y > max.y) max.y = p.y;
+		if (p.z < min.z) min.z = p.z;
+		else if (p.z > max.z) max.z = p.z;
+	}
+	Vector3f c(0, 0, 0);//c((max.x + min.x) / 2.f, min.y, (max.z + min.z) / 2.f);
+	float h = max.y - min.y;
+	float r = std::max(max.x - min.x, max.z - min.z);
+	delete boundingCylinder;
+	boundingCylinder = new BoundingCylinder(c, h, r);
 }
 
 Mesh::Mesh()
-{
-}
-
+{}
 
 Mesh::~Mesh()
 {
     Clear();
 }
-
 
 void Mesh::Clear()
 {

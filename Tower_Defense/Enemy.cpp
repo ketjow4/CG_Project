@@ -47,12 +47,12 @@ void Enemy::UpdatePosition(Pipeline *p)
 }
 
 
-Vector3f Enemy::GetPosition()
+const Vector3f& Enemy::GetPosition() const
 {
 	return position;
 }
 
-Vector3f Enemy::GetFuturePosition(int steps)
+Vector3f Enemy::GetFuturePosition(int steps) const
 {
 	int futurePathIndex = min(pathIndex + steps, (int)path->pathPoints.size() - 1);
 	float x = path->pathPoints[futurePathIndex].first;

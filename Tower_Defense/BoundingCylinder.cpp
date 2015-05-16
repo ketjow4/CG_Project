@@ -13,7 +13,7 @@ void BoundingCylinder::SetTrans(const Vector3f &trans)
 	c = cNoTrans + trans;
 }
 
-bool BoundingCylinder::SphereCollision(const Vector3f &s, float s_r)
+bool BoundingCylinder::SphereCollision(const Vector3f &s, float s_r) const
 {
 	float xzDistSquared = pow(s.x-c.x, 2.f) + pow(s.z-c.z, 2.f);
 	float s_rr = s.x * s.x;

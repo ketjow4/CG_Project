@@ -18,27 +18,23 @@
 class Enemy
 {
 public:
-	Enemy();
-	~Enemy();
-
 	Vector3f position;
 	BasicLightingTechnique* light;
 	Path* path;
 	Terrain* terrain;
+	Mesh *model;
 	int pathIndex;
 	double HP;
 	double Attack;
 	int effectId;
 
+	Enemy();
+	~Enemy();
 	void LoadModel(int id);
-
 	void UpdatePosition(Pipeline *p);
-
-	Vector3f GetPosition();
-	Vector3f GetFuturePosition(int steps);
-
+	const Vector3f& GetPosition() const;
+	Vector3f GetFuturePosition(int steps) const;
 private:
-	Mesh *model;
 	const static float EffectIntensity[2];
 	const static Vector4f EffectColor[2];
 };
