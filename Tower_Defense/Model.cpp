@@ -51,9 +51,9 @@ void MeshEntry::Init(const std::vector<Vertex>& Vertices,
 	}
 	Vector3f c(0, 0, 0);//c((max.x + min.x) / 2.f, min.y, (max.z + min.z) / 2.f);
 	float h = max.y - min.y;
-	float r = std::max(max.x - min.x, max.z - min.z);
+	float r = std::max(max.x - min.x, max.z - min.z) / 2.f;
 	delete boundingCylinder;
-	boundingCylinder = new BoundingCylinder(c, h, r);
+	boundingCylinder = new BoundingCylinder(c, h*0.3f, r*0.3f);
 }
 
 Mesh::Mesh()
