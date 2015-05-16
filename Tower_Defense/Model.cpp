@@ -3,12 +3,8 @@
 
 
 MeshEntry::MeshEntry()
-{
-    VB = INVALID_OGL_VALUE;
-    IB = INVALID_OGL_VALUE;
-    NumIndices  = 0;
-    MaterialIndex = INVALID_MATERIAL;
-};
+	: VB(INVALID_OGL_VALUE), IB(INVALID_OGL_VALUE), NumIndices(0), MaterialIndex(INVALID_MATERIAL), boundingCylinder(0)
+{}
 
 MeshEntry::~MeshEntry()
 {
@@ -21,6 +17,8 @@ MeshEntry::~MeshEntry()
     {
         glDeleteBuffers(1, &IB);
     }
+
+	delete boundingCylinder;
 }
 
 void MeshEntry::Init(const std::vector<Vertex>& Vertices,

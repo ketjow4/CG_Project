@@ -28,6 +28,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="GameHUD.cpp" />
     <ClCompile Include="GameMenu.cpp" />
+    <ClCompile Include="BoundingCylinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -60,5 +61,6 @@
     <ClInclude Include="GameConstsDefinitions.h" />
     <ClInclude Include="GameHUD.h" />
     <ClInclude Include="GameMenu.h" />
+    <ClInclude Include="BoundingCylinder.h" />
   </ItemGroup>
 </Project>
