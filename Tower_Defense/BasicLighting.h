@@ -68,10 +68,11 @@ public:
     void SetMatSpecularPower(float Power);		//TODO change in future to get power from model material
 	void SetPointLights(unsigned int NumLights, const PointLight* pLights);
 
-
+	void SetModelViewMatrix(const Matrix4f& modelViewMatrix);
 private:
 
     GLuint m_WVPLocation;
+	GLuint m_ModelViewMatrixLocation;
     GLuint m_samplerLocation;
     GLuint m_WorldMatrixLocation;
 	GLuint m_eyeWorldPosLocation;

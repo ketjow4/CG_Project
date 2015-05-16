@@ -4,7 +4,8 @@ const int MAX_POINT_LIGHTS = 10;
 
 in vec2 TexCoord0;
 in vec3 Normal0;     
-in vec3 WorldPos0;                                                                 
+in vec3 WorldPos0;    
+in float fogFactor;                                                             
                                                                                     
 out vec4 FragColor;                                                                 
                                                                                     
@@ -92,11 +93,20 @@ void main()
     vec3 Normal = normalize(Normal0);                                                       
     vec4 TotalLight = CalcDirectionalLight(Normal);                                         
 
-    for (int i = 0 ; i < gNumPointLights ; i++) {                                           
+    for (int i = 0 ; i < gNumPointLights ; i++)
+    {                                           
         TotalLight += CalcPointLight(i, Normal);                                            
     }                                                                                                                                        
-	FragColor = texture2D(gSampler, TexCoord0.xy) * TotalLight; 
-	
+	 
+    vec4 finalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight; 
+    vec4 fogColor;
+    fogColor.x = 0.5;
+    fogColor.y = 0.5;
+    fogColor.z = 0.5;
+    fogColor.w = 1;
+    FragColor = mix(finalColor, fogColor, fogFactor);
+    //FragColor = finalColor;
+    
     //FragColor = texture2D(gSampler, TexCoord0.xy) *
 	//min(AmbientColor + DiffuseColor + SpecularColor,1);
 }
