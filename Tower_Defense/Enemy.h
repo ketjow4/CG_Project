@@ -28,6 +28,7 @@ public:
 	int pathIndex;
 	double HP;
 	double Attack;
+	int effectId;
 
 	void LoadModel(int id);
 
@@ -38,6 +39,8 @@ public:
 
 private:
 	Mesh *model;
+	const static float EffectIntensity[2];
+	const static Vector4f EffectColor[2];
 };
 
 #endif

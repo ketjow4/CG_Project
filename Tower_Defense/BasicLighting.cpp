@@ -44,6 +44,8 @@ bool BasicLightingTechnique::Init()
     m_matSpecularIntensityLocation = GetUniformLocation("gMatSpecularIntensity");
     m_matSpecularPowerLocation = GetUniformLocation("gSpecularPower");
     m_numPointLightsLocation = GetUniformLocation("gNumPointLights");
+	m_colorEffect.Color = GetUniformLocation("gColorEffect.Color");
+	m_colorEffect.EffectIntensity = GetUniformLocation("gColorEffect.EffectIntensity");
 
 	 for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_pointLightsLocation) ; i++) 
 	 {
@@ -128,4 +130,14 @@ void BasicLightingTechnique::SetPointLights(unsigned int NumLights, const PointL
         glUniform1f(m_pointLightsLocation[i].Atten.Linear, pLights[i].Attenuation.Linear);
         glUniform1f(m_pointLightsLocation[i].Atten.Exp, pLights[i].Attenuation.Exp);
     }
+}
+
+void BasicLightingTechnique::SetColorEffect(const Vector4f& color)
+{
+	glUniform4f(m_colorEffect.Color, color.x, color.y, color.z, color.w);
+}
+
+void BasicLightingTechnique::SetColorEffectIntensity(float intensity)
+{
+	glUniform1f(m_colorEffect.EffectIntensity, intensity);
 }
