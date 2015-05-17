@@ -28,7 +28,11 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="GameHUD.cpp" />
     <ClCompile Include="GameMenu.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="Drawing2D.cpp" />
+=======
+    <ClCompile Include="BoundingCylinder.cpp" />
+>>>>>>> origin/master
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -61,6 +65,10 @@
     <ClInclude Include="GameConstsDefinitions.h" />
     <ClInclude Include="GameHUD.h" />
     <ClInclude Include="GameMenu.h" />
+<<<<<<< HEAD
     <ClInclude Include="Drawing2D.h" />
+=======
+    <ClInclude Include="BoundingCylinder.h" />
+>>>>>>> origin/master
   </ItemGroup>
 </Project>

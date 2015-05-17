@@ -217,7 +217,6 @@ void NewGame()
 		lvl->towerList[i]->UpdateMissiles(&p, lvl->currentWave->enemyList);
 		lvl->towerList[i]->Reload();
 	}
-
 	lvl->AdvanceToNextWave();
 
 	//----- end 3D drawing 

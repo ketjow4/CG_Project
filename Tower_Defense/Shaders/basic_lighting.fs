@@ -7,6 +7,12 @@ in vec3 Normal0;
 in vec3 WorldPos0;                                                                 
                                                                                     
 out vec4 FragColor;                                                                 
+                    
+struct ColorEffect
+{
+    vec4 Color;
+    float EffectIntensity;
+};
                                                                                     
 struct BaseLight                                                                    
 {                                                                                   
@@ -41,7 +47,9 @@ uniform PointLight gPointLights[MAX_POINT_LIGHTS];
 uniform sampler2D gSampler;   
 uniform vec3 gEyeWorldPos;                                                          
 uniform float gMatSpecularIntensity;                                                
-uniform float gSpecularPower;                                                       
+uniform float gSpecularPower;  
+
+uniform ColorEffect gColorEffect;                                                     
 
 
 vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal)                   
@@ -95,8 +103,6 @@ void main()
     for (int i = 0 ; i < gNumPointLights ; i++) {                                           
         TotalLight += CalcPointLight(i, Normal);                                            
     }                                                                                                                                        
-	FragColor = texture2D(gSampler, TexCoord0.xy) * TotalLight; 
-	
-    //FragColor = texture2D(gSampler, TexCoord0.xy) *
-	//min(AmbientColor + DiffuseColor + SpecularColor,1);
+    vec4 finalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight; 
+	FragColor = mix(finalColor, gColorEffect.Color, gColorEffect.EffectIntensity);
 }

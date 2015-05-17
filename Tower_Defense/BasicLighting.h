@@ -68,7 +68,8 @@ public:
     void SetMatSpecularPower(float Power);		//TODO change in future to get power from model material
 	void SetPointLights(unsigned int NumLights, const PointLight* pLights);
 
-
+	void SetColorEffect(const Vector4f& color);
+	void SetColorEffectIntensity(float intensity);
 private:
 
     GLuint m_WVPLocation;
@@ -78,7 +79,12 @@ private:
     GLuint m_matSpecularIntensityLocation;
     GLuint m_matSpecularPowerLocation;
 	GLuint m_numPointLightsLocation;
-    
+	
+	struct {
+		GLuint Color;
+		GLuint EffectIntensity;
+	} m_colorEffect;
+
 	struct {
         GLuint Color;
         GLuint AmbientIntensity;

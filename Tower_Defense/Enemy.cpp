@@ -1,5 +1,8 @@
 #include "Enemy.h"
 
+const float Enemy::EffectIntensity[2] = { 0.f, 0.4f };
+const Vector4f Enemy::EffectColor[2] = { Vector4f(1.f, 1.f, 1.f, 1.f), Vector4f(0.2f, 1.f, 0.f, 1.f) };
+
 Enemy::Enemy()
 	: pathIndex(0), HP(100), Attack(1)
 {}
@@ -28,8 +31,13 @@ void Enemy::UpdatePosition(Pipeline *p)
 	p->WorldPos(x,y+1.0,z);
 	position = Vector3f(x, y + 1, z);
 
+	effectId = HP < 50 ? 1 : 0;		// TMP effect change
+
 	light->SetWVP(p->GetWVPTrans());
+	light->SetColorEffect(EffectColor[effectId]);
+	light->SetColorEffectIntensity(EffectIntensity[effectId]);
 	model->Render();
+	light->SetColorEffectIntensity(0.f);
 
 	if (++pathIndex >= path->pathPoints.size() - 1)				//object arrived at end point		-- for now return to start 
 	{
@@ -39,12 +47,12 @@ void Enemy::UpdatePosition(Pipeline *p)
 }
 
 
-Vector3f Enemy::GetPosition()
+const Vector3f& Enemy::GetPosition() const
 {
 	return position;
 }
 
-Vector3f Enemy::GetFuturePosition(int steps)
+Vector3f Enemy::GetFuturePosition(int steps) const
 {
 	int futurePathIndex = min(pathIndex + steps, (int)path->pathPoints.size() - 1);
 	float x = path->pathPoints[futurePathIndex].first;

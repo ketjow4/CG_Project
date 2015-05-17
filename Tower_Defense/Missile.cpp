@@ -16,7 +16,16 @@ void Missile::UpdateMissile()
 bool Missile::Collide(Enemy *enemy) const
 {
 	Vector3f enemyPos = enemy->GetPosition();
-	if (sqrt
+	auto it = enemy->model->m_Entries.begin();
+	for (; it != enemy->model->m_Entries.end(); ++it)
+	{
+		it->boundingCylinder->SetTrans(enemyPos);
+		if (it->boundingCylinder->SphereCollision(pos, 10.f))
+			return true;
+	}
+	return false;
+
+	/*if (sqrt
 		(
 			pow(enemyPos.x - pos.x, 2.0) +
 			pow(enemyPos.y - pos.y, 2.0) +
@@ -25,7 +34,7 @@ bool Missile::Collide(Enemy *enemy) const
 	{
 		return true;
 	}
-	return false;
+	return false;*/
 }
 
 bool Missile::Collide(Terrain *terrain) const

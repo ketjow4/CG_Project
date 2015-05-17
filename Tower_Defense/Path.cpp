@@ -26,8 +26,7 @@ void Path::Init(char *filename)
 Vector3f Path::GetRotation(const Vector3f &currentPos, int nextPathPointIndex) const
 {
 	Vector3f rotation(0.f, 0.f, 0.f);
-	const int dIndexForRotY = 25;
-	const float maxRotXValue = 30.f;
+	const int dIndexForRotY = 15;
 	const float radToDeg = 180.0 / 3.141592;
 
 	float targetX = pathPoints[std::min(nextPathPointIndex + dIndexForRotY, (int)pathPoints.size() - 1)].first;

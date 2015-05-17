@@ -23,6 +23,7 @@
 #include "math_3d.h"
 #include "texture.h"
 #include "Renderable.h"
+#include "BoundingCylinder.h"
 
 
 struct Vertex
@@ -43,42 +44,37 @@ struct Vertex
 
  struct MeshEntry
  {
-        MeshEntry();
-        ~MeshEntry();
+    MeshEntry();
+    ~MeshEntry();
 
-        void Init(const std::vector<Vertex>& Vertices,
-                  const std::vector<unsigned int>& Indices);
+    void Init(const std::vector<Vertex>& Vertices,
+                const std::vector<unsigned int>& Indices);
 
-        GLuint VB;
-        GLuint IB;
-        unsigned int NumIndices;
-        unsigned int MaterialIndex;
-    };
+    GLuint VB;
+    GLuint IB;
+    unsigned int NumIndices;
+    unsigned int MaterialIndex;
+	BoundingCylinder *boundingCylinder;
+};
 
 
 class Mesh : public Renderable
 {
 public:
-    Mesh();
+	std::vector<MeshEntry> m_Entries;
+	std::vector<Texture*> m_Textures;
 
+	Mesh();
     ~Mesh();
-
     bool LoadMesh(const std::string& Filename);
-
     void Render();
-
-public:
+private:
     bool InitFromScene(const aiScene* pScene, const std::string& Filename);
     void InitMesh(unsigned int Index, const aiMesh* paiMesh);
     bool InitMaterials(const aiScene* pScene, const std::string& Filename);
     void Clear();
 
 #define INVALID_MATERIAL 0xFFFFFFFF
-
-   
-
-    std::vector<MeshEntry> m_Entries;
-    std::vector<Texture*> m_Textures;
 };
 
 
