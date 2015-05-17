@@ -100,6 +100,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Drawing2D.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameHUD.cpp" />
@@ -129,6 +130,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Drawing2D.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameConstsDefinitions.h" />

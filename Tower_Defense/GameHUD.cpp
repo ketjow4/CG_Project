@@ -16,18 +16,17 @@ GameHUD::~GameHUD()
 void GameHUD::Draw(const int &enemiesLeft)
 {
 	// ---- 2D drawing on screen eg. menu text etc.
-	//glDepthMask(GL_FALSE);  // disable writes to Z-Buffer
-	//glDisable(GL_DEPTH_TEST);  // disable depth-testing
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+
+	//just draw here like in game menu
+	////draw2D.Enable();
+
+	////draw2D.RenderQuad(0,0,640,480,1,BackgroundImg);				//drawing quad with texture texture must be loaded succesful before
+
+	////draw2D.RenderQuad(250,340,150,40,0,NULL, Vector3f(0.2,1.0,0.0));	//draw regular quad in one color 
+
 
 	this->DrawGameInfo(enemiesLeft);
 	this->DrawTextButtons();
-
-	//glDisable(GL_BLEND);
-	//glEnable(GL_DEPTH_TEST);
-	//glDepthMask(GL_TRUE);
-	//end of 2D drawing
 }
 
 void GameHUD::DrawGameInfo(const int &enemiesLeft)

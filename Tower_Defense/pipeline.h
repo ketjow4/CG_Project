@@ -94,6 +94,7 @@ public:
     const Matrix4f& GetVPTrans();
     const Matrix4f& GetWVPTrans();
     const Matrix4f& GetWorldTrans();
+	//const Matrix4f& GetOrthographicTrans();
 
 private:
     Vector3f m_scale;

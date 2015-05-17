@@ -4,6 +4,8 @@
 #include "texture.h"
 #include "GameConstsDefinitions.h"
 
+#include "Drawing2D.h"
+
 class GameMenu
 {
 public:
@@ -21,6 +23,8 @@ private:
 	bool gameInProgress;
 
 	Text *text;
+
+	Drawing2D draw2D;
 
 	// Background
 	Texture *BackgroundImg;

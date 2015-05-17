@@ -3,6 +3,8 @@
 
 GameMenu::GameMenu()
 {
+	draw2D.Init();
+
 	mouseHover = 0;
 	textButtonHover = DO_NOTHING;
 	gameInProgress = false;
@@ -12,7 +14,7 @@ GameMenu::GameMenu()
 	ResumeGameText = "Resume";
 
 	this->text = new Text(24);
-	BackgroundImg = new Texture(GL_TEXTURE_2D, "Menu/background.bmp");
+	BackgroundImg = new Texture(GL_TEXTURE_2D, "menu.jpg");
 	if (!BackgroundImg->Load())
 	{
 		std::cout << "Error. Can not load menu background image" << std::endl;
@@ -25,30 +27,28 @@ void GameMenu::Draw(bool _gameInProgress)
 
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	// przygotowane pod teksture
-	//glBegin(GL_QUADS);
-	//
-	////glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	////glEnable(GL_COLOR_MATERIAL);
-	//glColor3f(1.0, 0.0, 0.0);
-	//glVertex2f(0.0, 0.0);
-	//glVertex2f(640.0, 0.0);
-	//glVertex2f(640.0, 480.0);
-	//glVertex2f(0.0, 480.0);
-	//glEnd();
-	//glFlush();
-
+	//don't change anything below this
 	glDepthMask(GL_FALSE);  // disable writes to Z-Buffer
 	glDisable(GL_DEPTH_TEST);  // disable depth-testing
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+	//don't change anything above this
+
+
+	draw2D.Enable();
+
+	draw2D.RenderQuad(0,0,640,480,1,BackgroundImg);				//drawing quad with texture texture must be loaded succesful before
+
+	draw2D.RenderQuad(250,340,150,40,0,NULL, Vector3f(0.2,1.0,0.0));	//draw regular quad in one color 
+
+	text->Enable();
 	this->DrawTextButtons();
 
+	//don't change anything below this
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
-
+	//don't change anything above this
 }
 
 void GameMenu::DrawTextButtons()

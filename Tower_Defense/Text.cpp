@@ -132,7 +132,7 @@ Text::Text(int fontSize)
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
 
-	 glGenVertexArrays(1, &VAO);
+	glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);

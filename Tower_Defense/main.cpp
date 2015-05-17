@@ -90,6 +90,20 @@ void initGL()
 
 void NewGame()
 {
+	m_frameCount++;
+
+	long long time = GetCurrentTimeMillis();
+
+	if (time - m_frameTime >= 1000) {
+		m_frameTime = time;
+		m_fps = m_frameCount;
+		m_frameCount = 0;
+	}
+
+	cam.UpdateCamera();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+	light->Enable();
+
 	m_scale += 0.057;
 	PointLight pl[2];
 	for (int i = 0; i < 2; i++)
@@ -108,7 +122,7 @@ void NewGame()
 	pers.Width = 640;
 	pers.zFar = 1000.0f;
 	pers.zNear = 0.1f;
-	Pipeline p;
+	Pipeline p;				//important
 	//p.Scale(0.1f, 0.1f, 0.1f);
 	p.Rotate(0.0f, 90.0f, 0.0f);
 	p.WorldPos(0.0f, 0.0f, 1.0f);
@@ -210,18 +224,14 @@ void NewGame()
 
 	// ---- 2D drawing on screen eg. menu text etc.
 
-	glDepthMask(GL_FALSE);  // disable writes to Z-Buffer
+	glDepthMask(GL_FALSE);  // disable writes to Z-Buffer				//-------------------do not copy this function calls if you want to draw in 2D do this
 	glDisable(GL_DEPTH_TEST);  // disable depth-testing
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);																						//after this
 
 	if (showHud)
 		hud->Draw(lvl->currentWave->enemyList->size());
 
-	//text->RenderText("Tower Defense alpha 0.1",10,10,1,glm::vec3(1,1,1));
-	//text->RenderText("lives: " + to_string(Player::getPlayer().lives), 10, 460, 1, glm::vec3(1, 1, 1));
-	//text->RenderText("Money: " + to_string(Player::getPlayer().money), 10, 440, 1, glm::vec3(1, 1, 1));
-	//text->RenderText("Enemies: " + to_string(lvl->currentWave->enemyList->size()), 500, 460, 1, glm::vec3(1, 1, 1));
 
 	if (Player::getPlayer().lives == 0)
 	{
@@ -235,7 +245,7 @@ void NewGame()
 
 	text->RenderText(displayedText, 10, 10, 1, glm::vec3(1, 1, 1));
 
-	glDisable(GL_BLEND);
+	glDisable(GL_BLEND);																															//before this
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
 
@@ -244,19 +254,6 @@ void NewGame()
 // funkcja generuj¹ca scenê 3D
 void Display()
 {
-	m_frameCount++;
-
-	long long time = GetCurrentTimeMillis();
-
-	if (time - m_frameTime >= 1000) {
-		m_frameTime = time;
-		m_fps = m_frameCount;
-		m_frameCount = 0;
-	}
-
-	cam.UpdateCamera();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-	light->Enable();
 	//start of 3d Drawing
 
 	if (gameIsRunning)
@@ -270,7 +267,7 @@ void Display()
 	// ---- 2D drawing menu 
 	else
 	{
-		menu->Draw(gameInProgress);
+		menu->Draw(gameInProgress);				
 	}
 	//end of 2D drawing
 
