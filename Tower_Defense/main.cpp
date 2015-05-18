@@ -1,31 +1,24 @@
+#include <Windows.h>
 #include <iostream>
-
+#include <sstream>
 
 #include "Tower.h"
 #include "Camera.h"
-//#include "Wave.h"
 #include "Text.h"
-
 #include "Player.h"
 #include "GameMenu.h"
 #include "GameHUD.h"
 #include "Player.h"
 #include "GameConstsDefinitions.h"
-
 #include "Mouse.h"
 #include "PickingTexture.h"
 #include "PickingTechnique.h"
-#include <sstream>
-
 #include "Level.h"
 
-/*Global variables -- temporary*/
-int refreshMills = 30;        // refresh interval in milliseconds
-
+int refreshMills = 30;
 long long m_frameTime;
 int m_frameCount;
 int m_fps;
-
 
 Camera cam;
 
@@ -36,25 +29,19 @@ SkinningTechnique* m_pEffect;
 PickingTexture* m_pickingTexture;
 PickingTechnique* m_pickingEffect;
 
-
 DirectionalLight m_directionalLight;
 
 Text* text;
-
-//vector<Tower*> towerList;
-
 
 Level* lvl;
 Level* lvl2;
 
 Mouse mouse;
-
-
 string displayedText = "Tower Defense alpha 0.2";
 
 float m_scale = 0;
-	static const float FieldDepth = 400.0f;
-	static const float FieldWidth = 400.0f;
+static const float FieldDepth = 400.0f;
+static const float FieldWidth = 400.0f;
 
 bool gameIsRunning = false;
 bool gameInProgress = false;
@@ -64,7 +51,7 @@ GameMenu *menu;
 GameHUD *hud;
 
 
-void initGL() 
+void InitGL() 
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
 	glClearDepth(1.0f);									// Set background depth to farthest
@@ -88,7 +75,7 @@ void initGL()
 
 }
 
-void NewGame()
+void GameProgress()
 {
 	m_frameCount++;
 
@@ -250,29 +237,25 @@ void NewGame()
 
 }
 
-// funkcja generuj¹ca scenê 3D
 void Display()
 {
-	//start of 3d Drawing
-
 	if (gameIsRunning)
 	{
 		gameInProgress = true;
-		NewGame();
+		GameProgress();
+		glutSwapBuffers();
+		if (Player::lives <= 0)
+		{
+			Sleep(2500);
+			gameIsRunning = false;
+			gameInProgress = false;
+		}
 	}
-
-	//----- end 3D drawing 
-
-	// ---- 2D drawing menu 
 	else
 	{
 		menu->Draw(gameInProgress);				
+		glutSwapBuffers();
 	}
-	//end of 2D drawing
-
-	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
-
-
 	//cout << glGetError() << endl;
 }
 
@@ -297,7 +280,8 @@ void Reshape( int width, int height )
 }
 
 
-void timer(int value) {
+void timer(int value) 
+{
 	glutPostRedisplay();					// Post re-paint request to activate display()
 	glutTimerFunc(refreshMills, timer, 0);	// next timer call milliseconds later
 }
@@ -326,38 +310,39 @@ void Keyboard( unsigned char key, int x, int y )
 	Reshape( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
 }
 
-//Dzia³a nie tykaæ
 void SpecialKeys( int key, int x, int y )
 {
-	double movementSpeed = 10.0;
+	const double movementSpeed = 10.0;
 
 	switch( key )
 	{
-		// kursor w lewo
 	case GLUT_KEY_LEFT:
 		cam.MoveLeft(movementSpeed);
 		break;
-		// kursor w górê
 	case GLUT_KEY_UP:
 		cam.MoveForward(movementSpeed);
 		break;
-		// kursor w prawo
 	case GLUT_KEY_RIGHT:
 		cam.MoveRight(movementSpeed);
 		break;
-		// kursor w dó³
 	case GLUT_KEY_DOWN:
 		cam.MoveBackward(movementSpeed);
 		break;
 	}
 	// odrysowanie okna
-	Reshape( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
+	//Reshape( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
+}
+
+void PrepareNewGame()
+{
+	Player::getPlayer().Init(1, 100);
+	lvl = new Level();
+	lvl->LoadFromFile("Levels/level.txt");
 }
 
 void ResetGame()
 {
-	//need implementation
-	std::cout << "NEED IMPLEMENTATION FUNCTION ResetGame in main.cpp" << std::endl;
+	PrepareNewGame();
 }
 
 void HandleUserCommand(int menuOption)
@@ -366,8 +351,7 @@ void HandleUserCommand(int menuOption)
 	{
 	case NEW_GAME:
 		gameIsRunning = true;
-		if (gameInProgress)
-			ResetGame();
+		ResetGame();
 		break;
 	case END_GAME:
 		std::cout << "end of game" << std::endl;
@@ -394,13 +378,9 @@ void MouseFunc(int button, int state, int x, int y)
 	{
 		mouse.MouseLeftClick(x, y);
 		if (gameIsRunning)
-		{
-			result = hud->CheckWhereMouseClickedAndReact(x, y);
-		}
+			result = hud->CheckWhereMouseClickedAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
 		else
-		{
-			result = menu->CheckWhereMouseClickedAndReact(x, y);
-		}
+			result = menu->CheckWhereMouseClickedAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
 	}
 	else if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP)
 	{
@@ -418,14 +398,11 @@ void MotionFunc(int x, int y)
 
 void PassiveMotionFunc(int x, int y)
 {
+	mouse.MouseMove(x, y);
 	if (gameIsRunning)
-	{
-		hud->CheckMouseMoveAndReact(x, y);
-	}
+		hud->CheckMouseMoveAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
 	else
-	{
-		menu->CheckMouseMoveAndReact(x, y);
-	}
+		menu->CheckMouseMoveAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
 }
 
 
@@ -460,8 +437,7 @@ int main( int argc, char * argv[] )
 	glutMouseFunc(MouseFunc);
 	glutMotionFunc(MotionFunc);
 	glutPassiveMotionFunc(PassiveMotionFunc);
-	initGL(); 
-
+	InitGL();
 	glewInit();
 
 	menu = new GameMenu();
@@ -471,7 +447,6 @@ int main( int argc, char * argv[] )
 	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
 
-
 	light = Engine::getEngine().getLight();
 	m_pEffect = Engine::getEngine().getEffect();
 	m_pickingTexture = Engine::getEngine().getpickingTexture();
@@ -479,29 +454,21 @@ int main( int argc, char * argv[] )
 
 	light->Enable();
 
-	testObject = new Mesh();
-	if (testObject->LoadMesh("Models/phoenix_ugv.md2"))
-	{
-		cout << "Test object loaded successful " << endl;
-	}
-
-	lvl = new Level();
-	lvl->LoadFromFile("Levels/level.txt");
-
 	text = new Text(24);
 
 	glutTimerFunc(0, timer, 0);
 
-	Player::getPlayer().Init(5,100);
-	
+	PrepareNewGame();
+	Player::lives = 0;
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
-	try{
+	try
+	{
 		glutMainLoop();
 	}
 	catch (const char *msg)
 	{
-		std::cout << "Game terminated";
+		std::cout << "Game terminated\n";
 	}
 
 	delete text;

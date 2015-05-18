@@ -53,36 +53,32 @@ void GameMenu::Draw(bool _gameInProgress)
 
 void GameMenu::DrawTextButtons()
 {
-	switch (mouseHover)
+	if (mouseHover)
 	{
-		case 1:
-			switch (textButtonHover)
-			{
-			case NEW_GAME:
-				this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0.4f, 0.4f, 0.4f));
-				this->DrawResumeGameTextButton();
-				this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0, 0, 0));
-				//this->text->RenderText("", 0, 0, 1, glm::vec3(0.1f, 0.8f, 0.1f));
-				break;
-			case END_GAME:
-				this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0, 0, 0));
-				this->DrawResumeGameTextButton();
-				this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0.4f, 0.4f, 0.4f));
-				//this->text->RenderText("", 0, 0, 1, glm::vec3(0.1f, 0.8f, 0.1f));
-				break;
-			case RESUME_GAME:
-				this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0, 0, 0));
-				this->DrawResumeGameTextButton();
-				this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0, 0, 0));
-				//this->text->RenderText("", 0, 0, 1, glm::vec3(0.1f, 0.8f, 0.1f));
-				break;
-			}
+		switch (textButtonHover)
+		{
+		case NEW_GAME:
+			this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0.4f, 0.4f, 0.4f));
+			this->DrawResumeGameTextButton();
+			this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0, 0, 0));
 			break;
-		case 0:
+		case END_GAME:
+			this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0, 0, 0));
+			this->DrawResumeGameTextButton();
+			this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0.4f, 0.4f, 0.4f));
+			break;
+		case RESUME_GAME:
 			this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0, 0, 0));
 			this->DrawResumeGameTextButton();
 			this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0, 0, 0));
-			//this->text->RenderText("", 0, 0, 1, glm::vec3(0.1f, 0.8f, 0.1f));	
+			break;
+		}
+	}
+	else
+	{
+		this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0, 0, 0));
+		this->DrawResumeGameTextButton();
+		this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0, 0, 0));
 	}
 }
 
@@ -101,17 +97,17 @@ void GameMenu::DrawResumeGameTextButton()
 
 void GameMenu::CheckMouseMoveAndReact(int x, int y)
 {
-	if ((x > 261) && (x < 362) && (y>112) && (y < 128))
+	if ((x > 261) && (x < 362) && (y > 112) && (y < 128))
 	{
 		this->mouseHover = 1;
 		this->textButtonHover = NEW_GAME;
 	}
-	else if ((x > 273) && (x < 361) && (y>162) && (y < 179))
+	else if ((x > 273) && (x < 361) && (y > 162) && (y < 179))
 	{
 		this->mouseHover = 1;
 		this->textButtonHover = RESUME_GAME;
 	}
-	else if ((x > 294) && (x < 332) && (y>212) && (y < 228))
+	else if ((x > 294) && (x < 332) && (y > 212) && (y < 228))
 	{
 		this->mouseHover = 1;
 		this->textButtonHover = END_GAME;
