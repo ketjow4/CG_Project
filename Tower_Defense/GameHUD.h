@@ -5,6 +5,8 @@
 #include "GameConstsDefinitions.h"
 #include "Player.h"
 
+#include "Drawing2D.h"
+
 class GameHUD
 {
 public:
@@ -20,6 +22,8 @@ private:
 
 	int mouseHover;
 	int textButtonHover;
+	Drawing2D draw2d;
+	Texture *MoneyImgBack;
 
 	Text *text;
 
