@@ -7,8 +7,8 @@ GameHUD::GameHUD()
 	textButtonHover = DO_NOTHING;
 	this->text = new Text(17);
 	draw2d.Init();
-	MoneyImgBack = new Texture(GL_TEXTURE_2D, "Menu/hud_back.jpg");
-	if (!MoneyImgBack->Load())
+	BackgroundImg = new Texture(GL_TEXTURE_2D, "Menu/hud_back.jpg");
+	if (!BackgroundImg->Load())
 	{
 		std::cout << "Error. Can not load menu background image" << std::endl;
 	}
@@ -38,7 +38,7 @@ void GameHUD::DrawGameInfo(const int &enemiesLeft)
 {
 	//text->RenderText("Tower Defense, version ALPHA", 10, 10, 1, glm::vec3(0, 1, 0));
 	draw2d.Enable();
-	draw2d.RenderQuad(0, 454, 640, 26, 1, MoneyImgBack);
+	draw2d.RenderQuad(0, 454, 640, 26, 1, BackgroundImg);
 	text->RenderText("LIVES: " + std::to_string(Player::getPlayer().lives), 10, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
 	text->RenderText("ENEMIES: " + std::to_string(enemiesLeft), 110, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
 	text->RenderText("MONEY: " + std::to_string(Player::getPlayer().money) + " $", 250, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));

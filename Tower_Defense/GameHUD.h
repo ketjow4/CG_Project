@@ -23,7 +23,6 @@ private:
 	int mouseHover;
 	int textButtonHover;
 	Drawing2D draw2d;
-	Texture *MoneyImgBack;
 
 	Text *text;
 
