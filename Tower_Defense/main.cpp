@@ -76,7 +76,7 @@ void initGL()
 
 	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
 	m_directionalLight.AmbientIntensity = 0.4f;				//sila swiatla globalnego
-	m_directionalLight.DiffuseIntensity = 0.4f;
+	m_directionalLight.DiffuseIntensity = 0.1f;
 	m_directionalLight.Direction = Vector3f(1.0f, 1.0, 1.0).Normalize();
 
 	cam.eyey = 200;//100;
@@ -115,6 +115,18 @@ void NewGame()
 		pl[i].Attenuation.Linear = 0.05f;
 	}
 	light->SetPointLights(2, pl);
+
+
+	SpotLight sl[1];
+		sl[0].AmbientIntensity = 0.8;
+        sl[0].DiffuseIntensity = 0.9f;
+        sl[0].Color = Vector3f(1.0f, 1.0f, 1.0f);
+        sl[0].Position = Vector3f(-150.0f, 50.0f, 10.0f);
+        sl[0].Direction = Vector3f(-0.5f, -1.0f, 0.5f);
+        sl[0].Attenuation.Linear = 0.001f;
+        sl[0].Cutoff = 270.0f;
+     light->SetSpotLights(1, sl);
+
 
 	PersProjInfo pers;
 	pers.FOV = 90;
