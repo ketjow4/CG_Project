@@ -57,7 +57,7 @@ void GameHUD::DrawTextButtons()
 
 void GameHUD::CheckMouseMoveAndReact(int x, int y)
 {
-	if ((x > 579) && (x < 628) && (y>458) && (y < 470))
+	if ((x > 579) && (x < 633) && (y>458) && (y < 470))
 	{
 		this->mouseHover = 1;
 		this->textButtonHover = PAUSE_GAME;
@@ -70,7 +70,7 @@ void GameHUD::CheckMouseMoveAndReact(int x, int y)
 
 int GameHUD::CheckWhereMouseClickedAndReact(int x, int y)
 {
-	if ((x > 579) && (x < 628) && (y>458) && (y < 470))
+	if ((x > 579) && (x < 633) && (y>458) && (y < 470))
 	{
 		return PAUSE_GAME;
 	}
