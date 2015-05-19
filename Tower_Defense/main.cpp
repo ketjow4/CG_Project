@@ -14,6 +14,7 @@
 #include "PickingTexture.h"
 #include "PickingTechnique.h"
 #include "Level.h"
+#include "Audio.h"
 
 int refreshMills = 30;
 long long m_frameTime;
@@ -49,6 +50,7 @@ bool showHud = true;
 
 GameMenu *menu;
 GameHUD *hud;
+Audio *audio;
 
 
 void InitGL() 
@@ -427,6 +429,8 @@ void PassiveMotionFunc(int x, int y)
 
 int main( int argc, char * argv[] )
 {
+	audio = new Audio();
+
 	Magick::InitializeMagick(*argv);
 	// inicjalizacja biblioteki GLUT
 	glutInit( & argc, argv );
@@ -479,6 +483,8 @@ int main( int argc, char * argv[] )
 
 	PrepareNewGame();
 	Player::lives = 0;
+
+	audio->Play();
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	try

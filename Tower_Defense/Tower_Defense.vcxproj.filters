@@ -30,6 +30,7 @@
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="technique.cpp" />
     <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="Audio.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingCylinder.h" />
@@ -64,5 +65,6 @@
     <ClInclude Include="technique.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="WorldObject.h" />
+    <ClInclude Include="Audio.h" />
   </ItemGroup>
 </Project>
