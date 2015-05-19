@@ -17,8 +17,9 @@ void Level::Load()
 	//terrain->Init("Models/terrain1.bmp", 0.3f);
 	terrain = TerrainsContainer::Get(1);
 
-	path = new Path();
-	path->Init("Models/path1.bmp");
+	//path = new Path();
+	//path->Init("Models/path1.bmp");
+	path = PathsContainer::Get(1);
 
 	list<Enemy*> *enList;		//remember to add destructor
 
@@ -78,8 +79,9 @@ void Level::LoadFromFile(string filename)
 		string pathFile;
 		file >> pathFile;
 		getline(file,temp);			//get rid of comment
-		path = new Path();
-		path->Init(&pathFile[0u]);
+		//path = new Path();
+		//path->Init(&pathFile[0u]);
+		path = PathsContainer::Get(1);
 
 		string waveCount;
 		file >> waveCount;

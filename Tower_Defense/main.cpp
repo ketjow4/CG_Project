@@ -346,8 +346,6 @@ void SpecialKeys( int key, int x, int y )
 		cam.MoveBackward(movementSpeed);
 		break;
 	}
-	// odrysowanie okna
-	//Reshape( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
 }
 
 void PrepareNewGame()
@@ -464,6 +462,7 @@ int main( int argc, char * argv[] )
 	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
 	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
+	PathsContainer::LoadPath(1, "Models/path1.bmp");
 
 	light = Engine::getEngine().getLight();
 	m_pEffect = Engine::getEngine().getEffect();
@@ -502,6 +501,7 @@ int main( int argc, char * argv[] )
 	delete hud;
 	ModelsContainer::FreeResources();
 	TerrainsContainer::FreeResources();
+	PathsContainer::FreeResources();
 
 	return 0;
 }

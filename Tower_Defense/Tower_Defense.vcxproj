@@ -115,6 +115,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClCompile Include="ModelsContainer.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Path.cpp" />
+    <ClCompile Include="PathsContainer.cpp" />
     <ClCompile Include="PickingTechnique.cpp" />
     <ClCompile Include="PickingTexture.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -147,6 +148,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClInclude Include="ModelsContainer.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Path.h" />
+    <ClInclude Include="PathsContainer.h" />
     <ClInclude Include="PickingTechnique.h" />
     <ClInclude Include="PickingTexture.h" />
     <ClInclude Include="Player.h" />

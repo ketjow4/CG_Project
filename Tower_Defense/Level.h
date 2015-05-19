@@ -4,6 +4,7 @@
 #include <list>
 #include "Wave.h"
 #include "TerrainsContainer.h"
+#include "PathsContainer.h"
 #include "Engine.h"
 #include "Tower.h"
 #include <iostream>

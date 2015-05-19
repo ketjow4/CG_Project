@@ -17,7 +17,7 @@ Path::~Path()
 {
 }
 
-void Path::Init(char *filename)
+void Path::Init(const string &filename)
 {
 	LoadPathMap(filename);
 	SmoothPath();
@@ -39,9 +39,9 @@ Vector3f Path::GetRotation(const Vector3f &currentPos, int nextPathPointIndex) c
 	return rotation;
 }
 
-void Path::LoadPathMap(char *filename)
+void Path::LoadPathMap(const string &filename)
 {
-	FILE *file = fopen(filename, "rb");
+	FILE *file = fopen(filename.c_str(), "rb");
 	if (!file) { printf("path file error\n"); return; }
 
 	// Get path width
