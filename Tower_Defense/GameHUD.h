@@ -35,6 +35,8 @@ private:
 	Texture *BackgroundImg;
 	Texture *FirstTowerImg;
 	Texture *FirstTowerImgHover;
+	Texture *NotAvaiTowerImg;
+	Texture *NotAvaiTowerImgHover;
 	Texture *FirstTowerImgClick;
 	Texture *GameOver;
 	Texture *YouWon;

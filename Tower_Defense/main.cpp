@@ -498,6 +498,8 @@ int main( int argc, char * argv[] )
 	delete m_pickingTexture;
 	delete m_pEffect;
 	delete light;
+	delete menu;
+	delete hud;
 	ModelsContainer::FreeResources();
 
 	return 0;

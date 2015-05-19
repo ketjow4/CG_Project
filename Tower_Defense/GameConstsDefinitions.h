@@ -10,3 +10,4 @@
 
 #define NO_SELECTION 8
 #define FIRST_TOWER 9
+#define SEC_TOWER_HOVER 10

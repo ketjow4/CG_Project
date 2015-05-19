@@ -30,6 +30,16 @@ GameHUD::GameHUD()
 	{
 		std::cout << "Error. Can not load first tower clicked image" << std::endl;
 	}
+	NotAvaiTowerImg = new Texture(GL_TEXTURE_2D, "Menu/notAvalTower.jpg");
+	if (!NotAvaiTowerImg->Load())
+	{
+		std::cout << "Error. Can not load first tower clicked image" << std::endl;
+	}
+	NotAvaiTowerImgHover = new Texture(GL_TEXTURE_2D, "Menu/notAvalTowerHover.jpg");
+	if (!NotAvaiTowerImgHover->Load())
+	{
+		std::cout << "Error. Can not load first tower clicked image" << std::endl;
+	}
 	GameOver = new Texture(GL_TEXTURE_2D, "Menu/GameOverBig.png");
 	if (!GameOver->Load())
 	{
@@ -76,13 +86,22 @@ void GameHUD::DrawTextureButtons()
 	case FIRST_TOWER_HOVER:
 		text14->RenderText("First Tower", 520, 410, 1, glm::vec3(1, 1, 1));
 		draw2d.RenderQuad(597, 395, 43, 59, 1, FirstTowerImgHover);
+		draw2d.RenderQuad(597, 336, 43, 59, 1, NotAvaiTowerImg);
+		action = DO_NOTHING;
+		break;
+	case SEC_TOWER_HOVER:
+		text14->RenderText("Not Available", 507, 350, 1, glm::vec3(1, 1, 1));
+		draw2d.RenderQuad(597, 395, 43, 59, 1, FirstTowerImg);
+		draw2d.RenderQuad(597, 336, 43, 59, 1, NotAvaiTowerImgHover);
 		action = DO_NOTHING;
 		break;
 	case FIRST_TOWER_CLICKED:
 		draw2d.RenderQuad(597, 395, 43, 59, 1, FirstTowerImgClick);
+		draw2d.RenderQuad(597, 336, 43, 59, 1, NotAvaiTowerImg);
 		break;
 	case DO_NOTHING:
 		draw2d.RenderQuad(597, 395, 43, 59, 1, FirstTowerImg);
+		draw2d.RenderQuad(597, 336, 43, 59, 1, NotAvaiTowerImg);
 	}
 }
 
@@ -112,24 +131,29 @@ void GameHUD::DrawButtons()
 		switch (buttonHover)
 		{
 		case PAUSE_GAME:
-			text->RenderText("MENU", 575, 460, 1, glm::vec3(0.6f, 0.6f, 0.6f));
+			text->RenderText("MENU", 585, 460, 1, glm::vec3(0.6f, 0.6f, 0.6f));
+			break;
+		case SEC_TOWER_HOVER:
+			text->RenderText("MENU", 585, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
+			if (action != FIRST_TOWER_CLICKED)
+				action = SEC_TOWER_HOVER;
 			break;
 		case FIRST_TOWER_HOVER:
-			text->RenderText("MENU", 575, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
+			text->RenderText("MENU", 585, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
 			if( action != FIRST_TOWER_CLICKED)
 				action = FIRST_TOWER_HOVER;
 			break;
 		}
 	}
 	else{
-		text->RenderText("MENU", 575, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
+		text->RenderText("MENU", 585, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
 	}
 	this->DrawTextureButtons();
 }
 
 void GameHUD::CheckMouseMoveAndReact(int x, int y)
 {
-	if ((x > 573) && (x < 622) && (y>8) && (y < 20))
+	if ((x > 583) && (x < 632) && (y>8) && (y < 20))
 	{
 		this->mouseHover = 1;
 		this->buttonHover = PAUSE_GAME;
@@ -139,6 +163,11 @@ void GameHUD::CheckMouseMoveAndReact(int x, int y)
 		this->mouseHover = 1;
 		this->buttonHover = FIRST_TOWER_HOVER;
 	}
+	else if ((x > 597) && (x < 640) && (y>87) && (y < 136))
+	{
+		this->mouseHover = 1;
+		this->buttonHover = SEC_TOWER_HOVER;
+	}
 	else
 	{
 		this->mouseHover = 0;
@@ -147,7 +176,7 @@ void GameHUD::CheckMouseMoveAndReact(int x, int y)
 
 int GameHUD::CheckWhereMouseClickedAndReact(int x, int y)
 {
-	if ((x > 573) && (x < 622) && (y>8) && (y < 20))
+	if ((x > 583) && (x < 632) && (y>8) && (y < 20))
 	{
 		return PAUSE_GAME;
 	}
