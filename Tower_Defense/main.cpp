@@ -22,8 +22,6 @@ int m_fps;
 
 Camera cam;
 
-Mesh* testObject; 
-
 BasicLightingTechnique* light;		//use this shaders for static objects
 SkinningTechnique* m_pEffect;
 PickingTexture* m_pickingTexture;
@@ -465,6 +463,7 @@ int main( int argc, char * argv[] )
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
 	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
+	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
 
 	light = Engine::getEngine().getLight();
 	m_pEffect = Engine::getEngine().getEffect();
@@ -495,7 +494,6 @@ int main( int argc, char * argv[] )
 	delete text;
 	for (int i = 0; i < lvl->towerList.size(); i++)
 		delete lvl->towerList[i];
-	delete testObject;
 	delete m_pickingEffect;
 	delete m_pickingTexture;
 	delete m_pEffect;
@@ -503,6 +501,7 @@ int main( int argc, char * argv[] )
 	delete menu;
 	delete hud;
 	ModelsContainer::FreeResources();
+	TerrainsContainer::FreeResources();
 
 	return 0;
 }

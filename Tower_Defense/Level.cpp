@@ -8,14 +8,14 @@ Level::~Level()
 {
 	delete currentWave;
 	delete path;
-	delete terrain;
 }
 
 //deprecated to be deleted in future
 void Level::Load()
 {
-	terrain = new Terrain();
-	terrain->Init("Models/terrain1.bmp", 0.3f);
+	//terrain = new Terrain();
+	//terrain->Init("Models/terrain1.bmp", 0.3f);
+	terrain = TerrainsContainer::Get(1);
 
 	path = new Path();
 	path->Init("Models/path1.bmp");
@@ -71,8 +71,9 @@ void Level::LoadFromFile(string filename)
 		getline(file,temp);			//get rid of comment
 		file >> terrainElevation;
 		getline(file,temp);			//get rid of comment
-		terrain = new Terrain();
-		terrain->Init(&terrainFile[0u], stod(terrainElevation));
+		//terrain = new Terrain();
+		//terrain->Init(&terrainFile[0u], stod(terrainElevation));
+		terrain = TerrainsContainer::Get(1);
 
 		string pathFile;
 		file >> pathFile;
