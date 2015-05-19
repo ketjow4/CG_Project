@@ -243,8 +243,9 @@ void GameProgress()
 	}
 	if (lvl->IsWon())
 	{
-		text->RenderText("CONGRATULATION YOU WON", 150, 240, 1, glm::vec3(0, 1, 0));		//add some function to advance to next
-		text->RenderText("Click 'n' and wait", 200, 200, 1, glm::vec3(1, 1, 1));		//add some function to advance to next
+		//text->RenderText("CONGRATULATION YOU WON", 150, 240, 1, glm::vec3(0, 1, 0));		//add some function to advance to next
+		//text->RenderText("Click 'n' and wait", 200, 200, 1, glm::vec3(1, 1, 1));		//add some function to advance to next
+		hud->DrawYouWonInfo();
 	}
 
 	text->RenderText(displayedText, 10, 10, 1, glm::vec3(1, 1, 1));

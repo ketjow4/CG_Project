@@ -35,11 +35,17 @@ GameHUD::GameHUD()
 	{
 		std::cout << "Error. Can not load game over image" << std::endl;
 	}
+	YouWon = new Texture(GL_TEXTURE_2D, "Menu/youWon.png");
+	if (!YouWon->Load())
+	{
+		std::cout << "Error. Can not load you won image" << std::endl;
+	}
 }
 
 GameHUD::~GameHUD()
 {
 	delete GameOver;
+	delete YouWon;
 	delete FirstTowerImg;
 	delete FirstTowerImgClick;
 	delete FirstTowerImgHover;
@@ -83,6 +89,11 @@ void GameHUD::DrawTextureButtons()
 void GameHUD::DrawGameOverInfo()
 {
 	draw2d.RenderQuad(0, 0, 640, 480, 1, GameOver);
+}
+
+void GameHUD::DrawYouWonInfo()
+{
+	draw2d.RenderQuad(0, 0, 640, 480, 1, YouWon);
 }
 
 void GameHUD::DrawGameInfo(const int &enemiesLeft)
