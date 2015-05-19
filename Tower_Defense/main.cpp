@@ -194,6 +194,7 @@ void GameProgress()
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
 	light->SetWVP(p.GetWVPTrans());
+	light->SetWV(p.GetWVTrans());
 	lvl->terrain->Render();
 
 	for (int i = 0; i < lvl->towerList.size(); i++)
@@ -224,7 +225,6 @@ void GameProgress()
 		lvl->towerList[i]->Reload();
 	}
 	lvl->AdvanceToNextWave();
-
 	//----- end 3D drawing 
 
 	// ---- 2D drawing on screen eg. menu text etc.
@@ -476,6 +476,8 @@ int main( int argc, char * argv[] )
 	m_pickingEffect = Engine::getEngine().getpickingEffect();
 
 	light->Enable();
+	light->SetFogColor(Vector4f(0.5f, 0.5f, 0.5f, 1.f));
+	light->SetFogDensity(0.003);
 
 	text = new Text(24);
 

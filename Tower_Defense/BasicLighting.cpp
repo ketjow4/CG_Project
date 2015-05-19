@@ -22,7 +22,6 @@ bool BasicLightingTechnique::Init()
         return false;
     }
 
-
     if (!AddShader(GL_FRAGMENT_SHADER, "Shaders/basic_lighting.fs")) 
 	{
         return false;
@@ -34,6 +33,7 @@ bool BasicLightingTechnique::Init()
     }
 
     m_WVPLocation = GetUniformLocation("gWVP");
+	m_WVLocation = GetUniformLocation("gWV");
     m_WorldMatrixLocation = GetUniformLocation("gWorld");
     m_samplerLocation = GetUniformLocation("gSampler");
     m_eyeWorldPosLocation = GetUniformLocation("gEyeWorldPos");
@@ -47,6 +47,8 @@ bool BasicLightingTechnique::Init()
 	m_colorEffect.Color = GetUniformLocation("gColorEffect.Color");
 	m_colorEffect.EffectIntensity = GetUniformLocation("gColorEffect.EffectIntensity");
 	m_numSpotLightsLocation = GetUniformLocation("gNumSpotLights");
+	m_fogDensity = GetUniformLocation("fogDensity");
+	m_fogColor = GetUniformLocation("fogColor");
 
 	 for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_pointLightsLocation) ; i++) 
 	 {
@@ -115,6 +117,11 @@ void BasicLightingTechnique::SetWVP(const Matrix4f& WVP)
     glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);    
 }
 
+void BasicLightingTechnique::SetWV(const Matrix4f& WV)
+{
+	glUniformMatrix4fv(m_WVLocation, 1, GL_TRUE, (const GLfloat*)WV.m);
+}
+
 void BasicLightingTechnique::SetWorldMatrix(const Matrix4f& WorldInverse)
 {
     glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)WorldInverse.m);
@@ -124,7 +131,6 @@ void BasicLightingTechnique::SetTextureUnit(unsigned int TextureUnit)
 {
     glUniform1i(m_samplerLocation, TextureUnit);
 }
-
 
 void BasicLightingTechnique::SetDirectionalLight(const DirectionalLight& Light)
 {
@@ -174,6 +180,16 @@ void BasicLightingTechnique::SetColorEffect(const Vector4f& color)
 void BasicLightingTechnique::SetColorEffectIntensity(float intensity)
 {
 	glUniform1f(m_colorEffect.EffectIntensity, intensity);
+}
+
+void BasicLightingTechnique::SetFogColor(const Vector4f& color)
+{
+	glUniform4f(m_fogColor, color.x, color.y, color.z, color.w);
+}
+
+void BasicLightingTechnique::SetFogDensity(float density)
+{
+	glUniform1f(m_fogDensity, density);
 }
 
 void BasicLightingTechnique::SetSpotLights(unsigned int NumLights, const SpotLight* pLights)
