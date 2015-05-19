@@ -18,16 +18,22 @@ public:
 	void CheckMouseMoveAndReact(int x, int y);
 	int  ShowHide();
 
+	int selectedTower;
+
 private:
 
 	int mouseHover;
-	int textButtonHover;
+	int buttonHover;
+	int action;
 	Drawing2D draw2d;
 
 	Text *text;
+	Text *text14;
 
-	// Background
 	Texture *BackgroundImg;
+	Texture *FirstTowerImg;
+	Texture *FirstTowerImgHover;
+	Texture *FirstTowerImgClick;
 
 	// The text controls of the different entries.
 	std::string NewGameText;
@@ -35,7 +41,8 @@ private:
 	std::string ResumeGameText;
 
 	void DrawGameInfo(const int &enemiesLeft);
-	void DrawTextButtons();
+	void DrawButtons();
+	void DrawTextureButtons();
 
 };
 
