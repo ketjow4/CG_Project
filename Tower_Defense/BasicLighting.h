@@ -85,6 +85,8 @@ public:
 	void SetSpotLights(unsigned int NumLights, const SpotLight* pLights);
 	void SetColorEffect(const Vector4f& color);
 	void SetColorEffectIntensity(float intensity);
+	void SetFogColor(const Vector4f& color);
+	void SetFogDensity(float density);
 private:
 
     GLuint m_WVPLocation;
@@ -96,6 +98,7 @@ private:
     GLuint m_matSpecularPowerLocation;
 	GLuint m_numPointLightsLocation;
 	GLuint m_numSpotLightsLocation;
+	GLuint m_fogDensity, m_fogColor;
     
 	struct {
         GLuint Color;

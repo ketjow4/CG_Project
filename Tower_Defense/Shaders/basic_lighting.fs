@@ -60,7 +60,6 @@ uniform vec3 gEyeWorldPos;
 uniform float gMatSpecularIntensity;                                                
 uniform float gSpecularPower;                                                       
 uniform vec4 fogColor;                                                      
-
 uniform ColorEffect gColorEffect;                                                     
 
 
@@ -136,6 +135,8 @@ void main()
         TotalLight += CalcSpotLight(gSpotLights[i], Normal);                                
     }                                                                                                                                        
 	
-    vec4 finalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight; 
-	FragColor = mix(finalColor, gColorEffect.Color, gColorEffect.EffectIntensity);
+    vec4 normalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight;
+    vec4 colorWithEffect = mix(normalColor, gColorEffect.Color, gColorEffect.EffectIntensity);
+    vec4 foggedColor = mix(colorWithEffect, fogColor, fogFactor);
+	FragColor = foggedColor;
 }

@@ -472,6 +472,8 @@ int main( int argc, char * argv[] )
 	m_pickingEffect = Engine::getEngine().getpickingEffect();
 
 	light->Enable();
+	light->SetFogColor(Vector4f(0.5f, 0.5f, 0.5f, 1.f));
+	light->SetFogDensity(0.003);
 
 	text = new Text(24);
 

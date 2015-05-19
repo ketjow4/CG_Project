@@ -22,7 +22,6 @@ bool BasicLightingTechnique::Init()
         return false;
     }
 
-
     if (!AddShader(GL_FRAGMENT_SHADER, "Shaders/basic_lighting.fs")) 
 	{
         return false;
@@ -48,6 +47,8 @@ bool BasicLightingTechnique::Init()
 	m_colorEffect.Color = GetUniformLocation("gColorEffect.Color");
 	m_colorEffect.EffectIntensity = GetUniformLocation("gColorEffect.EffectIntensity");
 	m_numSpotLightsLocation = GetUniformLocation("gNumSpotLights");
+	m_fogDensity = GetUniformLocation("fogDensity");
+	m_fogColor = GetUniformLocation("fogColor");
 
 	 for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_pointLightsLocation) ; i++) 
 	 {
@@ -131,7 +132,6 @@ void BasicLightingTechnique::SetTextureUnit(unsigned int TextureUnit)
     glUniform1i(m_samplerLocation, TextureUnit);
 }
 
-
 void BasicLightingTechnique::SetDirectionalLight(const DirectionalLight& Light)
 {
     glUniform3f(m_dirLightLocation.Color, Light.Color.x, Light.Color.y, Light.Color.z);
@@ -180,6 +180,16 @@ void BasicLightingTechnique::SetColorEffect(const Vector4f& color)
 void BasicLightingTechnique::SetColorEffectIntensity(float intensity)
 {
 	glUniform1f(m_colorEffect.EffectIntensity, intensity);
+}
+
+void BasicLightingTechnique::SetFogColor(const Vector4f& color)
+{
+	glUniform4f(m_fogColor, color.x, color.y, color.z, color.w);
+}
+
+void BasicLightingTechnique::SetFogDensity(float density)
+{
+	glUniform1f(m_fogDensity, density);
 }
 
 void BasicLightingTechnique::SetSpotLights(unsigned int NumLights, const SpotLight* pLights)
