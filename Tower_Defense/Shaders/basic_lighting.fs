@@ -42,7 +42,8 @@ uniform PointLight gPointLights[MAX_POINT_LIGHTS];
 uniform sampler2D gSampler;   
 uniform vec3 gEyeWorldPos;                                                          
 uniform float gMatSpecularIntensity;                                                
-uniform float gSpecularPower;                                                       
+uniform float gSpecularPower; 
+uniform vec4 fogColor;                                                      
 
 
 vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal)                   
@@ -99,11 +100,6 @@ void main()
     }                                                                                                                                        
 	 
     vec4 finalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight; 
-    vec4 fogColor;
-    fogColor.x = 0.5;
-    fogColor.y = 0.5;
-    fogColor.z = 0.5;
-    fogColor.w = 1;
     FragColor = mix(finalColor, fogColor, fogFactor);
     //FragColor = finalColor;
     

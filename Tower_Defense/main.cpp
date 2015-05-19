@@ -173,8 +173,8 @@ void NewGame()
 	p.Scale(1.f, 1.f, 1.f);
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
-	light->SetModelViewMatrix(p.GetWVTrans());
 	light->SetWVP(p.GetWVPTrans());
+	light->SetWV(p.GetWVTrans());
 	lvl->terrain->Render();
 
 	for (int i = 0; i < lvl->towerList.size(); i++)

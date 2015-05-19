@@ -60,6 +60,7 @@ public:
     virtual bool Init();
 
     void SetWVP(const Matrix4f& WVP);
+	void SetWV(const Matrix4f& WV);
 	void SetWorldMatrix(const Matrix4f& WVP);
 	void SetTextureUnit(unsigned int TextureUnit);
     void SetDirectionalLight(const DirectionalLight& Light);
@@ -67,12 +68,10 @@ public:
     void SetMatSpecularIntensity(float Intensity);
     void SetMatSpecularPower(float Power);		//TODO change in future to get power from model material
 	void SetPointLights(unsigned int NumLights, const PointLight* pLights);
-
-	void SetModelViewMatrix(const Matrix4f& modelViewMatrix);
 private:
 
     GLuint m_WVPLocation;
-	GLuint m_ModelViewMatrixLocation;
+	GLuint m_WVLocation;
     GLuint m_samplerLocation;
     GLuint m_WorldMatrixLocation;
 	GLuint m_eyeWorldPosLocation;

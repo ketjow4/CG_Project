@@ -34,7 +34,7 @@ bool BasicLightingTechnique::Init()
     }
 
     m_WVPLocation = GetUniformLocation("gWVP");
-	m_ModelViewMatrixLocation = GetUniformLocation("gModelViewMatrix");
+	m_WVLocation = GetUniformLocation("gWV");
     m_WorldMatrixLocation = GetUniformLocation("gWorld");
     m_samplerLocation = GetUniformLocation("gSampler");
     m_eyeWorldPosLocation = GetUniformLocation("gEyeWorldPos");
@@ -80,9 +80,9 @@ void BasicLightingTechnique::SetWVP(const Matrix4f& WVP)
     glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);    
 }
 
-void BasicLightingTechnique::SetModelViewMatrix(const Matrix4f& modelViewMatrix)
+void BasicLightingTechnique::SetWV(const Matrix4f& WV)
 {
-	glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)modelViewMatrix.m);
+	glUniformMatrix4fv(m_WVLocation, 1, GL_TRUE, (const GLfloat*)WV.m);
 }
 
 void BasicLightingTechnique::SetWorldMatrix(const Matrix4f& WorldInverse)
