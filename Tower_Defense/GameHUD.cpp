@@ -30,11 +30,22 @@ GameHUD::GameHUD()
 	{
 		std::cout << "Error. Can not load first tower clicked image" << std::endl;
 	}
+	GameOver = new Texture(GL_TEXTURE_2D, "Menu/GameOverBig.png");
+	if (!GameOver->Load())
+	{
+		std::cout << "Error. Can not load game over image" << std::endl;
+	}
 }
-
 
 GameHUD::~GameHUD()
 {
+	delete GameOver;
+	delete FirstTowerImg;
+	delete FirstTowerImgClick;
+	delete FirstTowerImgHover;
+	delete BackgroundImg;
+	delete text;
+	delete text14;
 }
 
 void GameHUD::Draw(const int &enemiesLeft)
@@ -67,6 +78,11 @@ void GameHUD::DrawTextureButtons()
 	case DO_NOTHING:
 		draw2d.RenderQuad(597, 395, 43, 59, 1, FirstTowerImg);
 	}
+}
+
+void GameHUD::DrawGameOverInfo()
+{
+	draw2d.RenderQuad(0, 0, 640, 480, 1, GameOver);
 }
 
 void GameHUD::DrawGameInfo(const int &enemiesLeft)

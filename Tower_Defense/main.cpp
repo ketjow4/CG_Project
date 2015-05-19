@@ -238,7 +238,8 @@ void GameProgress()
 
 	if (Player::getPlayer().lives == 0)
 	{
-		text->RenderText("GAME OVER", 280, 240, 1, glm::vec3(1, 0, 0));		//add some function to exit to menu
+		//text->RenderText("GAME OVER", 280, 240, 1, glm::vec3(1, 0, 0));		//add some function to exit to menu
+		hud->DrawGameOverInfo();
 	}
 	if (lvl->IsWon())
 	{

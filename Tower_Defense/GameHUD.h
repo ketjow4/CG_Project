@@ -16,6 +16,7 @@ public:
 	void Draw(const int &enemiesLeft);
 	int  CheckWhereMouseClickedAndReact(int x, int y);
 	void CheckMouseMoveAndReact(int x, int y);
+	void DrawGameOverInfo();
 	int  ShowHide();
 
 	int selectedTower;
@@ -34,6 +35,7 @@ private:
 	Texture *FirstTowerImg;
 	Texture *FirstTowerImgHover;
 	Texture *FirstTowerImgClick;
+	Texture *GameOver;
 
 	// The text controls of the different entries.
 	std::string NewGameText;
