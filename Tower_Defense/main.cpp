@@ -388,12 +388,6 @@ void Display()
 	}
 
 	//end of 2D drawing
-
-	//glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
-
-
-	//cout << glGetError() << endl;
-
 }
 
 // change window size
@@ -622,6 +616,8 @@ int main( int argc, char * argv[] )
 	m_pickingTexture->Init(WINDOW_WIDTH, WINDOW_HEIGHT);
 	m_pickingEffect->Init();
 
+	m_pEffect->Enable();
+	m_pEffect->SetSpotLights(1,sl);
 
 	 m_pShadowMapEffect = new ShadowMapTechnique();
 
@@ -631,28 +627,6 @@ int main( int argc, char * argv[] )
         } 
 
 
-	/*testObject = new Mesh();
-	if (testObject->LoadMesh("Models/phoenix_ugv.md2"))
-	{
-		cout << "Test object loaded successful " << endl;
-	}
-
-		        m_pQuad = new Mesh();
-        
-		if (!m_pQuad->LoadMesh("Models/quad.obj")) {
-            return false;
-        }
-
-		m_pGroundTex = new Texture(GL_TEXTURE_2D, "Models/test.png");
-
-        if (!m_pGroundTex->Load()) {
-            return false;
-        }*/
-	
-
-	lvl = new Level();
-	lvl->cam = cam;
-	lvl->LoadFromFile("Levels/level.txt");
 
 	light->Enable();
 	light->SetFogColor(Vector4f(0.5f, 0.5f, 0.5f, 1.f));
@@ -667,7 +641,7 @@ int main( int argc, char * argv[] )
 
 	Player::getPlayer().Init(5,100);
 
-	//PrepareNewGame();
+	PrepareNewGame();
 	Player::lives = 0;
 
 	audio->Play();

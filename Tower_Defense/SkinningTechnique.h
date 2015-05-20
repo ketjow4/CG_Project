@@ -4,6 +4,8 @@
 #include "technique.h"
 #include "math_3d.h"
 
+#include "BasicLighting.h"
+
 //struct BaseLight
 //{
 //    Vector3f Color;
@@ -27,7 +29,7 @@
 //        Direction = Vector3f(0.0f, 0.0f, 0.0f);
 //    }
 //};
-
+//
 //struct PointLight : public BaseLight
 //{
 //    Vector3f Position;
@@ -74,9 +76,9 @@ public:
     void SetWVP(const Matrix4f& WVP);
     void SetWorldMatrix(const Matrix4f& WVP);
     void SetColorTextureUnit(uint TextureUnit);
-    //void SetDirectionalLight(const DirectionalLight& Light);
-   // void SetPointLights(uint NumLights, const PointLight* pLights);
-    //void SetSpotLights(uint NumLights, const SpotLight* pLights);
+    void SetDirectionalLight(const DirectionalLight& Light);
+    void SetPointLights(uint NumLights, const PointLight* pLights);
+    void SetSpotLights(uint NumLights, const SpotLight* pLights);
     void SetEyeWorldPos(const Vector3f& EyeWorldPos);
     void SetMatSpecularIntensity(float Intensity);
     void SetMatSpecularPower(float Power);
