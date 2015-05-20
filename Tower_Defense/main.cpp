@@ -14,20 +14,20 @@
 #include "PickingTexture.h"
 #include "PickingTechnique.h"
 #include "Level.h"
-<<<<<<< HEAD
+
 #include "ShadowMapFBO.h"
 #include "ShadowMapTechnique.h"
 #include "BasicLighting.h"
-=======
+
 #include "Audio.h"
->>>>>>> origin/master
+
 
 int refreshMills = 30;
 long long m_frameTime;
 int m_frameCount;
 int m_fps;
 
-Camera cam;
+Camera* cam;
 
 BasicLightingTechnique* light;		//use this shaders for static objects
 SkinningTechnique* m_pEffect;
@@ -59,9 +59,6 @@ GameHUD *hud;
 Audio *audio;
 
 
-<<<<<<< HEAD
-Mesh* m_pQuad;
-    Texture* m_pGroundTex;
 
 
 SpotLight sl[1];
@@ -71,10 +68,9 @@ SpotLight sl[1];
 #define WINDOW_HEIGHT 480
 
 
-void initGL() 
-=======
+
+
 void InitGL() 
->>>>>>> origin/master
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
 
@@ -93,12 +89,14 @@ void InitGL()
 	m_directionalLight.DiffuseIntensity = 0.0f;
 	m_directionalLight.Direction = Vector3f(1.0f, 1.0, 1.0).Normalize();
 
-	cam.eyey = 200;//100;
-	cam.eyex = 256;//256;
-	cam.eyez = 0;
-	cam.centerx = 1;
-	cam.centerz = 1;
-	cam.centery = 0;
+	cam = new Camera();
+
+	cam->eyey = 200;//100;
+	cam->eyex = 256;//256;
+	cam->eyez = 0;
+	cam->centerx = 1;
+	cam->centerz = 1;
+	cam->centery = 0;
 
 
 		sl[0].AmbientIntensity = 0.8f;
@@ -111,12 +109,14 @@ void InitGL()
 
 }
 
-<<<<<<< HEAD
+
+
+
+
+
+
 
 void CalcShadow()
-=======
-void GameProgress()
->>>>>>> origin/master
 {
 	m_shadowMapFBO.BindForWriting();
 
@@ -165,7 +165,7 @@ void Render()
 	
 	light->Enable();
 
-	light->SetEyeWorldPos(Vector3f(cam.eyex, cam.eyey, cam.eyez));
+	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
 
 	m_shadowMapFBO.BindForReading(GL_TEXTURE1);
 
@@ -195,7 +195,7 @@ void Render()
 
 	p.Rotate(0.0f, 90.0f, 0.0f);
 	p.WorldPos(0.0f, 0.0f, 1.0f);
-	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
+	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 	p.SetPerspectiveProj(pers);
 
 	lvl->currentWave->p = &p;
@@ -206,7 +206,7 @@ void Render()
 	const Matrix4f& WorldTransformation = p.GetWorldTrans();
 	light->SetWorldMatrix(WorldTransformation);
 	light->SetDirectionalLight(m_directionalLight);
-	light->SetEyeWorldPos(Vector3f(cam.eyex, cam.eyey, cam.eyez));
+	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
 	light->SetMatSpecularIntensity(0.5f);
 	light->SetMatSpecularPower(2);
 
@@ -263,21 +263,21 @@ void Render()
 	p.Scale(1.f, 1.f, 1.f);
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
-	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
+	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 	light->SetWVP(p.GetWVPTrans());
-<<<<<<< HEAD
+
 	light->SetWorldMatrix(p.GetWorldTrans());        
+	light->SetWV(p.GetWVTrans());
 
 	p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
     light->SetLightWVP(p.GetWVPTrans());
 
-=======
-	light->SetWV(p.GetWVTrans());
->>>>>>> origin/master
+	
+
 	lvl->terrain->Render();
 
 
-	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
+	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 
 
 
@@ -343,8 +343,8 @@ void Render()
 
 }
 
-<<<<<<< HEAD
-void NewGame()
+
+void GameProgress()
 {
 	m_frameCount++;
 
@@ -357,7 +357,7 @@ void NewGame()
 	}
 	
 
-	cam.UpdateCamera();
+	cam->UpdateCamera();
 
 	CalcShadow();
 	Render();
@@ -366,8 +366,7 @@ void NewGame()
 }
 
 // funkcja generuj¹ca scenê 3D
-=======
->>>>>>> origin/master
+
 void Display()
 {
 	if (gameIsRunning)
@@ -387,14 +386,14 @@ void Display()
 		menu->Draw(gameInProgress);				
 		glutSwapBuffers();
 	}
-<<<<<<< HEAD
+
 	//end of 2D drawing
 
-	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
+	//glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 
-=======
+
 	//cout << glGetError() << endl;
->>>>>>> origin/master
+
 }
 
 // change window size
@@ -430,11 +429,11 @@ void Keyboard( unsigned char key, int x, int y )
 	double angle = 5;
 	if( key == 'z')
 	{
-		cam.Rotate(-angle);	//kat_obrotu += 5;
+		cam->Rotate(-angle);	//kat_obrotu += 5;
 	}
 	if( key == 'x')
 	{
-		cam.Rotate(angle);	//kat_obrotu -= 5;
+		cam->Rotate(angle);	//kat_obrotu -= 5;
 	}
 	if( key == 'n' && lvl->IsWon())
 	{
@@ -455,16 +454,16 @@ void SpecialKeys( int key, int x, int y )
 	switch( key )
 	{
 	case GLUT_KEY_LEFT:
-		cam.MoveLeft(movementSpeed);
+		cam->MoveLeft(movementSpeed);
 		break;
 	case GLUT_KEY_UP:
-		cam.MoveForward(movementSpeed);
+		cam->MoveForward(movementSpeed);
 		break;
 	case GLUT_KEY_RIGHT:
-		cam.MoveRight(movementSpeed);
+		cam->MoveRight(movementSpeed);
 		break;
 	case GLUT_KEY_DOWN:
-		cam.MoveBackward(movementSpeed);
+		cam->MoveBackward(movementSpeed);
 		break;
 	}
 }
@@ -473,6 +472,7 @@ void PrepareNewGame()
 {
 	Player::getPlayer().Init(1, 100);
 	lvl = new Level();
+	lvl->cam = cam;
 	lvl->LoadFromFile("Levels/level.txt");
 }
 
@@ -576,16 +576,15 @@ int main( int argc, char * argv[] )
 	glutMouseFunc(MouseFunc);
 	glutMotionFunc(MotionFunc);
 	glutPassiveMotionFunc(PassiveMotionFunc);
-<<<<<<< HEAD
 
-	
-=======
+
+
 	InitGL();
->>>>>>> origin/master
+
 	glewInit();
 
 
-	initGL(); 
+	//initGL(); 
 
 	menu = new GameMenu();
 	hud = new GameHUD();
@@ -593,15 +592,15 @@ int main( int argc, char * argv[] )
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
 	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
-<<<<<<< HEAD
+
 
 	if (!m_shadowMapFBO.Init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
 		return false;
     }
-=======
+
 	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
 	PathsContainer::LoadPath(1, "Models/path1.bmp");
->>>>>>> origin/master
+
 
 	
 	light = Engine::getEngine().getLight();
@@ -618,7 +617,7 @@ int main( int argc, char * argv[] )
 	m_pickingTexture = Engine::getEngine().getpickingTexture();
 	m_pickingEffect = Engine::getEngine().getpickingEffect();
 
-<<<<<<< HEAD
+
 	m_pEffect->Init();
 	m_pickingTexture->Init(WINDOW_WIDTH, WINDOW_HEIGHT);
 	m_pickingEffect->Init();
@@ -632,7 +631,7 @@ int main( int argc, char * argv[] )
         } 
 
 
-	testObject = new Mesh();
+	/*testObject = new Mesh();
 	if (testObject->LoadMesh("Models/phoenix_ugv.md2"))
 	{
 		cout << "Test object loaded successful " << endl;
@@ -648,34 +647,31 @@ int main( int argc, char * argv[] )
 
         if (!m_pGroundTex->Load()) {
             return false;
-        }
+        }*/
 	
 
 	lvl = new Level();
-	lvl->cam = &cam;
+	lvl->cam = cam;
 	lvl->LoadFromFile("Levels/level.txt");
-=======
+
 	light->Enable();
 	light->SetFogColor(Vector4f(0.5f, 0.5f, 0.5f, 1.f));
 	light->SetFogDensity(0.003);
->>>>>>> origin/master
+
 
 
 	text = new Text(24);
 
 	glutTimerFunc(0, timer, 0);
 
-<<<<<<< HEAD
+
 	Player::getPlayer().Init(5,100);
 
-
-
-=======
-	PrepareNewGame();
+	//PrepareNewGame();
 	Player::lives = 0;
 
 	audio->Play();
->>>>>>> origin/master
+
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	try
