@@ -135,7 +135,8 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f( vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z ),
 				Vector2f( texCoordS, texCoordT ),
-				triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1BottomLeft);
 			AddThreeIndices(Indices, index);
@@ -144,7 +145,8 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f(vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT),
-				triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1UpperLeft);
 			AddThreeIndices(Indices, index);
@@ -153,7 +155,8 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
-				triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1UpperRight);
 			AddThreeIndices(Indices, index);
@@ -162,7 +165,8 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f(vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z),
 				Vector2f(texCoordS, texCoordT),
-				triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2BottomLeft);
 			AddThreeIndices(Indices, index);
@@ -171,7 +175,8 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
-				triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2UpperRight);
 			AddThreeIndices(Indices, index);
@@ -180,7 +185,8 @@ void Terrain::Init(char *filename, float heightFactor)
 				(
 				Vector3f(vertices[i - 1][j].x, vertices[i - 1][j].y, vertices[i - 1][j].z),
 				Vector2f(texCoordS, texCoordT + texCoordTStep),
-				triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
+				Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2BottomRight);
 			AddThreeIndices(Indices, index);

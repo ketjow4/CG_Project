@@ -15,7 +15,7 @@ void Enemy::LoadModel(int id)
 	model = (Mesh*)ModelsContainer::Get(id);
 }
 
-void Enemy::UpdatePosition(Pipeline *p)
+void Enemy::UpdatePosition(Pipeline *p, Camera* cam)
 {
 	light->Enable();
 
@@ -25,8 +25,9 @@ void Enemy::UpdatePosition(Pipeline *p)
 	p->Scale(0.3f, 0.3f, 0.3f);
 	float x = path->pathPoints[pathIndex].first;
 	float z = path->pathPoints[pathIndex].second;
-	float y = terrain->GetTerrainHeight(x, z);
-	p->Rotate(path->GetRotation(Vector3f(x,y,z),pathIndex));
+	float y = terrain->GetTerrainHeight(x, z) + 10;
+	rotation = path->GetRotation(Vector3f(x,y,z),pathIndex);
+	p->Rotate(rotation);
 
 	p->WorldPos(x,y+1.0,z);
 	position = Vector3f(x, y + 1, z);
@@ -34,9 +35,16 @@ void Enemy::UpdatePosition(Pipeline *p)
 	effectId = HP < 50 ? 1 : 0;		// TMP effect change
 
 	light->SetWVP(p->GetWVPTrans());
+	light->SetWorldMatrix(p->GetWorldTrans());   
 	light->SetColorEffect(EffectColor[effectId]);
 	light->SetColorEffectIntensity(EffectIntensity[effectId]);
+	p->SetCamera(Vector3f(-100.0, 300.0, -100.0f), Vector3f(0.2f, -1.0f, 0.1f), Vector3f(0.0f, 1.0f, 0.0f));
+	light->SetLightWVP(p->GetWVPTrans());
+	
+
 	model->Render();
+
+	p->SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 	light->SetColorEffectIntensity(0.f);
 
 	if (++pathIndex >= path->pathPoints.size() - 1)				//object arrived at end point		-- for now return to start 
@@ -52,11 +60,16 @@ const Vector3f& Enemy::GetPosition() const
 	return position;
 }
 
+const Vector3f& Enemy::GetRotation() const
+{
+	return rotation;
+}
+
 Vector3f Enemy::GetFuturePosition(int steps) const
 {
 	int futurePathIndex = min(pathIndex + steps, (int)path->pathPoints.size() - 1);
 	float x = path->pathPoints[futurePathIndex].first;
 	float z = path->pathPoints[futurePathIndex].second;
-	float y = terrain->GetTerrainHeight(x, z);
+	float y = terrain->GetTerrainHeight(x, z)  + 10;
 	return Vector3f(x, y, z);
 }

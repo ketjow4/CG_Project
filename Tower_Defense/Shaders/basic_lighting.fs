@@ -128,13 +128,14 @@ vec4 CalcSpotLight(SpotLight l, vec3 Normal, vec4 LightSpacePos)
     vec3 LightToPixel = normalize(WorldPos0 - l.Base.Position);                             
     float SpotFactor = dot(LightToPixel, l.Direction);                                      
                                                                                             
-    if (SpotFactor > l.Cutoff) {                                                            
-        vec4 Color = CalcPointLight(l.Base, Normal, LightSpacePos);                         
-        return Color * (1.0 - (1.0 - SpotFactor) * 1.0/(1.0 - l.Cutoff));                   
-    }                                                                                       
-    else {                                                                                  
-        return vec4(0,0,0,0);                                                               
-    }                                                                                       
+    //if (SpotFactor > l.Cutoff) {                                                            
+        vec4 Color = CalcPointLight(l.Base, Normal, LightSpacePos); 
+		return Color;
+        //return Color * (1.0 - (1.0 - SpotFactor) * 1.0/(1.0 - l.Cutoff));                   
+    //}                                                                                       
+   // else {                                                                                  
+      //  return vec4(0,0,0,0);                                                               
+   // }                                                                                       
 }        
 
 void main()                                                                         
@@ -150,10 +151,6 @@ void main()
         TotalLight += CalcSpotLight(gSpotLights[i], Normal, LightSpacePos);                 
     }      
 	
-    //vec4 finalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight; 
-	//FragColor = mix(finalColor, gColorEffect.Color, gColorEffect.EffectIntensity);
-	//FragColor = finalColor;
-	
-	vec4 SampledColor = texture2D(gSampler, TexCoord0.xy);                                  
-    FragColor = SampledColor * TotalLight;
+    vec4 finalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight; 
+	FragColor = mix(finalColor, gColorEffect.Color, gColorEffect.EffectIntensity);
 }

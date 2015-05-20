@@ -66,7 +66,7 @@ struct SpotLight : public PointLight
 class BasicLightingTechnique : public Technique {
 public:
 
-	static const unsigned int MAX_POINT_LIGHTS = 10;
+	static const unsigned int MAX_POINT_LIGHTS = 2;
 	static const unsigned int MAX_SPOT_LIGHTS = 2;
 
     BasicLightingTechnique();
@@ -82,6 +82,8 @@ public:
     void SetMatSpecularPower(float Power);		//TODO change in future to get power from model material
 	void SetPointLights(unsigned int NumLights, const PointLight* pLights);
 	void SetSpotLights(unsigned int NumLights, const SpotLight* pLights);
+	void SetShadowMapTextureUnit(unsigned int TextureUnit);
+	void SetLightWVP(const Matrix4f& LightWVP);
 
 	void SetColorEffect(const Vector4f& color);
 	void SetColorEffectIntensity(float intensity);
@@ -95,6 +97,9 @@ private:
     GLuint m_matSpecularPowerLocation;
 	GLuint m_numPointLightsLocation;
 	GLuint m_numSpotLightsLocation;
+	GLuint m_shadowMapLocation;
+	GLuint m_LightWVPLocation;
+
 	
 	struct {
 		GLuint Color;

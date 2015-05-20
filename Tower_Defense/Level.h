@@ -8,6 +8,7 @@
 #include "Tower.h"
 #include <iostream>
 #include <fstream>
+#include "Camera.h"
 
 class Level
 {
@@ -19,6 +20,7 @@ public:
 	Path* path;
 	Wave * currentWave;
 	vector<Tower*> towerList;	//tower list for actual level
+	Camera* cam;
 	
 	list<Wave*> waveList;
 	int levelNumber;		//to chceck if this is last level

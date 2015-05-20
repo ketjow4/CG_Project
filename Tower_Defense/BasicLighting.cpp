@@ -47,6 +47,8 @@ bool BasicLightingTechnique::Init()
 	m_colorEffect.Color = GetUniformLocation("gColorEffect.Color");
 	m_colorEffect.EffectIntensity = GetUniformLocation("gColorEffect.EffectIntensity");
 	m_numSpotLightsLocation = GetUniformLocation("gNumSpotLights");
+	m_shadowMapLocation = GetUniformLocation("gShadowMap");
+	m_LightWVPLocation = GetUniformLocation("gLightWVP");
 
 	 for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_pointLightsLocation) ; i++) 
 	 {
@@ -193,4 +195,14 @@ void BasicLightingTechnique::SetSpotLights(unsigned int NumLights, const SpotLig
         glUniform1f(m_spotLightsLocation[i].Atten.Linear,   pLights[i].Attenuation.Linear);
         glUniform1f(m_spotLightsLocation[i].Atten.Exp,      pLights[i].Attenuation.Exp);
     }
+}
+
+void BasicLightingTechnique::SetShadowMapTextureUnit(unsigned int TextureUnit)
+{
+    glUniform1i(m_shadowMapLocation, TextureUnit);
+}
+
+void BasicLightingTechnique::SetLightWVP(const Matrix4f& LightWVP)
+{
+    glUniformMatrix4fv(m_LightWVPLocation, 1, GL_TRUE, (const GLfloat*)LightWVP.m);
 }

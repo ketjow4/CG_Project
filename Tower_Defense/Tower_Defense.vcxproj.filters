@@ -30,6 +30,8 @@
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="technique.cpp" />
     <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="ShadowMapFBO.cpp" />
+    <ClCompile Include="ShadowMapTechnique.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingCylinder.h" />
@@ -64,5 +66,7 @@
     <ClInclude Include="technique.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="WorldObject.h" />
+    <ClInclude Include="ShadowMapFBO.h" />
+    <ClInclude Include="ShadowMapTechnique.h" />
   </ItemGroup>
 </Project>

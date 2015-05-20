@@ -118,6 +118,8 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClCompile Include="PickingTechnique.cpp" />
     <ClCompile Include="PickingTexture.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ShadowMapFBO.cpp" />
+    <ClCompile Include="ShadowMapTechnique.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="SkinningTechnique.cpp" />
@@ -150,6 +152,8 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClInclude Include="PickingTexture.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Renderable.h" />
+    <ClInclude Include="ShadowMapFBO.h" />
+    <ClInclude Include="ShadowMapTechnique.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="pipeline.h" />
     <ClInclude Include="SkinningTechnique.h" />
