@@ -42,6 +42,7 @@ bool SkinningTechnique::Init()
     m_matSpecularPowerLocation = GetUniformLocation("gSpecularPower");
     m_numPointLightsLocation = GetUniformLocation("gNumPointLights");
     m_numSpotLightsLocation = GetUniformLocation("gNumSpotLights");
+	m_LightWVPLocation = GetUniformLocation("gLightWVP");
 
 
 
@@ -198,4 +199,9 @@ void SkinningTechnique::SetBoneTransform(uint Index, const Matrix4f& Transform)
     assert(Index < MAX_BONES);
     //Transform.Print();
     glUniformMatrix4fv(m_boneLocation[Index], 1, GL_TRUE, (const GLfloat*)Transform);       
+}
+
+void SkinningTechnique::SetLightWVP(const Matrix4f& LightWVP)
+{
+    glUniformMatrix4fv(m_LightWVPLocation, 1, GL_TRUE, (const GLfloat*)LightWVP.m);
 }

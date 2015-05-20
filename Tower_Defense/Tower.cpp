@@ -119,15 +119,22 @@ void Tower::CalcAnimation()
     }
 }
 
-void Tower::Render(Pipeline *p)
+void Tower::Render(Pipeline *p, Camera* cam)
 {
 	CalcAnimation();
 	p->Scale(towerScale,towerScale,towerScale);
 	p->Rotate(0,90,-90);
 	p->WorldPos(towerPos);
 	m_pEffect->SetWVP(p->GetWVPTrans());
+	m_pEffect->SetWorldMatrix(p->GetWorldTrans());   
+
+	p->SetCamera(Vector3f(-100.0, 300.0, -100.0f), Vector3f(0.2f, -1.0f, 0.1f), Vector3f(0.0f, 1.0f, 0.0f));
+	m_pEffect->SetLightWVP(p->GetWVPTrans());
+
 	model->Render();
-	
+
+
+	p->SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 }
 
 bool Tower::IsInRange(Vector3f enemyPos)

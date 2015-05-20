@@ -41,7 +41,7 @@ public:
 	void LoadModel(int key);
 	void LoadMissile(int key);
 
-	void Render(Pipeline *p);
+	void Render(Pipeline *p, Camera* cam);
 
 	bool IsInRange(Vector3f enemyPos);
 

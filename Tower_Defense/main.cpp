@@ -284,7 +284,7 @@ void Render()
 	m_pEffect->Enable();
 	for (int i = 0; i < lvl->towerList.size(); i++)
 	{
-		lvl->towerList[i]->Render(&p);
+		lvl->towerList[i]->Render(&p, cam);
 	}
 
 	lvl->currentWave->ClearDead();
