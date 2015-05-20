@@ -1,5 +1,8 @@
 #include "Mouse.h"
 
+const int Mouse::DefaultWinW = 640;
+const int Mouse::DefaultWinH = 480;
+
 Mouse::Mouse()
 {}
 
@@ -20,10 +23,10 @@ void Mouse::MouseRightClick(int x, int y)
 
 void Mouse::MouseMove(int x, int y)
 {
-	if (pos2d.x == x && pos2d.y == y)
-		return;
 	pos2d.x = x;
 	pos2d.y = winH - y - 1;
+	normalizedPos2d.x = (x * DefaultWinW) / winW;
+	normalizedPos2d.y = (y * DefaultWinH) / winH;
 }
 
 void Mouse::SetWindowSize(int w, int h)

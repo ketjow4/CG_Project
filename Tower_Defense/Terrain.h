@@ -9,6 +9,11 @@ class Terrain
 public:
 	std::vector<MeshEntry> m_Entries;
 	std::vector<Texture*> m_Textures;
+	//Get max verticies in X direction to limit area of tower building
+	float MaxX;
+	float MaxZ;
+	float MinX;
+	float MinZ;
 
 	struct Triangle
 	{
@@ -18,18 +23,11 @@ public:
 	Terrain();
 	~Terrain();
 	// Initializes terrain object basing on bitmap.
-	void Init(char *filename, float heightFactor = 1.0);
+	void Init(const string &heightMap, const string &texture, float heightFactor = 1.0);
 	// Calculates height of terrain at P(x,z)
 	float GetTerrainHeight(float x, float z);
 	// Draws terrain
 	void Render();
-
-	//Get max verticies in X direction to limit area of tower building
-	float MaxX;
-	float MaxZ;
-	float MinX;
-	float MinZ;
-
 private:
 	float heightFactor;
 	int terrainList;
@@ -38,7 +36,7 @@ private:
 	Texture *texture;
 
 	// Loads bitmap and converts it to vertices.
-	void LoadHeightMap(char *filename);
+	void LoadHeightMap(const string &filename);
 	// Checks if P(x,z) is in triangle T((x1,z1),(x2,z2),(x3,z3))
 	bool IsTriangle2dCollision(float x, float z,const Triangle& triangle);
 	// Returns terrain triangle that line L(x,z) crosses

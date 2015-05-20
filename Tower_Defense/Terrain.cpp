@@ -13,9 +13,9 @@ Terrain::~Terrain()
 	glDeleteLists(this->terrainList, 1);
 }
 
-void Terrain::LoadHeightMap(char *filename)
+void Terrain::LoadHeightMap(const string &filename)
 {
-	FILE *file = fopen(filename, "rb");
+	FILE *file = fopen(filename.c_str(), "rb");
 	if (!file) { printf("terrain file error\n"); return; }
 
 	// Get terrain width
@@ -106,18 +106,18 @@ Vector3f Terrain::GetNormal(const Triangle& triangle)
 	return result.Normalize();
 }
 
-void Terrain::Init(char *filename, float heightFactor)
+void Terrain::Init(const string &heightMap, const string &texture, float heightFactor)
 {
 	this->heightFactor = heightFactor;
-	this->LoadHeightMap(filename);
+	this->LoadHeightMap(heightMap);
 	glEnable(GL_TEXTURE_2D);
 
 	float texCoordS = 0.0;
 	float texCoordSStep = 1.0 / (float)this->width;
 	float texCoordTStep = 1.0 / (float)this->height;
 
-	std::vector<Vertex> Vertices;
-	std::vector<unsigned int> Indices;
+	vector<Vertex> Vertices;
+	vector<unsigned int> Indices;
 
 	unsigned int index = 0;
 	for (int i = 1; i < this->width; ++i)
@@ -202,18 +202,18 @@ void Terrain::Init(char *filename, float heightFactor)
 
 	m_Textures.resize(1);
 	m_Textures[0] = NULL;
-	m_Textures[0] = new Texture(GL_TEXTURE_2D, "Models/terrain1texture.bmp");
+	m_Textures[0] = new Texture(GL_TEXTURE_2D, texture);
 
 	if (!m_Textures[0]->Load())
 	{
-		printf("Error loading texture '%s'\n", "Models/terrain1texture.bmp");
+		printf("Error loading texture '%s'\n", texture);
 		delete m_Textures[0];
 		m_Textures[0] = NULL;
 
 	}
 	else 
 	{
-		printf("Loaded texture '%s'\n", "Models/terrain1texture.bmp");
+		printf("Loaded texture '%s'\n", texture);
 	}
 
 	SetMaxX();

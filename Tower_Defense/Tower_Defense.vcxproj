@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -56,14 +56,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\glut;..\ImageMagick-6\ImageMagick-6;..\glew\include;..\assimp-3.1.1\include;..\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\glut;..\ImageMagick-6\ImageMagick-6;..\glew\include;..\assimp-3.1.1\include;..\glm;..\Audiere\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp.lib;glew32.lib;CORE_DB_Magick++_.lib;glut32.lib;freetype255.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp.lib;glew32.lib;CORE_DB_Magick++_.lib;glut32.lib;freetype255.lib;audiere.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Audiere\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)\DLL\*.dll" "$(ProjectDir)..\Debug\" /i /y
@@ -99,6 +98,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="BoundingCylinder.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Drawing2D.cpp" />
@@ -115,6 +115,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClCompile Include="ModelsContainer.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Path.cpp" />
+    <ClCompile Include="PathsContainer.cpp" />
     <ClCompile Include="PickingTechnique.cpp" />
     <ClCompile Include="PickingTexture.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -123,6 +124,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="SkinningTechnique.cpp" />
+    <ClCompile Include="TerrainsContainer.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="Tower.cpp" />
@@ -132,6 +134,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClCompile Include="Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="BoundingCylinder.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Drawing2D.h" />
@@ -148,6 +151,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClInclude Include="ModelsContainer.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Path.h" />
+    <ClInclude Include="PathsContainer.h" />
     <ClInclude Include="PickingTechnique.h" />
     <ClInclude Include="PickingTexture.h" />
     <ClInclude Include="Player.h" />
@@ -158,6 +162,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClInclude Include="pipeline.h" />
     <ClInclude Include="SkinningTechnique.h" />
     <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TerrainsContainer.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="Tower.h" />

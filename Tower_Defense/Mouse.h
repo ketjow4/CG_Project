@@ -5,6 +5,7 @@
 class Mouse
 {
 public:
+	Vector2i normalizedPos2d;
 	Vector2i pos2d;
 	Vector3f pos3d;
 	bool leftClick;
@@ -21,6 +22,8 @@ public:
 
 	float DistToClosest(const vector <pair<float, float>> &pointsXZ, pair<float, float> &closestXZ);
 private:
+	const static int DefaultWinW;
+	const static int DefaultWinH;
 	int winW, winH;
 	
 	float DistToPointXZ(const pair<float, float> &p);

@@ -1,15 +1,16 @@
 #version 330
 
-const int MAX_POINT_LIGHTS = 10;   
+const int MAX_POINT_LIGHTS = 10;    
 const int MAX_SPOT_LIGHTS = 2;   
 
 in vec4 LightSpacePos;  
 in vec2 TexCoord0;
 in vec3 Normal0;     
 in vec3 WorldPos0;                                                                 
+in float fogFactor;                                                             
                                                                                     
 out vec4 FragColor;                                                                 
-                    
+                                                                                    
 struct ColorEffect
 {
     vec4 Color;
@@ -41,7 +42,7 @@ struct PointLight
     BaseLight Base;                                                                         
     vec3 Position;                                                                          
     Attenuation Atten;                                                                      
-};                          
+};                                                                                   
 
 struct SpotLight                                                                            
 {                                                                                           
@@ -53,14 +54,14 @@ struct SpotLight
 uniform int gNumPointLights;  
 uniform int gNumSpotLights;   
 uniform DirectionalLight gDirectionalLight; 
-uniform PointLight gPointLights[MAX_POINT_LIGHTS];  
+uniform PointLight gPointLights[MAX_POINT_LIGHTS];                                         
 uniform SpotLight gSpotLights[MAX_SPOT_LIGHTS];                                          
 uniform sampler2D gSampler;   
 uniform sampler2D gShadowMap;  
 uniform vec3 gEyeWorldPos;                                                          
 uniform float gMatSpecularIntensity;                                                
-uniform float gSpecularPower;  
-
+uniform float gSpecularPower;                                                       
+uniform vec4 fogColor;                                                      
 uniform ColorEffect gColorEffect;                                                     
 
 float CalcShadowFactor(vec4 LightSpacePos)                                                  
@@ -151,6 +152,8 @@ void main()
         TotalLight += CalcSpotLight(gSpotLights[i], Normal, LightSpacePos);                 
     }      
 	
-    vec4 finalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight; 
-	FragColor = mix(finalColor, gColorEffect.Color, gColorEffect.EffectIntensity);
+    vec4 normalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight;
+    vec4 colorWithEffect = mix(normalColor, gColorEffect.Color, gColorEffect.EffectIntensity);
+    vec4 foggedColor = mix(colorWithEffect, fogColor, fogFactor);
+	FragColor = foggedColor;
 }

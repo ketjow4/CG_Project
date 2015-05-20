@@ -4,3 +4,10 @@
 #define PAUSE_GAME 3
 #define SHOW_HIDE_HUD 4
 #define RESUME_GAME 5
+
+#define FIRST_TOWER_HOVER 6
+#define FIRST_TOWER_CLICKED 7
+
+#define NO_SELECTION 8
+#define FIRST_TOWER 9
+#define SEC_TOWER_HOVER 10

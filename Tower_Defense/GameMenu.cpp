@@ -14,7 +14,7 @@ GameMenu::GameMenu()
 	ResumeGameText = "Resume";
 
 	this->text = new Text(24);
-	BackgroundImg = new Texture(GL_TEXTURE_2D, "menu.jpg");
+	BackgroundImg = new Texture(GL_TEXTURE_2D, "Menu/menu_back.jpg");
 	if (!BackgroundImg->Load())
 	{
 		std::cout << "Error. Can not load menu background image" << std::endl;
@@ -39,7 +39,7 @@ void GameMenu::Draw(bool _gameInProgress)
 
 	draw2D.RenderQuad(0,0,640,480,1,BackgroundImg);				//drawing quad with texture texture must be loaded succesful before
 
-	draw2D.RenderQuad(250,340,150,40,0,NULL, Vector3f(0.2,1.0,0.0));	//draw regular quad in one color 
+	//draw2D.RenderQuad(250,340,150,40,0,NULL, Vector3f(0.2,1.0,0.0));	//draw regular quad in one color 
 
 	text->Enable();
 	this->DrawTextButtons();
@@ -53,36 +53,32 @@ void GameMenu::Draw(bool _gameInProgress)
 
 void GameMenu::DrawTextButtons()
 {
-	switch (mouseHover)
+	if (mouseHover)
 	{
-		case 1:
-			switch (textButtonHover)
-			{
-			case NEW_GAME:
-				this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0.4f, 0.4f, 0.4f));
-				this->DrawResumeGameTextButton();
-				this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0, 0, 0));
-				//this->text->RenderText("", 0, 0, 1, glm::vec3(0.1f, 0.8f, 0.1f));
-				break;
-			case END_GAME:
-				this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0, 0, 0));
-				this->DrawResumeGameTextButton();
-				this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0.4f, 0.4f, 0.4f));
-				//this->text->RenderText("", 0, 0, 1, glm::vec3(0.1f, 0.8f, 0.1f));
-				break;
-			case RESUME_GAME:
-				this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0, 0, 0));
-				this->DrawResumeGameTextButton();
-				this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0, 0, 0));
-				//this->text->RenderText("", 0, 0, 1, glm::vec3(0.1f, 0.8f, 0.1f));
-				break;
-			}
-			break;
-		case 0:
-			this->text->RenderText(this->NewGameText, 260, 350, 1, glm::vec3(0, 0, 0));
+		switch (textButtonHover)
+		{
+		case NEW_GAME:
+			this->text->RenderText(this->NewGameText, 260, 300, 1, glm::vec3(0.4f, 0.4f, 0.4f));
 			this->DrawResumeGameTextButton();
-			this->text->RenderText(this->ExitText, 293, 250, 1, glm::vec3(0, 0, 0));
-			//this->text->RenderText("", 0, 0, 1, glm::vec3(0.1f, 0.8f, 0.1f));	
+			this->text->RenderText(this->ExitText, 293, 200, 1, glm::vec3(0, 0, 0));
+			break;
+		case END_GAME:
+			this->text->RenderText(this->NewGameText, 260, 300, 1, glm::vec3(0, 0, 0));
+			this->DrawResumeGameTextButton();
+			this->text->RenderText(this->ExitText, 293, 200, 1, glm::vec3(0.4f, 0.4f, 0.4f));
+			break;
+		case RESUME_GAME:
+			this->text->RenderText(this->NewGameText, 260, 300, 1, glm::vec3(0, 0, 0));
+			this->DrawResumeGameTextButton();
+			this->text->RenderText(this->ExitText, 293, 200, 1, glm::vec3(0, 0, 0));
+			break;
+		}
+	}
+	else
+	{
+		this->text->RenderText(this->NewGameText, 260, 300, 1, glm::vec3(0, 0, 0));
+		this->DrawResumeGameTextButton();
+		this->text->RenderText(this->ExitText, 293, 200, 1, glm::vec3(0, 0, 0));
 	}
 }
 
@@ -91,27 +87,27 @@ void GameMenu::DrawResumeGameTextButton()
 	if (this->gameInProgress)
 	{
 		if (textButtonHover == RESUME_GAME && mouseHover)
-			this->text->RenderText(this->ResumeGameText, 272, 300, 1, glm::vec3(0.4f, 0.4f, 0.4f));
+			this->text->RenderText(this->ResumeGameText, 272, 250, 1, glm::vec3(0.4f, 0.4f, 0.4f));
 		else
-			this->text->RenderText(this->ResumeGameText, 272, 300, 1, glm::vec3(0, 0, 0));
+			this->text->RenderText(this->ResumeGameText, 272, 250, 1, glm::vec3(0, 0, 0));
 	}
 	else
-		this->text->RenderText(this->ResumeGameText, 272, 300, 1, glm::vec3(0.8f, 0.8f, 0.8f));
+		this->text->RenderText(this->ResumeGameText, 272, 250, 1, glm::vec3(0.8f, 0.8f, 0.8f));
 }
 
 void GameMenu::CheckMouseMoveAndReact(int x, int y)
 {
-	if ((x > 261) && (x < 362) && (y>112) && (y < 128))
+	if ((x > 261) && (x < 380) && (y > 162) && (y < 179))
 	{
 		this->mouseHover = 1;
 		this->textButtonHover = NEW_GAME;
 	}
-	else if ((x > 273) && (x < 361) && (y>162) && (y < 179))
+	else if ((x > 273) && (x < 361) && (y > 212) && (y < 228))
 	{
 		this->mouseHover = 1;
 		this->textButtonHover = RESUME_GAME;
 	}
-	else if ((x > 294) && (x < 332) && (y>212) && (y < 228))
+	else if ((x > 294) && (x < 332) && (y > 262) && (y < 278))
 	{
 		this->mouseHover = 1;
 		this->textButtonHover = END_GAME;
@@ -124,15 +120,15 @@ void GameMenu::CheckMouseMoveAndReact(int x, int y)
 
 int GameMenu::CheckWhereMouseClickedAndReact(int x, int y)
 {
-	if ((x > 261) && (x < 362) && (y>112) && (y < 128))
+	if ((x > 261) && (x < 380) && (y>162) && (y < 179))
 	{
 		return NEW_GAME;
 	}
-	else if ((x > 273) && (x < 361) && (y>162) && (y < 179))
+	else if ((x > 273) && (x < 361) && (y>212) && (y < 228))
 	{
 		return RESUME_GAME;
 	}
-	else if ((x > 294) && (x < 332) && (y>212) && (y < 228))
+	else if ((x > 294) && (x < 332) && (y>262) && (y < 278))
 	{
 		return END_GAME;
 	}

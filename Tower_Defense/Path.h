@@ -10,14 +10,12 @@
 class Path
 {
 public:
-	std::vector<std::pair<float, float>> pathPoints;
-	std::vector<std::pair<float, float>> possibleTowerPoints;
-	//Terrain* terrain;
+	vector<pair<float, float>> pathPoints;
+	vector<pair<float, float>> possibleTowerPoints;
 
-	//Path(Terrain* terrain);
 	Path();
 	~Path();
-	void Init(char *filename);
+	void Init(const string &filename);
 	Vector3f GetRotation(const Vector3f &currentPos, int nextPathPointIndex) const;
 private:
 	struct RgbPoint
@@ -50,7 +48,7 @@ private:
 	const static char defaultPointChar = '-';
 
 	void SmoothPath();
-	void LoadPathMap(char *filename);
+	void LoadPathMap(const string &filename);
 	void CalculatePathPoints(char **map);
 	char RgbToPointChar(const RgbPoint &rgbPoint) const;
 };

@@ -1,38 +1,33 @@
+#include <Windows.h>
 #include <iostream>
-
+#include <sstream>
 
 #include "Tower.h"
 #include "Camera.h"
-//#include "Wave.h"
 #include "Text.h"
-
 #include "Player.h"
 #include "GameMenu.h"
 #include "GameHUD.h"
 #include "Player.h"
 #include "GameConstsDefinitions.h"
-
 #include "Mouse.h"
 #include "PickingTexture.h"
 #include "PickingTechnique.h"
-#include <sstream>
-
 #include "Level.h"
+<<<<<<< HEAD
 #include "ShadowMapFBO.h"
 #include "ShadowMapTechnique.h"
 #include "BasicLighting.h"
+=======
+#include "Audio.h"
+>>>>>>> origin/master
 
-/*Global variables -- temporary*/
-int refreshMills = 30;        // refresh interval in milliseconds
-
+int refreshMills = 30;
 long long m_frameTime;
 int m_frameCount;
 int m_fps;
 
-
 Camera cam;
-
-Mesh* testObject; 
 
 BasicLightingTechnique* light;		//use this shaders for static objects
 SkinningTechnique* m_pEffect;
@@ -41,25 +36,19 @@ PickingTechnique* m_pickingEffect;
 ShadowMapTechnique* m_pShadowMapEffect;
 ShadowMapFBO m_shadowMapFBO;
 
-
 DirectionalLight m_directionalLight;
 
 Text* text;
-
-//vector<Tower*> towerList;
-
 
 Level* lvl;
 Level* lvl2;
 
 Mouse mouse;
-
-
 string displayedText = "Tower Defense alpha 0.2";
 
 float m_scale = 0;
-	static const float FieldDepth = 400.0f;
-	static const float FieldWidth = 400.0f;
+static const float FieldDepth = 400.0f;
+static const float FieldWidth = 400.0f;
 
 bool gameIsRunning = false;
 bool gameInProgress = false;
@@ -67,8 +56,10 @@ bool showHud = true;
 
 GameMenu *menu;
 GameHUD *hud;
+Audio *audio;
 
 
+<<<<<<< HEAD
 Mesh* m_pQuad;
     Texture* m_pGroundTex;
 
@@ -81,6 +72,9 @@ SpotLight sl[1];
 
 
 void initGL() 
+=======
+void InitGL() 
+>>>>>>> origin/master
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
 
@@ -117,8 +111,12 @@ void initGL()
 
 }
 
+<<<<<<< HEAD
 
 void CalcShadow()
+=======
+void GameProgress()
+>>>>>>> origin/master
 {
 	m_shadowMapFBO.BindForWriting();
 
@@ -241,13 +239,18 @@ void Render()
 				" z: " << closest.second;
 			displayedText = ss.str();
 
-			if (Player::getPlayer().money >= Tower::cost)
+			if ((Player::getPlayer().money >= Tower::cost))
 			{
-				Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
-				tower->LoadModel(11);
-				tower->LoadMissile(21);
-				lvl->towerList.push_back(tower);
-				Player::getPlayer().TowerBuy();
+				if ((hud->selectedTower == FIRST_TOWER))
+				{
+					Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
+					tower->LoadModel(11);
+					tower->LoadMissile(21);
+					lvl->towerList.push_back(tower);
+					Player::getPlayer().TowerBuy();
+				}
+				else
+					displayedText = "You need to select tower first";
 			}
 		}
 		else
@@ -262,11 +265,15 @@ void Render()
 	p.WorldPos(0.f, 0.f, 0.f);
 	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
 	light->SetWVP(p.GetWVPTrans());
+<<<<<<< HEAD
 	light->SetWorldMatrix(p.GetWorldTrans());        
 
 	p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
     light->SetLightWVP(p.GetWVPTrans());
 
+=======
+	light->SetWV(p.GetWVTrans());
+>>>>>>> origin/master
 	lvl->terrain->Render();
 
 
@@ -303,7 +310,6 @@ void Render()
 		lvl->towerList[i]->Reload();
 	}
 	lvl->AdvanceToNextWave();
-
 	//----- end 3D drawing 
 
 	// ---- 2D drawing on screen eg. menu text etc.
@@ -319,12 +325,14 @@ void Render()
 
 	if (Player::getPlayer().lives == 0)
 	{
-		text->RenderText("GAME OVER", 280, 240, 1, glm::vec3(1, 0, 0));		//add some function to exit to menu
+		//text->RenderText("GAME OVER", 280, 240, 1, glm::vec3(1, 0, 0));		//add some function to exit to menu
+		hud->DrawGameOverInfo();
 	}
 	if (lvl->IsWon())
 	{
-		text->RenderText("CONGRATULATION YOU WON", 150, 240, 1, glm::vec3(0, 1, 0));		//add some function to advance to next
-		text->RenderText("Click 'n' and wait", 200, 200, 1, glm::vec3(1, 1, 1));		//add some function to advance to next
+		//text->RenderText("CONGRATULATION YOU WON", 150, 240, 1, glm::vec3(0, 1, 0));		//add some function to advance to next
+		//text->RenderText("Click 'n' and wait", 200, 200, 1, glm::vec3(1, 1, 1));		//add some function to advance to next
+		hud->DrawYouWonInfo();
 	}
 
 	text->RenderText(displayedText, 10, 10, 1, glm::vec3(1, 1, 1));
@@ -335,6 +343,7 @@ void Render()
 
 }
 
+<<<<<<< HEAD
 void NewGame()
 {
 	m_frameCount++;
@@ -357,27 +366,35 @@ void NewGame()
 }
 
 // funkcja generuj¹ca scenê 3D
+=======
+>>>>>>> origin/master
 void Display()
 {
-	//start of 3d Drawing
-
 	if (gameIsRunning)
 	{
 		gameInProgress = true;
-		NewGame();
+		GameProgress();
+		glutSwapBuffers();
+		if (Player::lives <= 0)
+		{
+			Sleep(2500);
+			gameIsRunning = false;
+			gameInProgress = false;
+		}
 	}
-
-	//----- end 3D drawing 
-
-	// ---- 2D drawing menu 
 	else
 	{
 		menu->Draw(gameInProgress);				
+		glutSwapBuffers();
 	}
+<<<<<<< HEAD
 	//end of 2D drawing
 
 	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 
+=======
+	//cout << glGetError() << endl;
+>>>>>>> origin/master
 }
 
 // change window size
@@ -401,7 +418,8 @@ void Reshape( int width, int height )
 }
 
 
-void timer(int value) {
+void timer(int value) 
+{
 	glutPostRedisplay();					// Post re-paint request to activate display()
 	glutTimerFunc(refreshMills, timer, 0);	// next timer call milliseconds later
 }
@@ -430,38 +448,37 @@ void Keyboard( unsigned char key, int x, int y )
 	Reshape( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
 }
 
-//Dzia³a nie tykaæ
 void SpecialKeys( int key, int x, int y )
 {
-	double movementSpeed = 10.0;
+	const double movementSpeed = 10.0;
 
 	switch( key )
 	{
-		// kursor w lewo
 	case GLUT_KEY_LEFT:
 		cam.MoveLeft(movementSpeed);
 		break;
-		// kursor w górê
 	case GLUT_KEY_UP:
 		cam.MoveForward(movementSpeed);
 		break;
-		// kursor w prawo
 	case GLUT_KEY_RIGHT:
 		cam.MoveRight(movementSpeed);
 		break;
-		// kursor w dó³
 	case GLUT_KEY_DOWN:
 		cam.MoveBackward(movementSpeed);
 		break;
 	}
-	// odrysowanie okna
-	Reshape( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
+}
+
+void PrepareNewGame()
+{
+	Player::getPlayer().Init(1, 100);
+	lvl = new Level();
+	lvl->LoadFromFile("Levels/level.txt");
 }
 
 void ResetGame()
 {
-	//need implementation
-	std::cout << "NEED IMPLEMENTATION FUNCTION ResetGame in main.cpp" << std::endl;
+	PrepareNewGame();
 }
 
 void HandleUserCommand(int menuOption)
@@ -470,8 +487,7 @@ void HandleUserCommand(int menuOption)
 	{
 	case NEW_GAME:
 		gameIsRunning = true;
-		if (gameInProgress)
-			ResetGame();
+		ResetGame();
 		break;
 	case END_GAME:
 		std::cout << "end of game" << std::endl;
@@ -498,13 +514,9 @@ void MouseFunc(int button, int state, int x, int y)
 	{
 		mouse.MouseLeftClick(x, y);
 		if (gameIsRunning)
-		{
-			result = hud->CheckWhereMouseClickedAndReact(x, y);
-		}
+			result = hud->CheckWhereMouseClickedAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
 		else
-		{
-			result = menu->CheckWhereMouseClickedAndReact(x, y);
-		}
+			result = menu->CheckWhereMouseClickedAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
 	}
 	else if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP)
 	{
@@ -522,19 +534,18 @@ void MotionFunc(int x, int y)
 
 void PassiveMotionFunc(int x, int y)
 {
+	mouse.MouseMove(x, y);
 	if (gameIsRunning)
-	{
-		hud->CheckMouseMoveAndReact(x, y);
-	}
+		hud->CheckMouseMoveAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
 	else
-	{
-		menu->CheckMouseMoveAndReact(x, y);
-	}
+		menu->CheckMouseMoveAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
 }
 
 
 int main( int argc, char * argv[] )
 {
+	audio = new Audio();
+
 	Magick::InitializeMagick(*argv);
 	// inicjalizacja biblioteki GLUT
 	glutInit( & argc, argv );
@@ -565,8 +576,12 @@ int main( int argc, char * argv[] )
 	glutMouseFunc(MouseFunc);
 	glutMotionFunc(MotionFunc);
 	glutPassiveMotionFunc(PassiveMotionFunc);
+<<<<<<< HEAD
 
 	
+=======
+	InitGL();
+>>>>>>> origin/master
 	glewInit();
 
 
@@ -578,10 +593,15 @@ int main( int argc, char * argv[] )
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
 	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
+<<<<<<< HEAD
 
 	if (!m_shadowMapFBO.Init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
 		return false;
     }
+=======
+	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
+	PathsContainer::LoadPath(1, "Models/path1.bmp");
+>>>>>>> origin/master
 
 	
 	light = Engine::getEngine().getLight();
@@ -598,6 +618,7 @@ int main( int argc, char * argv[] )
 	m_pickingTexture = Engine::getEngine().getpickingTexture();
 	m_pickingEffect = Engine::getEngine().getpickingEffect();
 
+<<<<<<< HEAD
 	m_pEffect->Init();
 	m_pickingTexture->Init(WINDOW_WIDTH, WINDOW_HEIGHT);
 	m_pickingEffect->Init();
@@ -633,35 +654,51 @@ int main( int argc, char * argv[] )
 	lvl = new Level();
 	lvl->cam = &cam;
 	lvl->LoadFromFile("Levels/level.txt");
+=======
+	light->Enable();
+	light->SetFogColor(Vector4f(0.5f, 0.5f, 0.5f, 1.f));
+	light->SetFogDensity(0.003);
+>>>>>>> origin/master
 
 
 	text = new Text(24);
 
 	glutTimerFunc(0, timer, 0);
 
+<<<<<<< HEAD
 	Player::getPlayer().Init(5,100);
 
 
 
+=======
+	PrepareNewGame();
+	Player::lives = 0;
+
+	audio->Play();
+>>>>>>> origin/master
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
-	try{
+	try
+	{
 		glutMainLoop();
 	}
 	catch (const char *msg)
 	{
-		std::cout << "Game terminated";
+		std::cout << "Game terminated\n";
 	}
 
 	delete text;
 	for (int i = 0; i < lvl->towerList.size(); i++)
 		delete lvl->towerList[i];
-	delete testObject;
 	delete m_pickingEffect;
 	delete m_pickingTexture;
 	delete m_pEffect;
 	delete light;
+	delete menu;
+	delete hud;
 	ModelsContainer::FreeResources();
+	TerrainsContainer::FreeResources();
+	PathsContainer::FreeResources();
 
 	return 0;
 }
