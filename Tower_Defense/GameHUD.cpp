@@ -229,7 +229,7 @@ int GameHUD::CheckWhereMouseClickedAndReact(int x, int y)
 			break;
 		}
 	}
-	std::cout << "x " << x << "y " << y << std::endl;
+	//std::cout << "x " << x << "y " << y << std::endl;
 }
 
 int GameHUD::ShowHide()

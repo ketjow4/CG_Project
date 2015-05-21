@@ -518,6 +518,7 @@ void HandleUserCommand(int menuOption)
 void MouseFunc(int button, int state, int x, int y)
 {
 	int result = DO_NOTHING;
+
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
 		mouse.MouseLeftClick(x, y);
@@ -531,6 +532,8 @@ void MouseFunc(int button, int state, int x, int y)
 		mouse.MouseRightClick(x, y);
 		result = hud->ShowHide();
 	}
+	else if (state == GLUT_DOWN)
+		audio->MouseClick();
 	if (result != DO_NOTHING)
 		HandleUserCommand(result);
 }

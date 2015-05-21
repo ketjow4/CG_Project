@@ -14,10 +14,13 @@ public:
 	~Audio();
 
 	void Play(std::string fileName);
+	void MouseClick();
 	void PlayBackground();
+
 private:
-	OutputStreamPtr stream;
+	
 	AudioDevicePtr device;
 
+	void LoadFile();
 };
 
