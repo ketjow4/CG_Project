@@ -39,7 +39,7 @@ void Enemy::UpdatePosition(Pipeline *p, Camera* cam)
 	p->Scale(0.3f, 0.3f, 0.3f);
 	float x = path->pathPoints[pathIndex].first;
 	float z = path->pathPoints[pathIndex].second;
-	float y = terrain->GetTerrainHeight(x, z) + 10;
+	float y = terrain->GetTerrainHeight(x, z);
 	rotation = path->GetRotation(Vector3f(x,y,z),pathIndex);
 	p->Rotate(rotation);
 

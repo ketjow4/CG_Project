@@ -91,10 +91,11 @@ void Tower::UpdateMissile(Pipeline *p, Missile *missile, list<Enemy*> *enemies)
 void Tower::RenderMissile(Missile *missile, Pipeline *p)
 {
 	p->WorldPos(missile->pos);
-	p->Scale(5, 5, 5);		//temporary missile scale can be differen than tower scale
+	p->Scale(.5f, .5f, .5f);
 	p->Rotate(0, 0, 0);
 	light->SetWVP(p->GetWVPTrans());
 	light->SetWV(p->GetWVTrans());
+	light->SetWorldMatrix(p->GetWorldTrans());
 	missileModel->Render();
 }
 

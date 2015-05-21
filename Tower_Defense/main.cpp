@@ -581,9 +581,9 @@ int main(int argc, char * argv[])
 
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
 	ModelsContainer::LoadMesh(11, new SkinnedMesh(FIRST_TOWER_MATERIAL), "Models/firstTower.md5mesh");
-	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
+	ModelsContainer::LoadMesh(21, new Mesh, "Models/grayMissile.fbx");
 	ModelsContainer::LoadMesh(12, new SkinnedMesh(SEC_TOWER_MATERIAL), "Models/secondTower.md5mesh");
-	ModelsContainer::LoadMesh(22, new Mesh, "Models/missile.fbx");
+	ModelsContainer::LoadMesh(22, new Mesh, "Models/greenMissile.fbx");
 
 	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
 	PathsContainer::LoadPath(1, "Models/path1.bmp");
