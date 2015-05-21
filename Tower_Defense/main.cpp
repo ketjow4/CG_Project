@@ -447,6 +447,7 @@ void Keyboard( unsigned char key, int x, int y )
 	{
 		lvl->towerList.clear();
 		lvl2 = new Level();
+		lvl2->cam = cam;
 		lvl2->LoadFromFile("Levels/level2.txt");
 		lvl = lvl2;
 	}
