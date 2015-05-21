@@ -310,12 +310,12 @@ void CalcShadow()
 	m_pSkinnedShadowMapEffect->Enable();
 	for (int i = 0; i < lvl->towerList.size(); i++)
 	{
-		lvl->towerList[i]->CalcAnimation(m_pSkinnedShadowMapEffect);
 		p.Scale(lvl->towerList[i]->GetScale());
 		p.Rotate(0, 90, -90);
 		p.WorldPos(lvl->towerList[i]->GetPosition());
 		p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
 		m_pSkinnedShadowMapEffect->SetWVP(p.GetWVPTrans());
+		lvl->towerList[i]->CalcAnimation(m_pSkinnedShadowMapEffect);
 		lvl->towerList[i]->model->Render();
 	}
 
@@ -559,8 +559,7 @@ void Reshape(int width, int height)
 
 	mouse.SetWindowSize(width, height);
 	m_pickingTexture->Init(width, height);
-	if (gameIsRunning)
-		m_shadowMapFBO->Init(width, height);
+	m_shadowMapFBO->Init(width, height);
 }
 
 void Timer(int value)
