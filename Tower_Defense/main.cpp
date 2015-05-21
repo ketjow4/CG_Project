@@ -162,6 +162,7 @@ void CalcShadow()
 		p.WorldPos(lvl->towerList[i]->GetPosition());
 		p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
 		m_pShadowMapEffect->SetWVP(p.GetWVPTrans());
+		
 		lvl->towerList[i]->model->Render();
 	}
 
