@@ -35,20 +35,21 @@ void Enemy::UpdatePosition(Pipeline *p, Camera* cam)
 	effectId = HP < 50 ? 1 : 0;		// TMP effect change
 
 	light->SetWVP(p->GetWVPTrans());
-	light->SetWorldMatrix(p->GetWorldTrans());   
+	light->SetWV(p->GetWVTrans());
+	light->SetWorldMatrix(p->GetWorldTrans());
 	light->SetColorEffect(EffectColor[effectId]);
 	light->SetColorEffectIntensity(EffectIntensity[effectId]);
 	p->SetCamera(Vector3f(-100.0, 300.0, -100.0f), Vector3f(0.2f, -1.0f, 0.1f), Vector3f(0.0f, 1.0f, 0.0f));
 	light->SetLightWVP(p->GetWVPTrans());
-	
 
 	model->Render();
 
 	p->SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 	light->SetColorEffectIntensity(0.f);
 
-	if (++pathIndex >= path->pathPoints.size() - 1)				//object arrived at end point		-- for now return to start 
+	if (++pathIndex >= path->pathPoints.size() - 1)				//object arrived at end point 
 	{
+		HP = 0;
 		pathIndex = 0;
 		Player::getPlayer().LooseLive(Attack);
 	}

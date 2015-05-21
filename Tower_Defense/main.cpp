@@ -267,9 +267,8 @@ void Render()
 	p.WorldPos(0.f, 0.f, 0.f);
 	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 	light->SetWVP(p.GetWVPTrans());
-
-	light->SetWorldMatrix(p.GetWorldTrans());        
 	light->SetWV(p.GetWVTrans());
+	light->SetWorldMatrix(p.GetWorldTrans());
 
 	p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
     light->SetLightWVP(p.GetWVPTrans());
