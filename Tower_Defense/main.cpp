@@ -34,6 +34,7 @@ ShadowMapFBO* m_shadowMapFBO;
 DirectionalLight m_directionalLight;
 SpotLight sl[1];
 Camera* cam;
+PersProjInfo pers;
 Text* text;
 Level* lvl;
 Mouse mouse;
@@ -56,15 +57,20 @@ Audio *audio;
 void InitGL();
 void InitGlut(int argc, char * argv[]);
 void InitShaders();
+
 void Display();
 void Render();
 void GameProgress();
+void CalcPickingCoords(Pipeline &p);
 void CalcShadow();
+void CheckMouseLeftClick();
+
 void PrepareNewGame();
 void ResetGame();
 void HandleUserCommand(int menuOption);
+
 void Reshape(int width, int height);
-void timer(int value);
+void Timer(int value);
 void Keyboard(unsigned char key, int x, int y);
 void SpecialKeys(int key, int x, int y);
 void MouseFunc(int button, int state, int x, int y);
@@ -96,7 +102,7 @@ int main(int argc, char * argv[])
 	PathsContainer::LoadPath(2, "Models/path2.bmp");
 
 
-	glutTimerFunc(0, timer, 0);
+	glutTimerFunc(0, Timer, 0);
 
 	audio = new Audio();
 	//audio->PlayBackground();
@@ -159,6 +165,30 @@ void InitGL()
 	sl[0].Position = Vector3f(-100.0, 300.0, -100.0f);
 	sl[0].Direction = Vector3f(0.2f, -1.0f, 0.1f);
 	//sl[0].Cutoff =  240.0f;
+
+	pers.FOV = 90;
+	pers.Height = WINDOW_HEIGHT;
+	pers.Width = WINDOW_WIDTH;
+	pers.zFar = 1000.0f;
+	pers.zNear = 0.1f;
+}
+
+void InitGlut(int argc, char * argv[])
+{
+	glutInit(&argc, argv);// inicjalizacja biblioteki GLUT
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);// inicjalizacja bufora ramki
+	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);// rozmiary g³ównego okna programu
+	mouse.SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	glutCreateWindow("Tower Defense");// utworzenie g³ównego okna programu
+	glutDisplayFunc(Display);// do³¹czenie funkcji generuj¹cej scenê 3D
+	glutReshapeFunc(Reshape);// do³¹czenie funkcji wywo³ywanej przy zmianie rozmiaru okna
+	glutKeyboardFunc(Keyboard);// do³¹czenie funkcji obs³ugi klawiatury
+
+	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
+	glutSpecialFunc(SpecialKeys);
+	glutMouseFunc(MouseFunc);
+	glutMotionFunc(MotionFunc);
+	glutPassiveMotionFunc(PassiveMotionFunc);
 }
 
 void InitShaders()
@@ -210,16 +240,7 @@ void InitShaders()
 void CalcShadow()
 {
 	m_shadowMapFBO->BindForWriting();
-
 	glClear(GL_DEPTH_BUFFER_BIT);
-
-
-	PersProjInfo pers;
-	pers.FOV = 90;
-	pers.Height = WINDOW_HEIGHT;
-	pers.Width = WINDOW_WIDTH;
-	pers.zFar = 1000.0f;
-	pers.zNear = 0.1f;
 
 	Pipeline p;
 	p.SetPerspectiveProj(pers);
@@ -228,7 +249,7 @@ void CalcShadow()
 	//p.Rotate(0.0f, 0.0f, 0.0f);
 	//p.WorldPos(0.f, 0.f, 0.f);
 	//p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
-	//   m_pShadowMapEffect->SetWVP(p.GetWVPTrans());
+	//m_pShadowMapEffect->SetWVP(p.GetWVPTrans());
 	//lvl->terrain->Render();
 
 	m_pShadowMapEffect->Enable();
@@ -262,24 +283,6 @@ void CalcShadow()
 void Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	light->Enable();
-
-	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
-
-
-
-	PersProjInfo pers;
-	pers.FOV = 90;
-	pers.Height = WINDOW_HEIGHT;
-	pers.Width = WINDOW_WIDTH;
-	pers.zFar = 1000.0f;
-	pers.zNear = 0.1f;
-	Pipeline p;
-	p.SetPerspectiveProj(pers);
-
-
-
 	//m_scale += 0.057;
 	//PointLight pl[2];
 	//for (int i = 0; i < 2; i++)
@@ -292,86 +295,26 @@ void Render()
 	//}
 	//light->SetPointLights(2, pl);
 
-
+	Pipeline p;
+	p.SetPerspectiveProj(pers);
 	p.Rotate(0.0f, 90.0f, 0.0f);
 	p.WorldPos(0.0f, 0.0f, 1.0f);
 	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 	p.SetPerspectiveProj(pers);
-
 	lvl->currentWave->p = &p;
 
-	light->Enable();
+	CalcPickingCoords(p);
+	CheckMouseLeftClick();
 
+	m_shadowMapFBO->BindForReading(GL_TEXTURE1);
+	light->Enable();
+	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
 	light->SetWVP(p.GetWVPTrans());
-	const Matrix4f& WorldTransformation = p.GetWorldTrans();
-	light->SetWorldMatrix(WorldTransformation);
+	light->SetWorldMatrix(p.GetWorldTrans());
 	light->SetDirectionalLight(m_directionalLight);
 	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
 	light->SetMatSpecularIntensity(0.5f);
 	light->SetMatSpecularPower(2);
-
-	m_pickingTexture->EnableWriting();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	m_pickingEffect->Enable();
-
-	p.Scale(1.f, 1.f, 1.f);
-	p.Rotate(0.0f, 0.0f, 0.0f);
-	p.WorldPos(0.f, 0.f, 0.f);
-	light->SetWVP(p.GetWVPTrans());
-	m_pickingEffect->SetWVP(p.GetWVPTrans());
-	lvl->terrain->Render();
-
-
-	m_pickingTexture->DisableWriting();
-
-	m_shadowMapFBO->BindForReading(GL_TEXTURE1);
-
-	if (mouse.leftClick)
-	{
-		mouse.leftClick = false;
-
-		PickingTexture::PixelInfo Pixel = m_pickingTexture->ReadPixel(mouse.pos2d.x, mouse.pos2d.y);
-		mouse.SetPos3d(Pixel.x, Pixel.y, Pixel.z);
-		pair<float, float> closest;
-		if (mouse.DistToClosest(lvl->path->possibleTowerPoints, closest) < 20.f)
-		{
-			if ((Player::getPlayer().money >= Tower::cost))
-			{
-				if ((hud->selectedTower == NO_SELECTION))
-				{
-					displayedText = "You need to select tower first";
-				}
-				else if (lvl->occupiedTowerPoints.find(closest) != lvl->occupiedTowerPoints.end())
-				{
-					displayedText = "There's already a tower here";
-				}
-				else
-				{
-					Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
-					lvl->occupiedTowerPoints.insert(closest);
-					if (hud->selectedTower == FIRST_TOWER)
-					{
-						tower->LoadModel(11);
-						tower->LoadMissile(21);
-					}
-					else if (hud->selectedTower == SECOND_TOWER)
-					{
-						tower->LoadModel(12);
-						tower->LoadMissile(22);
-					}
-
-					lvl->towerList.push_back(tower);
-					Player::getPlayer().TowerBuy();
-					hud->action = DO_NOTHING;
-					hud->selectedTower = NO_SELECTION;
-				}
-
-			}
-		}
-	}
-
-
-	light->Enable();
 
 	p.Scale(1.f, 1.f, 1.f);
 	p.Rotate(0.0f, 0.0f, 0.0f);
@@ -454,29 +397,65 @@ void Render()
 
 }
 
-
-void GameProgress()
+void CalcPickingCoords(Pipeline &p)
 {
-	m_frameCount++;
+	m_pickingTexture->EnableWriting();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	m_pickingEffect->Enable();
 
-	long long time = GetCurrentTimeMillis();
+	p.Scale(1.f, 1.f, 1.f);
+	p.Rotate(0.0f, 0.0f, 0.0f);
+	p.WorldPos(0.f, 0.f, 0.f);
+	light->SetWVP(p.GetWVPTrans());
+	m_pickingEffect->SetWVP(p.GetWVPTrans());
+	lvl->terrain->Render();
 
-	if (time - m_frameTime >= 1000) {
-		m_frameTime = time;
-		m_fps = m_frameCount;
-		m_frameCount = 0;
-	}
-
-
-	cam->UpdateCamera();
-
-	CalcShadow();
-	Render();
-
-
+	m_pickingTexture->DisableWriting();
 }
 
-// funkcja generuj¹ca scenê 3D
+void CheckMouseLeftClick()
+{
+	if (!mouse.leftClick)
+		return;
+	mouse.leftClick = false;
+	PickingTexture::PixelInfo Pixel = m_pickingTexture->ReadPixel(mouse.pos2d.x, mouse.pos2d.y);
+	mouse.SetPos3d(Pixel.x, Pixel.y, Pixel.z);
+	pair<float, float> closest;
+	if (mouse.DistToClosest(lvl->path->possibleTowerPoints, closest) < 20.f)
+	{
+		if ((Player::getPlayer().money >= Tower::cost))
+		{
+			if ((hud->selectedTower == NO_SELECTION))
+			{
+				displayedText = "You need to select tower first";
+			}
+			else if (lvl->occupiedTowerPoints.find(closest) != lvl->occupiedTowerPoints.end())
+			{
+				displayedText = "There's already a tower here";
+			}
+			else
+			{
+				Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
+				lvl->occupiedTowerPoints.insert(closest);
+				if (hud->selectedTower == FIRST_TOWER)
+				{
+					tower->LoadModel(11);
+					tower->LoadMissile(21);
+				}
+				else if (hud->selectedTower == SECOND_TOWER)
+				{
+					tower->LoadModel(12);
+					tower->LoadMissile(22);
+				}
+				lvl->towerList.push_back(tower);
+				Player::getPlayer().TowerBuy();
+				hud->action = DO_NOTHING;
+				hud->selectedTower = NO_SELECTION;
+			}
+
+		}
+	}
+}
 
 void Display()
 {
@@ -497,8 +476,60 @@ void Display()
 		menu->Draw(gameInProgress);
 		glutSwapBuffers();
 	}
+}
 
-	//end of 2D drawing
+void GameProgress()
+{
+	m_frameCount++;
+	long long time = GetCurrentTimeMillis();
+	if (time - m_frameTime >= 1000) {
+		m_frameTime = time;
+		m_fps = m_frameCount;
+		m_frameCount = 0;
+	}
+	cam->UpdateCamera();
+	CalcShadow();
+	Render();
+}
+
+void PrepareNewGame()
+{
+	Player::getPlayer().Init(3, 30);
+	//delete lvl;
+	lvl = new Level();
+	lvl->cam = cam;
+	lvl->LoadFromFile("Levels/level.txt");
+}
+
+void ResetGame()
+{
+	PrepareNewGame();
+}
+
+void HandleUserCommand(int menuOption)
+{
+	switch (menuOption)
+	{
+	case NEW_GAME:
+		gameIsRunning = true;
+		ResetGame();
+		break;
+	case END_GAME:
+		std::cout << "End of game" << std::endl;
+		throw "EXIT";
+		break;
+	case PAUSE_GAME:
+		if (showHud)
+			gameIsRunning = false;
+		break;
+	case RESUME_GAME:
+		if (gameInProgress)
+			gameIsRunning = true;
+		break;
+	case SHOW_HIDE_HUD:
+		showHud = !showHud;
+		break;
+	}
 }
 
 // change window size
@@ -523,10 +554,10 @@ void Reshape(int width, int height)
 		m_shadowMapFBO->Init(width, height);
 }
 
-void timer(int value)
+void Timer(int value)
 {
 	glutPostRedisplay();					// Post re-paint request to activate display()
-	glutTimerFunc(refreshMills, timer, 0);	// next timer call milliseconds later
+	glutTimerFunc(refreshMills, Timer, 0);	// next Timer call milliseconds later
 }
 
 void Keyboard(unsigned char key, int x, int y)
@@ -571,46 +602,6 @@ void SpecialKeys(int key, int x, int y)
 	}
 }
 
-void PrepareNewGame()
-{
-	Player::getPlayer().Init(3, 30);
-	//delete lvl;
-	lvl = new Level();
-	lvl->cam = cam;
-	lvl->LoadFromFile("Levels/level.txt");
-}
-
-void ResetGame()
-{
-	PrepareNewGame();
-}
-
-void HandleUserCommand(int menuOption)
-{
-	switch (menuOption)
-	{
-	case NEW_GAME:
-		gameIsRunning = true;
-		ResetGame();
-		break;
-	case END_GAME:
-		std::cout << "End of game" << std::endl;
-		throw "EXIT";
-		break;
-	case PAUSE_GAME:
-		if (showHud)
-			gameIsRunning = false;
-		break;
-	case RESUME_GAME:
-		if (gameInProgress)
-			gameIsRunning = true;
-		break;
-	case SHOW_HIDE_HUD:
-		showHud = !showHud;
-		break;
-	}
-}
-
 void MouseFunc(int button, int state, int x, int y)
 {
 	int result = DO_NOTHING;
@@ -646,28 +637,4 @@ void PassiveMotionFunc(int x, int y)
 		hud->CheckMouseMoveAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
 	else
 		menu->CheckMouseMoveAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
-}
-
-void InitGlut(int argc, char * argv[])
-{
-	// inicjalizacja biblioteki GLUT
-	glutInit(&argc, argv);
-	// inicjalizacja bufora ramki
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
-	// rozmiary g³ównego okna programu
-	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-	mouse.SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-	// utworzenie g³ównego okna programu
-	glutCreateWindow("Tower Defense");
-	// do³¹czenie funkcji generuj¹cej scenê 3D
-	glutDisplayFunc(Display);
-	// do³¹czenie funkcji wywo³ywanej przy zmianie rozmiaru okna
-	glutReshapeFunc(Reshape);
-	// do³¹czenie funkcji obs³ugi klawiatury
-	glutKeyboardFunc(Keyboard);
-	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
-	glutSpecialFunc(SpecialKeys);
-	glutMouseFunc(MouseFunc);
-	glutMotionFunc(MotionFunc);
-	glutPassiveMotionFunc(PassiveMotionFunc);
 }
