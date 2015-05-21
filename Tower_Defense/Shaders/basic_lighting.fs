@@ -1,15 +1,4 @@
-#version 330
-
-const int MAX_POINT_LIGHTS = 2;    
-const int MAX_SPOT_LIGHTS = 2;   
-
-in vec4 LightSpacePos;  
-in vec2 TexCoord0;
-in vec3 Normal0;     
-in vec3 WorldPos0;                                                                 
-in float fogFactor;                                                             
-                                                                                    
-out vec4 FragColor;                                                                 
+#version 330                                                                
                                                                                     
 struct ColorEffect
 {
@@ -51,6 +40,17 @@ struct SpotLight
     float Cutoff;                                                                           
 };                                                              
 
+const int MAX_POINT_LIGHTS = 2;    
+const int MAX_SPOT_LIGHTS = 2;   
+
+in vec4 LightSpacePos;  
+in vec2 TexCoord0;
+in vec3 Normal0;     
+in vec3 WorldPos0;                                                                 
+in float fogFactor;                                                             
+                                                                                    
+out vec4 FragColor; 
+
 uniform int gNumPointLights;  
 uniform int gNumSpotLights;   
 uniform DirectionalLight gDirectionalLight; 
@@ -63,6 +63,32 @@ uniform float gMatSpecularIntensity;
 uniform float gSpecularPower;                                                       
 uniform vec4 fogColor;                                                      
 uniform ColorEffect gColorEffect;                                                     
+
+float CalcShadowFactor(vec4 LightSpacePos);
+vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal,            
+                       float ShadowFactor);
+vec4 CalcDirectionalLight(vec3 Normal);  
+vec4 CalcPointLight(PointLight l, vec3 Normal, vec4 LightSpacePos);      
+vec4 CalcSpotLight(SpotLight l, vec3 Normal, vec4 LightSpacePos);      
+
+void main()                                                                         
+{                                                                                   
+    vec3 Normal = normalize(Normal0);                                                       
+    vec4 TotalLight = CalcDirectionalLight(Normal);                                         
+
+    for (int i = 0 ; i < gNumPointLights ; i++) {                                           
+        TotalLight += CalcPointLight(gPointLights[i], Normal, LightSpacePos);               
+    }                                                                                       
+                                                                                            
+    for (int i = 0 ; i < gNumSpotLights ; i++) {                                            
+        TotalLight += CalcSpotLight(gSpotLights[i], Normal, LightSpacePos);                 
+    }      
+	
+    vec4 normalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight;
+    vec4 colorWithEffect = mix(normalColor, gColorEffect.Color, gColorEffect.EffectIntensity);
+    vec4 foggedColor = mix(colorWithEffect, fogColor, fogFactor);
+	FragColor = foggedColor;
+}
 
 float CalcShadowFactor(vec4 LightSpacePos)                                                  
 {                                                                                           
@@ -137,23 +163,4 @@ vec4 CalcSpotLight(SpotLight l, vec3 Normal, vec4 LightSpacePos)
    // else {                                                                                  
       //  return vec4(0,0,0,0);                                                               
    // }                                                                                       
-}        
-
-void main()                                                                         
-{                                                                                   
-    vec3 Normal = normalize(Normal0);                                                       
-    vec4 TotalLight = CalcDirectionalLight(Normal);                                         
-
-    for (int i = 0 ; i < gNumPointLights ; i++) {                                           
-        TotalLight += CalcPointLight(gPointLights[i], Normal, LightSpacePos);               
-    }                                                                                       
-                                                                                            
-    for (int i = 0 ; i < gNumSpotLights ; i++) {                                            
-        TotalLight += CalcSpotLight(gSpotLights[i], Normal, LightSpacePos);                 
-    }      
-	
-    vec4 normalColor = texture2D(gSampler, TexCoord0.xy) * TotalLight;
-    vec4 colorWithEffect = mix(normalColor, gColorEffect.Color, gColorEffect.EffectIntensity);
-    vec4 foggedColor = mix(colorWithEffect, fogColor, fogFactor);
-	FragColor = foggedColor;
-}
+}     

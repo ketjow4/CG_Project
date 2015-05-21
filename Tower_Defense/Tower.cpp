@@ -82,6 +82,7 @@ void Tower::RenderMissile(Missile *missile, Pipeline *p)
 	p->Scale(5, 5, 5);		//temporary missile scale can be differen than tower scale
 	p->Rotate(0, 0, 0);
 	light->SetWVP(p->GetWVPTrans());
+	light->SetWV(p->GetWVTrans());
 	missileModel->Render();
 }
 
@@ -125,8 +126,9 @@ void Tower::Render(Pipeline *p, Camera* cam)
 	p->Scale(towerScale,towerScale,towerScale);
 	p->Rotate(0,90,-90);
 	p->WorldPos(towerPos);
+	m_pEffect->SetWV(p->GetWVTrans());
 	m_pEffect->SetWVP(p->GetWVPTrans());
-	m_pEffect->SetWorldMatrix(p->GetWorldTrans());   
+	m_pEffect->SetWorldMatrix(p->GetWorldTrans()); 
 
 	p->SetCamera(Vector3f(-100.0, 300.0, -100.0f), Vector3f(0.2f, -1.0f, 0.1f), Vector3f(0.0f, 1.0f, 0.0f));
 	m_pEffect->SetLightWVP(p->GetWVPTrans());

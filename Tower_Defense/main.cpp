@@ -623,9 +623,14 @@ int main(int argc, char * argv[])
 	m_pEffect->SetSpotLights(1,sl);
 	
 
+	const Vector4f fogColor(0.5f, 0.5f, 0.5f, 1.f);
+	const float fogDensity = 0.003f;
 	light->Enable();
-	light->SetFogColor(Vector4f(0.5f, 0.5f, 0.5f, 1.f));
-	light->SetFogDensity(0.003);
+	light->SetFogColor(fogColor);
+	light->SetFogDensity(fogDensity);
+	m_pEffect->Enable();
+	m_pEffect->SetFogColor(fogColor);
+	m_pEffect->SetFogDensity(fogDensity);
 
 	text = new Text(24);
 
