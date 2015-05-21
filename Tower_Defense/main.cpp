@@ -243,16 +243,26 @@ void Render()
 
 			if ((Player::getPlayer().money >= Tower::cost))
 			{
-				if ((hud->selectedTower == FIRST_TOWER))
+				if ((hud->selectedTower == NO_SELECTION))
+				{
+					displayedText = "You need to select tower first";
+				}
+				else
 				{
 					Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
-					tower->LoadModel(11);
+					if (hud->selectedTower == FIRST_TOWER)
+						tower->LoadModel(11);
+					else if (hud->selectedTower == SECOND_TOWER)
+						tower->LoadModel(31);
+					else
+						displayedText = "Not a possible tower position";
 					tower->LoadMissile(21);
 					lvl->towerList.push_back(tower);
 					Player::getPlayer().TowerBuy();
+					hud->action = DO_NOTHING;
+					hud->selectedTower = NO_SELECTION;
 				}
-				else
-					displayedText = "You need to select tower first";
+					
 			}
 		}
 		else
@@ -321,8 +331,10 @@ void Render()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);																						//after this
 
 	if (showHud)
+	{
+		text->RenderText(displayedText, 320, 10, 1, glm::vec3(0.2, 0.2, 0.2));
 		hud->Draw(lvl->currentWave->enemyList->size());
-
+	}
 
 	if (Player::getPlayer().lives == 0)
 	{
@@ -336,7 +348,7 @@ void Render()
 		hud->DrawYouWonInfo();
 	}
 
-	text->RenderText(displayedText, 10, 10, 1, glm::vec3(1, 1, 1));
+
 
 	glDisable(GL_BLEND);																															//before this
 	glEnable(GL_DEPTH_TEST);
@@ -572,8 +584,9 @@ int main(int argc, char * argv[])
 	hud = new GameHUD();
 
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
-	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
+	ModelsContainer::LoadMesh(11, new SkinnedMesh(FIRST_TOWER_MATERIAL), "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
+	ModelsContainer::LoadMesh(31, new SkinnedMesh(SEC_TOWER_MATERIAL), "Models/secondTower.md5mesh");
 
 	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
 	PathsContainer::LoadPath(1, "Models/path1.bmp");

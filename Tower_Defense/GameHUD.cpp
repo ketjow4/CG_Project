@@ -30,15 +30,20 @@ GameHUD::GameHUD()
 	{
 		std::cout << "Error. Can not load first tower clicked image" << std::endl;
 	}
-	NotAvaiTowerImg = new Texture(GL_TEXTURE_2D, "Menu/notAvalTower.jpg");
-	if (!NotAvaiTowerImg->Load())
+	SecondTowerImg = new Texture(GL_TEXTURE_2D, "Menu/secTower.jpg");
+	if (!SecondTowerImg->Load())
 	{
-		std::cout << "Error. Can not load first tower clicked image" << std::endl;
+		std::cout << "Error. Can not load second tower image" << std::endl;
 	}
-	NotAvaiTowerImgHover = new Texture(GL_TEXTURE_2D, "Menu/notAvalTowerHover.jpg");
-	if (!NotAvaiTowerImgHover->Load())
+	SecondTowerImgHover = new Texture(GL_TEXTURE_2D, "Menu/secTowerHover.jpg");
+	if (!SecondTowerImgHover->Load())
 	{
-		std::cout << "Error. Can not load first tower clicked image" << std::endl;
+		std::cout << "Error. Can not load second tower hover image" << std::endl;
+	}
+	SecondTowerImgClick = new Texture(GL_TEXTURE_2D, "Menu/secTowerClicked.jpg");
+	if (!SecondTowerImgClick->Load())
+	{
+		std::cout << "Error. Can not load second tower clicked image" << std::endl;
 	}
 	GameOver = new Texture(GL_TEXTURE_2D, "Menu/GameOverBig.png");
 	if (!GameOver->Load())
@@ -59,6 +64,9 @@ GameHUD::~GameHUD()
 	delete FirstTowerImg;
 	delete FirstTowerImgClick;
 	delete FirstTowerImgHover;
+	delete SecondTowerImg;
+	delete SecondTowerImgHover;
+	delete SecondTowerImgClick;
 	delete BackgroundImg;
 	delete text;
 	delete text14;
@@ -84,24 +92,28 @@ void GameHUD::DrawTextureButtons()
 	switch (action)
 	{
 	case FIRST_TOWER_HOVER:
-		text14->RenderText("First Tower", 520, 410, 1, glm::vec3(1, 1, 1));
-		draw2d.RenderQuad(597, 395, 43, 59, 1, FirstTowerImgHover);
-		draw2d.RenderQuad(597, 336, 43, 59, 1, NotAvaiTowerImg);
+		text14->RenderText("Simple Tower", FirstTowerX, FirstTowerY + 60, 1, glm::vec3(0.2, 0.2, 0.2));
+		draw2d.RenderQuad(FirstTowerX, FirstTowerY, 43, 59, 1, FirstTowerImgHover);
+		draw2d.RenderQuad(SecondTowerX, SecondTowerY, 43, 59, 1, SecondTowerImg);
 		action = DO_NOTHING;
 		break;
 	case SEC_TOWER_HOVER:
-		text14->RenderText("Not Available", 507, 350, 1, glm::vec3(1, 1, 1));
-		draw2d.RenderQuad(597, 395, 43, 59, 1, FirstTowerImg);
-		draw2d.RenderQuad(597, 336, 43, 59, 1, NotAvaiTowerImgHover);
+		text14->RenderText("Toxic Tower", FirstTowerX, SecondTowerY + 60, 1, glm::vec3(0.2, 0.2, 0.2));
+		draw2d.RenderQuad(FirstTowerX, FirstTowerY, 43, 59, 1, FirstTowerImg);
+		draw2d.RenderQuad(SecondTowerX, SecondTowerY, 43, 59, 1, SecondTowerImgHover);
 		action = DO_NOTHING;
 		break;
 	case FIRST_TOWER_CLICKED:
-		draw2d.RenderQuad(597, 395, 43, 59, 1, FirstTowerImgClick);
-		draw2d.RenderQuad(597, 336, 43, 59, 1, NotAvaiTowerImg);
+		draw2d.RenderQuad(FirstTowerX, FirstTowerY, 43, 59, 1, FirstTowerImgClick);
+		draw2d.RenderQuad(SecondTowerX, SecondTowerY, 43, 59, 1, SecondTowerImg);
+		break;
+	case SEC_TOWER_CLICKED:
+		draw2d.RenderQuad(FirstTowerX, FirstTowerY, 43, 59, 1, FirstTowerImg);
+		draw2d.RenderQuad(SecondTowerX, SecondTowerY, 43, 59, 1, SecondTowerImgClick);
 		break;
 	case DO_NOTHING:
-		draw2d.RenderQuad(597, 395, 43, 59, 1, FirstTowerImg);
-		draw2d.RenderQuad(597, 336, 43, 59, 1, NotAvaiTowerImg);
+		draw2d.RenderQuad(FirstTowerX, FirstTowerY, 43, 59, 1, FirstTowerImg);
+		draw2d.RenderQuad(SecondTowerX, SecondTowerY, 43, 59, 1, SecondTowerImg);
 	}
 }
 
@@ -135,12 +147,12 @@ void GameHUD::DrawButtons()
 			break;
 		case SEC_TOWER_HOVER:
 			text->RenderText("MENU", 585, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
-			if (action != FIRST_TOWER_CLICKED)
+			if (action != FIRST_TOWER_CLICKED && action != SEC_TOWER_CLICKED)
 				action = SEC_TOWER_HOVER;
 			break;
 		case FIRST_TOWER_HOVER:
 			text->RenderText("MENU", 585, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
-			if( action != FIRST_TOWER_CLICKED)
+			if( action != FIRST_TOWER_CLICKED && action != SEC_TOWER_CLICKED)
 				action = FIRST_TOWER_HOVER;
 			break;
 		}
@@ -158,12 +170,12 @@ void GameHUD::CheckMouseMoveAndReact(int x, int y)
 		this->mouseHover = 1;
 		this->buttonHover = PAUSE_GAME;
 	}
-	else if ((x > 597) && (x < 640) && (y>20) && (y < 87))
+	else if ((x > FirstTowerMouseX) && (x < FirstTowerMouseX + 43) && (y > FirstTowerMouseY - 59) && (y < FirstTowerMouseY))
 	{
 		this->mouseHover = 1;
 		this->buttonHover = FIRST_TOWER_HOVER;
 	}
-	else if ((x > 597) && (x < 640) && (y>87) && (y < 136))
+	else if ((x > SecondTowerMouseX) && (x < SecondTowerMouseX + 43) && (y > SecondTowerMouseY - 59) && (y < SecondTowerMouseY))
 	{
 		this->mouseHover = 1;
 		this->buttonHover = SEC_TOWER_HOVER;
@@ -180,20 +192,44 @@ int GameHUD::CheckWhereMouseClickedAndReact(int x, int y)
 	{
 		return PAUSE_GAME;
 	}
-	else if ((x > 597) && (x < 640) && (y>20) && (y < 84))
+	else if ((x > FirstTowerMouseX) && (x < FirstTowerMouseX + 43) && (y > FirstTowerMouseY - 59) && (y < FirstTowerMouseY))
 	{
-		if (action == FIRST_TOWER_CLICKED)
+		switch (action)
 		{
+		case FIRST_TOWER_CLICKED:
 			action = DO_NOTHING;
 			selectedTower = NO_SELECTION;
-		}
-		else
-		{
+			break;
+		case SEC_TOWER_CLICKED:
+			action = DO_NOTHING;
+			selectedTower = FIRST_TOWER;
+			break;
+		default:
 			action = FIRST_TOWER_CLICKED;
 			selectedTower = FIRST_TOWER;
+			break;
 		}
 		return DO_NOTHING;
 	}
+	else if ((x > SecondTowerMouseX) && (x < SecondTowerMouseX + 43) && (y > SecondTowerMouseY - 59) && (y < SecondTowerMouseY))
+	{
+		switch (action)
+		{
+		case FIRST_TOWER_CLICKED:
+			action = DO_NOTHING;
+			selectedTower = SECOND_TOWER;
+			break;
+		case SEC_TOWER_CLICKED:
+			action = DO_NOTHING;
+			selectedTower = NO_SELECTION;
+			break;
+		default:
+			action = SEC_TOWER_CLICKED;
+			selectedTower = SECOND_TOWER;
+			break;
+		}
+	}
+	std::cout << "x " << x << "y " << y << std::endl;
 }
 
 int GameHUD::ShowHide()

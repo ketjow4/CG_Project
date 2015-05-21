@@ -15,13 +15,14 @@
 #include "math_3d.h"
 #include "texture.h"
 #include "Renderable.h"
+#include "GameConstsDefinitions.h"
 
 using namespace std;
 
 class SkinnedMesh : public Renderable
 {
 public:
-    SkinnedMesh();
+	SkinnedMesh(int selectMaterial = 0);
 
     ~SkinnedMesh();
 
@@ -38,6 +39,7 @@ public:
     
 private:
     #define NUM_BONES_PER_VEREX 4
+	string materialName;
 
     struct BoneInfo
     {

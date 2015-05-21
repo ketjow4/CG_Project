@@ -21,12 +21,22 @@ public:
 	int  ShowHide();
 
 	int selectedTower;
+	int buttonHover;
+	int action;
 
 private:
 
+	const int FirstTowerX = 0;
+	const int FirstTowerY = 0;
+	const int SecondTowerX = FirstTowerX + 43;
+	const int SecondTowerY = FirstTowerY;
+
+	const int FirstTowerMouseX = 0;
+	const int FirstTowerMouseY = 480;
+	const int SecondTowerMouseX = FirstTowerMouseX + 43;
+	const int SecondTowerMouseY = FirstTowerMouseY;
+
 	int mouseHover;
-	int buttonHover;
-	int action;
 	Drawing2D draw2d;
 
 	Text *text;
@@ -35,9 +45,10 @@ private:
 	Texture *BackgroundImg;
 	Texture *FirstTowerImg;
 	Texture *FirstTowerImgHover;
-	Texture *NotAvaiTowerImg;
-	Texture *NotAvaiTowerImgHover;
+	Texture *SecondTowerImg;
+	Texture *SecondTowerImgHover;
 	Texture *FirstTowerImgClick;
+	Texture *SecondTowerImgClick;
 	Texture *GameOver;
 	Texture *YouWon;
 

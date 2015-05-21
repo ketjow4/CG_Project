@@ -22,12 +22,18 @@ void SkinnedMesh::VertexBoneData::AddBoneData(uint BoneID, float Weight)
     assert(0);
 }
 
-SkinnedMesh::SkinnedMesh()
+SkinnedMesh::SkinnedMesh(int selectMaterial)
 {
     m_VAO = 0;
     ZERO_MEM(m_Buffers);
     m_NumBones = 0;
     m_pScene = NULL;
+	if (selectMaterial == SEC_TOWER_MATERIAL)
+		materialName = "second";
+	else if (selectMaterial == FIRST_TOWER_MATERIAL)
+		materialName = "first";
+	else
+		materialName = "";
 }
 
 
@@ -254,7 +260,7 @@ bool SkinnedMesh::InitMaterials(const aiScene* pScene, const string& Filename)
                     p = p.substr(2, p.size() - 2);
                 }
                                
-                string FullPath = Dir + "/" + p;
+                string FullPath = Dir + "/" + materialName + p;
                     
                 m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());
 
