@@ -35,6 +35,7 @@
     <ClCompile Include="TerrainsContainer.cpp" />
     <ClCompile Include="PathsContainer.cpp" />
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="SkinnedShadowTechnique.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingCylinder.h" />
@@ -74,5 +75,6 @@
     <ClInclude Include="TerrainsContainer.h" />
     <ClInclude Include="PathsContainer.h" />
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="SkinnedShadowTechnique.h" />
   </ItemGroup>
 </Project>

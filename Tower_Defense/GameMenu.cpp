@@ -25,7 +25,7 @@ void GameMenu::Draw(bool _gameInProgress)
 {
 	this->gameInProgress = _gameInProgress;
 
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//don't change anything below this
 	glDepthMask(GL_FALSE);  // disable writes to Z-Buffer

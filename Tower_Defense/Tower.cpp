@@ -115,18 +115,20 @@ void Tower::LoadMissile(int key)
 
 void Tower::CalcAnimation()
 {
-	//m_pEffect->Enable();
-	 
 	vector<Matrix4f> Transforms;
-               
 	float RunningTime = reloading / 25.f;
-
 	model->BoneTransform(RunningTime, Transforms);
-        
     for (uint i = 0 ; i < Transforms.size() ; i++)
-	{
         m_pEffect->SetBoneTransform(i, Transforms[i]);
-    }
+}
+
+void Tower::CalcAnimation(SkinnedShadowTechnique *m_SkinnedShadowTechnique)
+{
+	vector<Matrix4f> Transforms;
+	float RunningTime = reloading / 25.f;
+	model->BoneTransform(RunningTime, Transforms);
+	for (uint i = 0; i < Transforms.size(); i++)
+		m_SkinnedShadowTechnique->SetBoneTransform(i, Transforms[i]);
 }
 
 void Tower::Render(Pipeline *p, Camera* cam)

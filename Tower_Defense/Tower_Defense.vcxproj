@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -122,6 +122,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClCompile Include="ShadowMapFBO.cpp" />
     <ClCompile Include="ShadowMapTechnique.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
+    <ClCompile Include="SkinnedShadowTechnique.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="SkinningTechnique.cpp" />
     <ClCompile Include="TerrainsContainer.cpp" />
@@ -160,6 +161,7 @@ xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
     <ClInclude Include="ShadowMapTechnique.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="pipeline.h" />
+    <ClInclude Include="SkinnedShadowTechnique.h" />
     <ClInclude Include="SkinningTechnique.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TerrainsContainer.h" />
