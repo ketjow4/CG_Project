@@ -2,24 +2,30 @@
 
 
 ShadowMapFBO::ShadowMapFBO()
-{
-    m_fbo = 0;
-    m_shadowMap = 0;
-}
+	: m_fbo(0), m_shadowMap(0)
+{}
 
 ShadowMapFBO::~ShadowMapFBO()
 {
-    if (m_fbo != 0) {
-        glDeleteFramebuffers(1, &m_fbo);
-    }
+	FreeResources();
+}
 
-    if (m_shadowMap != 0) {
-        glDeleteTextures(1, &m_shadowMap);
-    }
+void ShadowMapFBO::FreeResources()
+{
+	if (m_fbo != 0) {
+		glDeleteFramebuffers(1, &m_fbo);
+	}
+
+	if (m_shadowMap != 0) {
+		glDeleteTextures(1, &m_shadowMap);
+	}
 }
 
 bool ShadowMapFBO::Init(unsigned int WindowWidth, unsigned int WindowHeight)
 {
+	// Clean for reinit
+	FreeResources();
+
     // Create the FBO
     glGenFramebuffers(1, &m_fbo);
 

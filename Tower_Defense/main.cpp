@@ -410,6 +410,7 @@ void Reshape( int width, int height )
 
 	mouse.SetWindowSize(width, height);
 	m_pickingTexture->Init(width, height);
+	//m_shadowMapFBO.Init(width, height);
 }
 
 
@@ -422,7 +423,7 @@ void timer(int value)
 
 void Keyboard( unsigned char key, int x, int y )
 {
-	double angle = 5;
+	const double angle = 5;
 	if( key == 'z')
 	{
 		cam->Rotate(-angle);	//kat_obrotu += 5;
@@ -438,9 +439,6 @@ void Keyboard( unsigned char key, int x, int y )
 		lvl2->LoadFromFile("Levels/level2.txt");
 		lvl = lvl2;
 	}
-
-	// odrysowanie okna
-	Reshape( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
 }
 
 void SpecialKeys( int key, int x, int y )
@@ -589,22 +587,22 @@ int main( int argc, char * argv[] )
 	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
 
-
-	if (!m_shadowMapFBO.Init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
-		return false;
-    }
-
 	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
 	PathsContainer::LoadPath(1, "Models/path1.bmp");
 	TerrainsContainer::LoadTerrain(2, "Models/terrain2.bmp", "Models/terrain2texture.bmp", 0.2);
 	PathsContainer::LoadPath(2, "Models/path2.bmp");
-
-
 	
+	if (!m_shadowMapFBO.Init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
+		return false;
+	}
+	m_pShadowMapEffect = new ShadowMapTechnique();
+	if (!m_pShadowMapEffect->Init()) {
+		printf("Error initializing the shadow map technique\n");
+		return false;
+	}
+
 	light = Engine::getEngine().getLight();
-
 	light->Init();		//very important
-
 	light->Enable();
 	light->SetSpotLights(1, sl);
     light->SetTextureUnit(0);
@@ -622,39 +620,22 @@ int main( int argc, char * argv[] )
 
 	m_pEffect->Enable();
 	m_pEffect->SetSpotLights(1,sl);
-
-	 m_pShadowMapEffect = new ShadowMapTechnique();
-
-        if (!m_pShadowMapEffect->Init()) {
-            printf("Error initializing the shadow map technique\n");
-            return false;
-        } 
-
-
+	
 
 	light->Enable();
 	light->SetFogColor(Vector4f(0.5f, 0.5f, 0.5f, 1.f));
 	light->SetFogDensity(0.003);
 
-
-
 	text = new Text(24);
 
 	glutTimerFunc(0, timer, 0);
 
-
-	Player::getPlayer().Init(5,100);
-
 	PrepareNewGame();
-	Player::lives = 0;
-
 	//audio->Play();
 
-
-	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	try
 	{
-		glutMainLoop();
+		glutMainLoop();// wprowadzenie programu do obs³ugi pêtli komunikatów
 	}
 	catch (const char *msg)
 	{
@@ -664,6 +645,7 @@ int main( int argc, char * argv[] )
 	delete text;
 	for (int i = 0; i < lvl->towerList.size(); i++)
 		delete lvl->towerList[i];
+	delete m_pShadowMapEffect;
 	delete m_pickingEffect;
 	delete m_pickingTexture;
 	delete m_pEffect;
