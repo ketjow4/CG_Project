@@ -49,6 +49,7 @@ public:
 private:
 	SkinnedMesh *model;
 	Mesh *missileModel;
+	int missileType;
 
 	void CalcAnimation();
 	void UpdateMissile(Pipeline * p, Missile* missile, list<Enemy*> *enemies);

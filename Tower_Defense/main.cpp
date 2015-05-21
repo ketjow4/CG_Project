@@ -44,7 +44,7 @@ Level* lvl;
 Level* lvl2;
 
 Mouse mouse;
-string displayedText = "Tower Defense alpha 0.2";
+string displayedText = "Tower Defense gamma 0.99";
 
 float m_scale = 0;
 static const float FieldDepth = 400.0f;
@@ -235,12 +235,6 @@ void Render()
 		pair<float, float> closest;
 		if (mouse.DistToClosest(lvl->path->possibleTowerPoints, closest) < 20.f)
 		{
-			ostringstream ss;
-			ss << " x: " << closest.first <<
-				" y: " << lvl->terrain->GetTerrainHeight(closest.first, closest.second) <<
-				" z: " << closest.second;
-			displayedText = ss.str();
-
 			if ((Player::getPlayer().money >= Tower::cost))
 			{
 				if ((hud->selectedTower == NO_SELECTION))
@@ -251,12 +245,16 @@ void Render()
 				{
 					Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
 					if (hud->selectedTower == FIRST_TOWER)
+					{
 						tower->LoadModel(11);
+						tower->LoadMissile(21);
+					}
 					else if (hud->selectedTower == SECOND_TOWER)
-						tower->LoadModel(31);
-					else
-						displayedText = "Not a possible tower position";
-					tower->LoadMissile(21);
+					{
+						tower->LoadModel(12);
+						tower->LoadMissile(22);
+					}
+					
 					lvl->towerList.push_back(tower);
 					Player::getPlayer().TowerBuy();
 					hud->action = DO_NOTHING;
@@ -265,8 +263,6 @@ void Render()
 					
 			}
 		}
-		else
-			displayedText = "Not a possible tower position";
 	}
 
 
@@ -586,7 +582,8 @@ int main(int argc, char * argv[])
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
 	ModelsContainer::LoadMesh(11, new SkinnedMesh(FIRST_TOWER_MATERIAL), "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
-	ModelsContainer::LoadMesh(31, new SkinnedMesh(SEC_TOWER_MATERIAL), "Models/secondTower.md5mesh");
+	ModelsContainer::LoadMesh(12, new SkinnedMesh(SEC_TOWER_MATERIAL), "Models/secondTower.md5mesh");
+	ModelsContainer::LoadMesh(22, new Mesh, "Models/missile.fbx");
 
 	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
 	PathsContainer::LoadPath(1, "Models/path1.bmp");

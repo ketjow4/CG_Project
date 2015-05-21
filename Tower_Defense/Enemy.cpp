@@ -4,8 +4,11 @@ const float Enemy::EffectIntensity[2] = { 0.f, 0.4f };
 const Vector4f Enemy::EffectColor[2] = { Vector4f(1.f, 1.f, 1.f, 1.f), Vector4f(0.2f, 1.f, 0.f, 1.f) };
 
 Enemy::Enemy()
-	: pathIndex(0), HP(100), Attack(1)
-{}
+	: pathIndex(0), HP(100), Attack(1), effectId(0)
+{
+	poison.duration = 0;
+	poison.degenFreq = 10;
+}
 
 Enemy::~Enemy()
 {}
@@ -19,6 +22,17 @@ void Enemy::UpdatePosition(Pipeline *p, Camera* cam)
 {
 	light->Enable();
 
+	if (poison.duration > 0)
+	{
+		if (--poison.duration % poison.degenFreq == 0)
+			--HP;
+		effectId = 1;
+	}
+	else
+	{
+		effectId = 0;
+	}
+
 	if(HP <= 0)			//in future delete enemy in this case
 		return ;		
 
@@ -31,8 +45,6 @@ void Enemy::UpdatePosition(Pipeline *p, Camera* cam)
 
 	p->WorldPos(x,y+1.0,z);
 	position = Vector3f(x, y + 1, z);
-
-	effectId = HP < 50 ? 1 : 0;		// TMP effect change
 
 	light->SetWVP(p->GetWVPTrans());
 	light->SetWV(p->GetWVTrans());
