@@ -92,7 +92,7 @@ void Path::LoadPathMap(const string &filename)
 	delete pathData;
 #ifdef CHECK_POINTS
 	for (auto p : diffrentPoints)
-		printf("%d %d %d -> '%c'\n", p.r, p.g, p.b, RgbToPointChar(RgbPoint(p.r, p.g, p.g)));
+		printf("%d %d %d -> '%c'\n", p.r, p.g, p.b, RgbToPointChar(RgbPoint(p.r, p.g, p.b)));
 #endif
 
 	CalculatePathPoints(map);
@@ -189,7 +189,7 @@ char Path::RgbToPointChar(const RgbPoint &rgbPoint) const
 		return Path::beginPointChar;
 	if (rgbPoint == Path::endPoint)
 		return Path::endPointChar;
-	if (rgbPoint == Path::towerPoint)
+	if (rgbPoint == Path::towerPoint || rgbPoint == RgbPoint{ 255, 255, 0 })
 		return Path::towerPointChar;
 	return defaultPointChar;
 }

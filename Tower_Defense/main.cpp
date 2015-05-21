@@ -465,8 +465,10 @@ int main( int argc, char * argv[] )
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
 	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
-	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
-	PathsContainer::LoadPath(1, "Models/path1.bmp");
+	TerrainsContainer::LoadTerrain(2, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
+	PathsContainer::LoadPath(2, "Models/path1.bmp");
+	TerrainsContainer::LoadTerrain(1, "Models/terrain2.bmp", "Models/terrain2texture.bmp", 0.2);
+	PathsContainer::LoadPath(1, "Models/path2.bmp");
 
 	light = Engine::getEngine().getLight();
 	m_pEffect = Engine::getEngine().getEffect();
