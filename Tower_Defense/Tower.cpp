@@ -61,7 +61,19 @@ void Tower::UpdateMissile(Pipeline *p, Missile *missile, list<Enemy*> *enemies)
 	for (; it != enemies->end(); ++it)
 		if (missile->Collide(*it))
 		{
-			(*it)->HP -= 30;
+			switch (missileType)
+			{
+				case 22:
+					if ((*it)->poison.duration > 0)
+						(*it)->poison.degenFreq = max(1, (*it)->poison.degenFreq - 1);
+					else
+						(*it)->poison.degenFreq = 10;
+					(*it)->poison.duration = 300;
+					break;
+				default:
+					(*it)->HP -= 30;
+					break;
+			}
 			missile->lifetime = 0;
 			return;
 		}
@@ -79,10 +91,11 @@ void Tower::UpdateMissile(Pipeline *p, Missile *missile, list<Enemy*> *enemies)
 void Tower::RenderMissile(Missile *missile, Pipeline *p)
 {
 	p->WorldPos(missile->pos);
-	p->Scale(5, 5, 5);		//temporary missile scale can be differen than tower scale
+	p->Scale(.5f, .5f, .5f);
 	p->Rotate(0, 0, 0);
 	light->SetWVP(p->GetWVPTrans());
 	light->SetWV(p->GetWVTrans());
+	light->SetWorldMatrix(p->GetWorldTrans());
 	missileModel->Render();
 }
 
@@ -96,20 +109,16 @@ void Tower::LoadModel(int key)
 void Tower::LoadMissile(int key)
 {
 	missileModel = (Mesh*)ModelsContainer::Get(key);
+	missileType = key;
 }
 
 
 void Tower::CalcAnimation()
 {
-	m_pEffect->Enable();
+	//m_pEffect->Enable();
 	 
 	vector<Matrix4f> Transforms;
                
-    //float RunningTime = Engine::GetRunningTime();
-
-	//if( distance_to_target > Range)			//no animation playing when enemy is out of range
-	//	RunningTime = 0.1;
-
 	float RunningTime = reloading / 25.f;
 
 	model->BoneTransform(RunningTime, Transforms);

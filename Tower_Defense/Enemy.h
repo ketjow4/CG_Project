@@ -18,6 +18,7 @@
 
 class Enemy
 {
+
 public:
 	Vector3f position;
 	Vector3f rotation;
@@ -30,6 +31,11 @@ public:
 	double Attack;
 	int effectId;
 	Camera* cam;
+	struct Poison
+	{
+		int duration;
+		int degenFreq;
+	} poison;
 
 	Enemy();
 	~Enemy();

@@ -20,21 +20,10 @@ bool Missile::Collide(Enemy *enemy) const
 	for (; it != enemy->model->m_Entries.end(); ++it)
 	{
 		it->boundingCylinder->SetTrans(enemyPos);
-		if (it->boundingCylinder->SphereCollision(pos, 10.f))
+		if (it->boundingCylinder->SphereCollision(pos, 5.f))
 			return true;
 	}
 	return false;
-
-	/*if (sqrt
-		(
-			pow(enemyPos.x - pos.x, 2.0) +
-			pow(enemyPos.y - pos.y, 2.0) +
-			pow(enemyPos.z - pos.z, 2.0)
-		) < 10.f)
-	{
-		return true;
-	}
-	return false;*/
 }
 
 bool Missile::Collide(Terrain *terrain) const
