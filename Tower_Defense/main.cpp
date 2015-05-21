@@ -639,7 +639,7 @@ int main(int argc, char * argv[])
 	PrepareNewGame();
 
 	audio = new Audio();
-	audio->Play();
+	audio->PlayBackground();
 
 	try
 	{

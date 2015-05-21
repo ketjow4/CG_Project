@@ -13,10 +13,11 @@ public:
 	Audio();
 	~Audio();
 
-	void Play();
+	void Play(std::string fileName);
+	void PlayBackground();
 private:
 	OutputStreamPtr stream;
-
+	AudioDevicePtr device;
 
 };
 
