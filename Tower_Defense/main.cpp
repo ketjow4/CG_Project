@@ -154,6 +154,16 @@ void CalcShadow()
 		(*it)->model->Render();
 	}
 
+	for (int i = 0; i < lvl->towerList.size(); i++)
+	{
+		p.Scale(lvl->towerList[i]->GetScale());
+		p.Rotate(0,90,-90);
+		p.WorldPos(lvl->towerList[i]->GetPosition());
+		p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
+		m_pShadowMapEffect->SetWVP(p.GetWVPTrans());
+		lvl->towerList[i]->model->Render();
+	}
+
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -288,7 +298,7 @@ void Render()
 
 
 
-	m_pEffect->Enable();
+	m_pEffect->Enable();		//leave it here
 	for (int i = 0; i < lvl->towerList.size(); i++)
 	{
 		lvl->towerList[i]->Render(&p, cam);
