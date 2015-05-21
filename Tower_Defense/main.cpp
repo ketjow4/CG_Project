@@ -410,7 +410,11 @@ void Reshape( int width, int height )
 
 	mouse.SetWindowSize(width, height);
 	m_pickingTexture->Init(width, height);
-	//m_shadowMapFBO.Init(width, height);
+	static bool firstReshape = true;
+	if (firstReshape)
+		firstReshape = false; 
+	else
+		m_shadowMapFBO.Init(width, height);
 }
 
 
@@ -444,7 +448,6 @@ void Keyboard( unsigned char key, int x, int y )
 void SpecialKeys( int key, int x, int y )
 {
 	const double movementSpeed = 10.0;
-
 	switch( key )
 	{
 	case GLUT_KEY_LEFT:
@@ -535,50 +538,36 @@ void PassiveMotionFunc(int x, int y)
 		menu->CheckMouseMoveAndReact(mouse.normalizedPos2d.x, mouse.normalizedPos2d.y);
 }
 
-
-int main( int argc, char * argv[] )
+void InitGlut(int argc, char * argv[])
 {
-	//audio = new Audio();
-
-	Magick::InitializeMagick(*argv);
 	// inicjalizacja biblioteki GLUT
-	glutInit( & argc, argv );
-
+	glutInit(&argc, argv);
 	// inicjalizacja bufora ramki
-	glutInitDisplayMode(  GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA );
-
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
 	// rozmiary g³ównego okna programu
-	glutInitWindowSize( WINDOW_WIDTH, WINDOW_HEIGHT );
-	
-	mouse.SetWindowSize( WINDOW_WIDTH, WINDOW_HEIGHT);
-
+	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	mouse.SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	// utworzenie g³ównego okna programu
-	glutCreateWindow( "Tower Defense" );
-
+	glutCreateWindow("Tower Defense");
 	// do³¹czenie funkcji generuj¹cej scenê 3D
-	glutDisplayFunc( Display );
-
+	glutDisplayFunc(Display);
 	// do³¹czenie funkcji wywo³ywanej przy zmianie rozmiaru okna
-	glutReshapeFunc( Reshape );
-
+	glutReshapeFunc(Reshape);
 	// do³¹czenie funkcji obs³ugi klawiatury
-	glutKeyboardFunc( Keyboard );
-
+	glutKeyboardFunc(Keyboard);
 	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
-	glutSpecialFunc( SpecialKeys );
-
+	glutSpecialFunc(SpecialKeys);
 	glutMouseFunc(MouseFunc);
 	glutMotionFunc(MotionFunc);
 	glutPassiveMotionFunc(PassiveMotionFunc);
+}
 
-
-
+int main(int argc, char * argv[])
+{
+	Magick::InitializeMagick(*argv);
+	InitGlut(argc, argv);
 	InitGL();
-
 	glewInit();
-
-
-	//initGL(); 
 
 	menu = new GameMenu();
 	hud = new GameHUD();
@@ -631,7 +620,9 @@ int main( int argc, char * argv[] )
 	glutTimerFunc(0, timer, 0);
 
 	PrepareNewGame();
-	//audio->Play();
+
+	audio = new Audio();
+	audio->Play();
 
 	try
 	{
