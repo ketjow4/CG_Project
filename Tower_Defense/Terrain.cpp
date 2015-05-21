@@ -16,7 +16,11 @@ Terrain::~Terrain()
 void Terrain::LoadHeightMap(const string &filename)
 {
 	FILE *file = fopen(filename.c_str(), "rb");
-	if (!file) { printf("terrain file error\n"); return; }
+	if (!file)
+	{
+		printf("Error loading terrain height map '%s'\n", filename.c_str());
+		return; 
+	}
 
 	// Get terrain width
 	fseek(file, 18, SEEK_SET);
@@ -50,6 +54,7 @@ void Terrain::LoadHeightMap(const string &filename)
 		}
 	}
 	delete terrainData;
+	printf("Loaded terrain height map '%s'\n", filename.c_str());
 }
 
 bool Terrain::IsTriangle2dCollision(float x, float z, const Triangle& triangle)
@@ -118,6 +123,17 @@ void Terrain::Init(const string &heightMap, const string &texture, float heightF
 
 	vector<Vertex> Vertices;
 	vector<unsigned int> Indices;
+	/*struct PairedTrianglesNormals
+	{
+		Vector3f *t1BottomLeft, *t1UpperLeft, *t1UpperRight;
+		Vector3f *t2BottomLeft, *t2UpperRight, *t2BottomRight;
+	};
+	vector<vector<PairedTrianglesNormals>> triangles(this->width);
+	for (vector<vector<PairedTrianglesNormals>>::iterator it = triangles.begin(); it != triangles.end(); ++it)
+		it->resize(this->height);
+	vector<vector<Vector3f>> flatNormals(this->width);
+	for (vector<vector<Vector3f>>::iterator it = flatNormals.begin(); it != flatNormals.end(); ++it)
+		it->resize(this->height);*/
 
 	unsigned int index = 0;
 	for (int i = 1; i < this->width; ++i)
@@ -129,76 +145,104 @@ void Terrain::Init(const string &heightMap, const string &texture, float heightF
 			triangle.vertices[0] = Vector3f(vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z);
 			triangle.vertices[1] = Vector3f(vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z);
 			triangle.vertices[2] = Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z);
-			Vector3f triangleNormal = GetNormal(triangle);
+			Vector3f triangleNormal = GetNormal(triangle) * -1.f;
+			//flatNormals[i][j] = triangleNormal;
+			//PairedTrianglesNormals &ptn = triangles[i][j];
 
 			Vertex t1BottomLeft
 				(
 				Vector3f( vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z ),
 				Vector2f( texCoordS, texCoordT ),
-				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal
+				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1BottomLeft);
 			AddThreeIndices(Indices, index);
+			//ptn.t1BottomLeft = &t1BottomLeft.m_normal;
 
 			Vertex t1UpperLeft
 				(
 				Vector3f(vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT),
-				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal
+				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1UpperLeft);
 			AddThreeIndices(Indices, index);
+			//ptn.t1UpperLeft = &t1UpperLeft.m_normal;
 
 			Vertex t1UpperRight
 				(
 				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
-				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal
+				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1UpperRight);
 			AddThreeIndices(Indices, index);
+			//ptn.t1UpperRight = &t1UpperRight.m_normal;
 
 			Vertex t2BottomLeft
 				(
 				Vector3f(vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z),
 				Vector2f(texCoordS, texCoordT),
-				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal
+				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2BottomLeft);
 			AddThreeIndices(Indices, index);
+			//ptn.t2BottomLeft = &t2BottomLeft.m_normal;
 
 			Vertex t2UpperRight
 				(
 				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
-				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal
+				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2UpperRight);
 			AddThreeIndices(Indices, index);
+			//ptn.t2UpperRight = &t2UpperRight.m_normal;
 
 			Vertex t2BottomRight
 				(
 				Vector3f(vertices[i - 1][j].x, vertices[i - 1][j].y, vertices[i - 1][j].z),
 				Vector2f(texCoordS, texCoordT + texCoordTStep),
-				//triangleNormal//Vector3f(0.0, 0.0, -1.0)
-				Vector3f(0.0, 0.0, -1.0)
+				triangleNormal
+				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2BottomRight);
 			AddThreeIndices(Indices, index);
+			//ptn.t2BottomRight = &t2BottomRight.m_normal;
 
 			texCoordT += texCoordTStep;
 		}
 		texCoordS += texCoordSStep;
 	}
 
+	/*for (int i = 2; i < this->width-1; ++i)
+	{
+		for (int j = 2; j < this->height-1; ++j)
+		{
+			vector<vector<Vector3f>> &N = flatNormals;
+			Vector3f bottomLeft = (N[i-1][j-1] + N[i-1][j] + N[i][j] + N[i][j-1]).Normalize();
+			Vector3f upperLeft = (N[i-1][j] + N[i-1][j+1] + N[i][j+1] + N[i][j]).Normalize();
+			Vector3f upperRight = (N[i][j] + N[i][j+1] + N[i+1][j+1] + N[i+1][j]).Normalize();
+			Vector3f bottomRight = (N[i][j-1] + N[i][j] + N[i+1][j] + N[i+1][j-1]).Normalize();
+
+			*triangles[i][j].t1BottomLeft = bottomLeft;
+			*triangles[i][j].t1UpperLeft = upperLeft;
+			*triangles[i][j].t1UpperRight = upperRight;
+			*triangles[i][j].t2BottomLeft = bottomLeft;
+			*triangles[i][j].t2BottomRight = bottomRight;
+			*triangles[i][j].t2UpperRight = upperRight;
+		}
+	}*/
+
 	m_Entries.resize(1);
 	m_Entries[0].Init(Vertices, Indices);
 	m_Entries[0].MaterialIndex = 0;
+	printf("Generated terrain model (from '%s')\n", heightMap.c_str());
 
 	m_Textures.resize(1);
 	m_Textures[0] = NULL;
@@ -206,14 +250,14 @@ void Terrain::Init(const string &heightMap, const string &texture, float heightF
 
 	if (!m_Textures[0]->Load())
 	{
-		printf("Error loading texture '%s'\n", texture);
+		printf("Error loading texture '%s'\n", texture.c_str());
 		delete m_Textures[0];
 		m_Textures[0] = NULL;
 
 	}
 	else 
 	{
-		printf("Loaded texture '%s'\n", texture);
+		printf("Loaded texture '%s'\n", texture.c_str());
 	}
 
 	SetMaxX();

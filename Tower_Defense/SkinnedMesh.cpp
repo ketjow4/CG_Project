@@ -265,7 +265,7 @@ bool SkinnedMesh::InitMaterials(const aiScene* pScene, const string& Filename)
                     Ret = false;
                 }
                 else {
-                    printf("%d - loaded texture '%s'\n", i, FullPath.c_str());
+                    printf("Loaded texture (%d) '%s'\n", i, FullPath.c_str());
                 }
             }
         }

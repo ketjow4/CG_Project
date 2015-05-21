@@ -167,7 +167,7 @@ void Render()
 
 	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
 
-	m_shadowMapFBO.BindForReading(GL_TEXTURE1);
+	
 
 	PersProjInfo pers;
 	pers.FOV = 90;
@@ -223,6 +223,8 @@ void Render()
 
 
 	m_pickingTexture->DisableWriting();
+
+	m_shadowMapFBO.BindForReading(GL_TEXTURE1);
 
 	if (mouse.leftClick)
 	{
@@ -484,7 +486,7 @@ void HandleUserCommand(int menuOption)
 		ResetGame();
 		break;
 	case END_GAME:
-		std::cout << "end of game" << std::endl;
+		std::cout << "End of game" << std::endl;
 		throw "EXIT";
 		break;
 	case PAUSE_GAME:
@@ -538,7 +540,7 @@ void PassiveMotionFunc(int x, int y)
 
 int main( int argc, char * argv[] )
 {
-	audio = new Audio();
+	//audio = new Audio();
 
 	Magick::InitializeMagick(*argv);
 	// inicjalizacja biblioteki GLUT
@@ -646,7 +648,7 @@ int main( int argc, char * argv[] )
 	PrepareNewGame();
 	Player::lives = 0;
 
-	audio->Play();
+	//audio->Play();
 
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
