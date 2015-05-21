@@ -46,8 +46,21 @@ public:
 	bool IsInRange(Vector3f enemyPos);
 
 	void RenderMissile(Missile *missile, Pipeline *p);
-private:
+
+	Vector3f GetPosition()
+	{
+		return towerPos;
+	}
+
+	Vector3f GetScale()
+	{
+		return Vector3f(towerScale,towerScale,towerScale);
+	}
+
 	SkinnedMesh *model;
+
+private:
+	
 	Mesh *missileModel;
 	int missileType;
 

@@ -26,15 +26,15 @@ public:
 
 private:
 
-	const int FirstTowerX = 0;
-	const int FirstTowerY = 0;
-	const int SecondTowerX = FirstTowerX + 43;
-	const int SecondTowerY = FirstTowerY;
+	const static int FirstTowerX = 0;
+	const static int FirstTowerY = 0;
+	const static int SecondTowerX = FirstTowerX + 43;
+	const static int SecondTowerY = FirstTowerY;
 
-	const int FirstTowerMouseX = 0;
-	const int FirstTowerMouseY = 480;
-	const int SecondTowerMouseX = FirstTowerMouseX + 43;
-	const int SecondTowerMouseY = FirstTowerMouseY;
+	const static int FirstTowerMouseX = 0;
+	const static int FirstTowerMouseY = 480;
+	const static int SecondTowerMouseX = FirstTowerMouseX + 43;
+	const static int SecondTowerMouseY = FirstTowerMouseY;
 
 	int mouseHover;
 	Drawing2D draw2d;

@@ -126,8 +126,9 @@ vec4 CalcPointLight(PointLight l, VSOutput In, vec4 LightSpacePos)
     vec3 LightDirection = In.WorldPos - l.Position;
     float Distance = length(LightDirection);
     LightDirection = normalize(LightDirection);
+	float ShadowFactor = CalcShadowFactor(LightSpacePos);
 
-    vec4 Color = CalcLightInternal(l.Base, LightDirection, In, 1.0);
+    vec4 Color = CalcLightInternal(l.Base, LightDirection, In, ShadowFactor);
     float Attenuation = l.Atten.Constant +
     l.Atten.Linear * Distance +
     l.Atten.Exp * Distance * Distance;
@@ -140,12 +141,12 @@ vec4 CalcSpotLight(SpotLight l, VSOutput In, vec4 LightSpacePos)
     vec3 LightToPixel = normalize(In.WorldPos - l.Base.Position);
     float SpotFactor = dot(LightToPixel, l.Direction);
 
-    if (SpotFactor > l.Cutoff)
-    {
+    //if (SpotFactor > l.Cutoff)
+    //{
         vec4 Color = CalcPointLight(l.Base, In, LightSpacePos);
         return Color * (1.0 - (1.0 - SpotFactor) * 1.0/(1.0 - l.Cutoff));
-    }
-    return vec4(0,0,0,0);
+   // }
+   // return vec4(0,0,0,0);
 }
 
 

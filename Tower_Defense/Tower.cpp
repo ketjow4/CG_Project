@@ -115,7 +115,7 @@ void Tower::LoadMissile(int key)
 
 void Tower::CalcAnimation()
 {
-	m_pEffect->Enable();
+	//m_pEffect->Enable();
 	 
 	vector<Matrix4f> Transforms;
                
