@@ -34,7 +34,7 @@ void Level::Load()
 		enList->push_back(en);
 	}
 
-	currentWave = new Wave(enList, 0, 50);
+	currentWave = new Wave(enList, 0, 50,cam);
 
 	list<Enemy*> *enList2;		//remember to add destructor
 	enList2 = new list<Enemy*>();
@@ -49,7 +49,7 @@ void Level::Load()
 		en->path = path;
 		enList2->push_back(en);
 	}
-	Wave* wave2 = new Wave(enList2, 0, 50);
+	Wave* wave2 = new Wave(enList2, 0, 50,cam);
 
 	waveList.push_back(currentWave);
 	waveList.push_back(wave2);
@@ -103,7 +103,7 @@ void Level::LoadFromFile(string filename)
 				en->path = path;
 				enList->push_back(en);
 			}
-			Wave* wave = new Wave(enList, 0, 50);
+			Wave* wave = new Wave(enList, 0, 50,cam);
 			waveList.push_back(wave);
 		}
 		currentWave = *waveList.begin();

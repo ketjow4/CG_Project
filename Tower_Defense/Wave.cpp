@@ -7,8 +7,8 @@ Wave::~Wave()
 			delete *it, it = enemyList->erase(it);
 }
 
-Wave::Wave(list<Enemy*>* list, Pipeline *p, int pathDifference)
-	: enemyList(list), p(p), pathDifference(pathDifference), j(0)
+Wave::Wave(list<Enemy*>* list, Pipeline *p, int pathDifference, Camera* c)
+	: enemyList(list), p(p), pathDifference(pathDifference), j(0), cam(c)
 {}
 
 
@@ -21,7 +21,7 @@ void Wave::UpdatePosition()
 			j++;
 		if(i > j)
 			break;
-		(*it)->UpdatePosition(p);
+		(*it)->UpdatePosition(p, cam);
 	}
 
 }
@@ -38,5 +38,14 @@ void Wave::ClearDead()
 		}
 		else
 			++it;
+	}
+}
+
+void Wave::Render()
+{
+	std::list<Enemy*>::iterator it = enemyList->begin();
+	for (int i = 0; it != enemyList->end(); ++it, ++i)
+	{
+		(*it)->model->Render();
 	}
 }

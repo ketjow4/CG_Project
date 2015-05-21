@@ -30,6 +30,8 @@
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="technique.cpp" />
     <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="ShadowMapFBO.cpp" />
+    <ClCompile Include="ShadowMapTechnique.cpp" />
     <ClCompile Include="TerrainsContainer.cpp" />
     <ClCompile Include="PathsContainer.cpp" />
     <ClCompile Include="Audio.cpp" />
@@ -67,6 +69,8 @@
     <ClInclude Include="technique.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="WorldObject.h" />
+    <ClInclude Include="ShadowMapFBO.h" />
+    <ClInclude Include="ShadowMapTechnique.h" />
     <ClInclude Include="TerrainsContainer.h" />
     <ClInclude Include="PathsContainer.h" />
     <ClInclude Include="Audio.h" />

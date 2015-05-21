@@ -14,19 +14,27 @@
 #include "PickingTexture.h"
 #include "PickingTechnique.h"
 #include "Level.h"
+
+#include "ShadowMapFBO.h"
+#include "ShadowMapTechnique.h"
+#include "BasicLighting.h"
+
 #include "Audio.h"
+
 
 int refreshMills = 30;
 long long m_frameTime;
 int m_frameCount;
 int m_fps;
 
-Camera cam;
+Camera* cam;
 
 BasicLightingTechnique* light;		//use this shaders for static objects
 SkinningTechnique* m_pEffect;
 PickingTexture* m_pickingTexture;
 PickingTechnique* m_pickingEffect;
+ShadowMapTechnique* m_pShadowMapEffect;
+ShadowMapFBO m_shadowMapFBO;
 
 DirectionalLight m_directionalLight;
 
@@ -51,9 +59,22 @@ GameHUD *hud;
 Audio *audio;
 
 
+
+
+SpotLight sl[1];
+
+
+#define WINDOW_WIDTH  640
+#define WINDOW_HEIGHT 480
+
+
+
+
 void InitGL() 
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
+
+
 	glClearDepth(1.0f);									// Set background depth to farthest
 	glEnable(GL_DEPTH_TEST);							// Enable depth testing for z-culling
 	glDepthFunc(GL_LEQUAL);								// Set the type of depth-test
@@ -61,71 +82,120 @@ void InitGL()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 	glEnable( GL_TEXTURE_2D );
 
+
+
 	m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-	m_directionalLight.AmbientIntensity = 0.4f;				//sila swiatla globalnego
-	m_directionalLight.DiffuseIntensity = 0.1f;
+	m_directionalLight.AmbientIntensity = 0.0f;				//sila swiatla globalnego
+	m_directionalLight.DiffuseIntensity = 0.0f;
 	m_directionalLight.Direction = Vector3f(1.0f, 1.0, 1.0).Normalize();
 
-	cam.eyey = 200;//100;
-	cam.eyex = 256;//256;
-	cam.eyez = 0;
-	cam.centerx = 1;
-	cam.centerz = 1;
-	cam.centery = 0;
+	cam = new Camera();
+
+	cam->eyey = 200;//100;
+	cam->eyex = 256;//256;
+	cam->eyez = 0;
+	cam->centerx = 1;
+	cam->centerz = 1;
+	cam->centery = 0;
+
+
+		sl[0].AmbientIntensity = 0.8f;
+        sl[0].DiffuseIntensity = 0.9f;
+        sl[0].Color = Vector3f(1.0f, 1.0f, 1.0f);
+        sl[0].Attenuation.Linear = 0.001f;
+        sl[0].Position  = Vector3f(-100.0, 300.0, -100.0f);
+        sl[0].Direction = Vector3f(0.2f, -1.0f, 0.1f);
+        //sl[0].Cutoff =  240.0f;
 
 }
 
-void GameProgress()
+
+
+
+
+
+
+
+void CalcShadow()
 {
-	m_frameCount++;
+	m_shadowMapFBO.BindForWriting();
 
-	long long time = GetCurrentTimeMillis();
+    glClear(GL_DEPTH_BUFFER_BIT);
 
-	if (time - m_frameTime >= 1000) {
-		m_frameTime = time;
-		m_fps = m_frameCount;
-		m_frameCount = 0;
-	}
-
-	cam.UpdateCamera();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-	light->Enable();
-
-	m_scale += 0.057;
-	PointLight pl[2];
-	for (int i = 0; i < 2; i++)
-	{
-		pl[i].DiffuseIntensity = 0.5f;
-		pl[i].AmbientIntensity = 1.8;
-		pl[i].Color = Vector3f(0.8f*i, 0.3f*i, 1.0f);
-		pl[i].Position = Vector3f(-150.0f*i, 1.0f, FieldDepth * (cosf(m_scale) + 1.0f) / 2.0f);
-		pl[i].Attenuation.Linear = 0.05f;
-	}
-	light->SetPointLights(2, pl);
-
-
-	SpotLight sl[1];
-		sl[0].AmbientIntensity = 0.8;
-        sl[0].DiffuseIntensity = 0.9f;
-        sl[0].Color = Vector3f(1.0f, 1.0f, 1.0f);
-        sl[0].Position = Vector3f(-150.0f, 50.0f, 10.0f);
-        sl[0].Direction = Vector3f(-0.5f, -1.0f, 0.5f);
-        sl[0].Attenuation.Linear = 0.001f;
-        sl[0].Cutoff = 270.0f;
-     light->SetSpotLights(1, sl);
-
+    m_pShadowMapEffect->Enable();
 
 	PersProjInfo pers;
 	pers.FOV = 90;
-	pers.Height = 480;
-	pers.Width = 640;
+	pers.Height = WINDOW_HEIGHT;
+	pers.Width = WINDOW_WIDTH;
 	pers.zFar = 1000.0f;
 	pers.zNear = 0.1f;
-	Pipeline p;				//important
-	//p.Scale(0.1f, 0.1f, 0.1f);
+
+    Pipeline p;
+	p.SetPerspectiveProj(pers);
+	
+	//p.Scale(1.f, 1.f, 1.f);
+	//p.Rotate(0.0f, 0.0f, 0.0f);
+	//p.WorldPos(0.f, 0.f, 0.f);
+	//p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
+ //   m_pShadowMapEffect->SetWVP(p.GetWVPTrans());
+	//lvl->terrain->Render();
+
+
+	std::list<Enemy*>::iterator it = lvl->currentWave->enemyList->begin();
+
+	for(it ; it != lvl->currentWave->enemyList->end(); it++)
+	{
+		p.Scale(0.3,0.3,0.3);
+		p.Rotate( (*it)->GetRotation());
+		p.WorldPos( (*it)->GetPosition());
+		p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
+		m_pShadowMapEffect->SetWVP(p.GetWVPTrans());
+		(*it)->model->Render();
+	}
+
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
+void Render()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+	
+	light->Enable();
+
+	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
+
+	m_shadowMapFBO.BindForReading(GL_TEXTURE1);
+
+	PersProjInfo pers;
+	pers.FOV = 90;
+	pers.Height = WINDOW_HEIGHT;
+	pers.Width = WINDOW_WIDTH;
+	pers.zFar = 1000.0f;
+	pers.zNear = 0.1f;
+	Pipeline p;	
+	p.SetPerspectiveProj(pers);
+
+	
+
+	//m_scale += 0.057;
+	//PointLight pl[2];
+	//for (int i = 0; i < 2; i++)
+	//{
+	//	pl[i].DiffuseIntensity = 0.5f;
+	//	pl[i].AmbientIntensity = 1.8;
+	//	pl[i].Color = Vector3f(0.8f*i, 0.3f*i, 1.0f);
+	//	pl[i].Position = Vector3f(-150.0f*i, 1.0f, FieldDepth * (cosf(m_scale) + 1.0f) / 2.0f);
+	//	pl[i].Attenuation.Linear = 0.05f;
+	//}
+	//light->SetPointLights(2, pl);
+
+
 	p.Rotate(0.0f, 90.0f, 0.0f);
 	p.WorldPos(0.0f, 0.0f, 1.0f);
-	p.SetCamera(Vector3f(cam.eyex, cam.eyey, cam.eyez), Vector3f(cam.centerx, cam.centery, cam.centerz), cam.m_up);
+	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 	p.SetPerspectiveProj(pers);
 
 	lvl->currentWave->p = &p;
@@ -136,7 +206,7 @@ void GameProgress()
 	const Matrix4f& WorldTransformation = p.GetWorldTrans();
 	light->SetWorldMatrix(WorldTransformation);
 	light->SetDirectionalLight(m_directionalLight);
-	light->SetEyeWorldPos(Vector3f(cam.eyex, cam.eyey, cam.eyez));
+	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
 	light->SetMatSpecularIntensity(0.5f);
 	light->SetMatSpecularPower(2);
 
@@ -187,17 +257,34 @@ void GameProgress()
 			displayedText = "Not a possible tower position";
 	}
 
+
 	light->Enable();
+
 	p.Scale(1.f, 1.f, 1.f);
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
+	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 	light->SetWVP(p.GetWVPTrans());
+
+	light->SetWorldMatrix(p.GetWorldTrans());        
 	light->SetWV(p.GetWVTrans());
+
+	p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
+    light->SetLightWVP(p.GetWVPTrans());
+
+	
+
 	lvl->terrain->Render();
 
+
+	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
+
+
+
+	m_pEffect->Enable();
 	for (int i = 0; i < lvl->towerList.size(); i++)
 	{
-		lvl->towerList[i]->Render(&p);
+		lvl->towerList[i]->Render(&p, cam);
 	}
 
 	lvl->currentWave->ClearDead();
@@ -256,6 +343,30 @@ void GameProgress()
 
 }
 
+
+void GameProgress()
+{
+	m_frameCount++;
+
+	long long time = GetCurrentTimeMillis();
+
+	if (time - m_frameTime >= 1000) {
+		m_frameTime = time;
+		m_fps = m_frameCount;
+		m_frameCount = 0;
+	}
+	
+
+	cam->UpdateCamera();
+
+	CalcShadow();
+	Render();
+
+
+}
+
+// funkcja generuj¹ca scenê 3D
+
 void Display()
 {
 	if (gameIsRunning)
@@ -275,7 +386,8 @@ void Display()
 		menu->Draw(gameInProgress);				
 		glutSwapBuffers();
 	}
-	//cout << glGetError() << endl;
+
+	//end of 2D drawing
 }
 
 // change window size
@@ -311,11 +423,11 @@ void Keyboard( unsigned char key, int x, int y )
 	double angle = 5;
 	if( key == 'z')
 	{
-		cam.Rotate(-angle);	//kat_obrotu += 5;
+		cam->Rotate(-angle);	//kat_obrotu += 5;
 	}
 	if( key == 'x')
 	{
-		cam.Rotate(angle);	//kat_obrotu -= 5;
+		cam->Rotate(angle);	//kat_obrotu -= 5;
 	}
 	if( key == 'n' && lvl->IsWon())
 	{
@@ -336,16 +448,16 @@ void SpecialKeys( int key, int x, int y )
 	switch( key )
 	{
 	case GLUT_KEY_LEFT:
-		cam.MoveLeft(movementSpeed);
+		cam->MoveLeft(movementSpeed);
 		break;
 	case GLUT_KEY_UP:
-		cam.MoveForward(movementSpeed);
+		cam->MoveForward(movementSpeed);
 		break;
 	case GLUT_KEY_RIGHT:
-		cam.MoveRight(movementSpeed);
+		cam->MoveRight(movementSpeed);
 		break;
 	case GLUT_KEY_DOWN:
-		cam.MoveBackward(movementSpeed);
+		cam->MoveBackward(movementSpeed);
 		break;
 	}
 }
@@ -354,6 +466,7 @@ void PrepareNewGame()
 {
 	Player::getPlayer().Init(1, 100);
 	lvl = new Level();
+	lvl->cam = cam;
 	lvl->LoadFromFile("Levels/level.txt");
 }
 
@@ -435,8 +548,9 @@ int main( int argc, char * argv[] )
 	glutInitDisplayMode(  GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA );
 
 	// rozmiary g³ównego okna programu
-	glutInitWindowSize( 640, 480 );
-	mouse.SetWindowSize(640, 480);
+	glutInitWindowSize( WINDOW_WIDTH, WINDOW_HEIGHT );
+	
+	mouse.SetWindowSize( WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	// utworzenie g³ównego okna programu
 	glutCreateWindow( "Tower Defense" );
@@ -456,8 +570,15 @@ int main( int argc, char * argv[] )
 	glutMouseFunc(MouseFunc);
 	glutMotionFunc(MotionFunc);
 	glutPassiveMotionFunc(PassiveMotionFunc);
+
+
+
 	InitGL();
+
 	glewInit();
+
+
+	//initGL(); 
 
 	menu = new GameMenu();
 	hud = new GameHUD();
@@ -465,28 +586,68 @@ int main( int argc, char * argv[] )
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
 	ModelsContainer::LoadMesh(11, new SkinnedMesh, "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
-	TerrainsContainer::LoadTerrain(2, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
-	PathsContainer::LoadPath(2, "Models/path1.bmp");
-	TerrainsContainer::LoadTerrain(1, "Models/terrain2.bmp", "Models/terrain2texture.bmp", 0.2);
-	PathsContainer::LoadPath(1, "Models/path2.bmp");
 
+
+	if (!m_shadowMapFBO.Init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
+		return false;
+    }
+
+	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
+	PathsContainer::LoadPath(1, "Models/path1.bmp");
+	TerrainsContainer::LoadTerrain(2, "Models/terrain2.bmp", "Models/terrain2texture.bmp", 0.2);
+	PathsContainer::LoadPath(2, "Models/path2.bmp");
+
+
+	
 	light = Engine::getEngine().getLight();
+
+	light->Init();		//very important
+
+	light->Enable();
+	light->SetSpotLights(1, sl);
+    light->SetTextureUnit(0);
+    light->SetShadowMapTextureUnit(1);
+
+
 	m_pEffect = Engine::getEngine().getEffect();
 	m_pickingTexture = Engine::getEngine().getpickingTexture();
 	m_pickingEffect = Engine::getEngine().getpickingEffect();
+
+
+	m_pEffect->Init();
+	m_pickingTexture->Init(WINDOW_WIDTH, WINDOW_HEIGHT);
+	m_pickingEffect->Init();
+
+	m_pEffect->Enable();
+	m_pEffect->SetSpotLights(1,sl);
+
+	 m_pShadowMapEffect = new ShadowMapTechnique();
+
+        if (!m_pShadowMapEffect->Init()) {
+            printf("Error initializing the shadow map technique\n");
+            return false;
+        } 
+
+
 
 	light->Enable();
 	light->SetFogColor(Vector4f(0.5f, 0.5f, 0.5f, 1.f));
 	light->SetFogDensity(0.003);
 
+
+
 	text = new Text(24);
 
 	glutTimerFunc(0, timer, 0);
+
+
+	Player::getPlayer().Init(5,100);
 
 	PrepareNewGame();
 	Player::lives = 0;
 
 	audio->Play();
+
 
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	try

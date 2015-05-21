@@ -13,12 +13,14 @@
 #include "pipeline.h"
 #include "ModelsContainer.h"
 #include "Player.h"
+#include "Camera.h"
 
 
 class Enemy
 {
 public:
 	Vector3f position;
+	Vector3f rotation;
 	BasicLightingTechnique* light;
 	Path* path;
 	Terrain* terrain;
@@ -27,12 +29,15 @@ public:
 	double HP;
 	double Attack;
 	int effectId;
+	Camera* cam;
 
 	Enemy();
 	~Enemy();
 	void LoadModel(int id);
-	void UpdatePosition(Pipeline *p);
+	void UpdatePosition(Pipeline *p, Camera* cam);
 	const Vector3f& GetPosition() const;
+	const Vector3f& GetRotation() const;
+
 	Vector3f GetFuturePosition(int steps) const;
 private:
 	const static float EffectIntensity[2];
