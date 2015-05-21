@@ -57,13 +57,20 @@ Audio *audio;
 void InitGL();
 void InitGlut(int argc, char * argv[]);
 void InitShaders();
+void LoadModels();
+void FreeResources();
 
 void Display();
-void Render();
 void GameProgress();
-void CalcPickingCoords(Pipeline &p);
 void CalcShadow();
+void ProcessAndRender();
+void CalcPickingCoords(Pipeline &p);
 void CheckMouseLeftClick();
+void RenderTerrain(Pipeline &p);
+void RenderTowers(Pipeline &p);
+void RenderEnemies(Pipeline &p);
+void ProcessAndRenderMissiles(Pipeline &p);
+void RenderHud();
 
 void PrepareNewGame();
 void ResetGame();
@@ -83,55 +90,22 @@ int main(int argc, char * argv[])
 	InitGlut(argc, argv);
 	InitGL();
 	glewInit();
-	
 	InitShaders();
-
-
+	LoadModels();
 	menu = new GameMenu();
 	hud = new GameHUD();
-
-	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
-	ModelsContainer::LoadMesh(11, new SkinnedMesh(FIRST_TOWER_MATERIAL), "Models/firstTower.md5mesh");
-	ModelsContainer::LoadMesh(21, new Mesh, "Models/grayMissile.fbx");
-	ModelsContainer::LoadMesh(12, new SkinnedMesh(SEC_TOWER_MATERIAL), "Models/secondTower.md5mesh");
-	ModelsContainer::LoadMesh(22, new Mesh, "Models/greenMissile.fbx");
-
-	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
-	PathsContainer::LoadPath(1, "Models/path1.bmp");
-	TerrainsContainer::LoadTerrain(2, "Models/terrain2.bmp", "Models/terrain2texture.bmp", 0.2);
-	PathsContainer::LoadPath(2, "Models/path2.bmp");
-
-
-	glutTimerFunc(0, Timer, 0);
-
 	audio = new Audio();
 	//audio->PlayBackground();
-
 	try
 	{
+		glutTimerFunc(0, Timer, 0);
 		glutMainLoop();// wprowadzenie programu do obs³ugi pêtli komunikatów
 	}
 	catch (const char *msg)
 	{
 		std::cout << "Game terminated\n";
 	}
-
-	delete text;
-	for (int i = 0; i < lvl->towerList.size(); i++)
-		delete lvl->towerList[i];
-	delete m_pSkinnedShadowMapEffect;
-	delete m_pShadowMapEffect;
-	delete m_shadowMapFBO;
-	delete m_pickingEffect;
-	delete m_pickingTexture;
-	delete m_pEffect;
-	delete light;
-	delete menu;
-	delete hud;
-	ModelsContainer::FreeResources();
-	TerrainsContainer::FreeResources();
-	PathsContainer::FreeResources();
-
+	FreeResources();
 	return 0;
 }
 
@@ -237,6 +211,75 @@ void InitShaders()
 	text = new Text(24);
 }
 
+void LoadModels()
+{
+	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
+	ModelsContainer::LoadMesh(11, new SkinnedMesh(FIRST_TOWER_MATERIAL), "Models/firstTower.md5mesh");
+	ModelsContainer::LoadMesh(21, new Mesh, "Models/grayMissile.fbx");
+	ModelsContainer::LoadMesh(12, new SkinnedMesh(SEC_TOWER_MATERIAL), "Models/secondTower.md5mesh");
+	ModelsContainer::LoadMesh(22, new Mesh, "Models/greenMissile.fbx");
+
+	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
+	PathsContainer::LoadPath(1, "Models/path1.bmp");
+	TerrainsContainer::LoadTerrain(2, "Models/terrain2.bmp", "Models/terrain2texture.bmp", 0.2);
+	PathsContainer::LoadPath(2, "Models/path2.bmp");
+}
+
+void FreeResources()
+{
+	delete text;
+	for (int i = 0; i < lvl->towerList.size(); i++)
+		delete lvl->towerList[i];
+	delete m_pSkinnedShadowMapEffect;
+	delete m_pShadowMapEffect;
+	delete m_shadowMapFBO;
+	delete m_pickingEffect;
+	delete m_pickingTexture;
+	delete m_pEffect;
+	delete light;
+	delete menu;
+	delete hud;
+	ModelsContainer::FreeResources();
+	TerrainsContainer::FreeResources();
+	PathsContainer::FreeResources();
+}
+
+void Display()
+{
+	if (gameIsRunning)
+	{
+		gameInProgress = true;
+		GameProgress();
+		glutSwapBuffers();
+		if (Player::lives <= 0)
+		{
+			Sleep(2500);
+			gameIsRunning = false;
+			gameInProgress = false;
+		}
+	}
+	else
+	{
+		menu->Draw(gameInProgress);
+		glutSwapBuffers();
+	}
+}
+
+void GameProgress()
+{
+	m_frameCount++;
+	long long time = GetCurrentTimeMillis();
+	if (time - m_frameTime >= 1000) {
+		m_frameTime = time;
+		m_fps = m_frameCount;
+		m_frameCount = 0;
+	}
+	cam->UpdateCamera();
+	CalcShadow();
+	ProcessAndRender();
+}
+
+
 void CalcShadow()
 {
 	m_shadowMapFBO->BindForWriting();
@@ -279,8 +322,7 @@ void CalcShadow()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-
-void Render()
+void ProcessAndRender()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//m_scale += 0.057;
@@ -309,92 +351,20 @@ void Render()
 	m_shadowMapFBO->BindForReading(GL_TEXTURE1);
 	light->Enable();
 	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
-	light->SetWVP(p.GetWVPTrans());
-	light->SetWorldMatrix(p.GetWorldTrans());
 	light->SetDirectionalLight(m_directionalLight);
 	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
 	light->SetMatSpecularIntensity(0.5f);
 	light->SetMatSpecularPower(2);
 
-	p.Scale(1.f, 1.f, 1.f);
-	p.Rotate(0.0f, 0.0f, 0.0f);
-	p.WorldPos(0.f, 0.f, 0.f);
-	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
-	light->SetWVP(p.GetWVPTrans());
-	light->SetWV(p.GetWVTrans());
-	light->SetWorldMatrix(p.GetWorldTrans());
-	p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
-	light->SetLightWVP(p.GetWVPTrans());
-	lvl->terrain->Render();
-
-
-	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
-
-
-
-	m_pEffect->Enable();		//leave it here
-	for (int i = 0; i < lvl->towerList.size(); i++)
-	{
-		lvl->towerList[i]->Render(&p, cam);
-	}
-
+	RenderTerrain(p);
+	RenderTowers(p);
+	RenderEnemies(p);
+	ProcessAndRenderMissiles(p);
+	
 	lvl->currentWave->ClearDead();
-	light->Enable();
-	lvl->currentWave->UpdatePosition();
-	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
-
-	for (int i = 0; i < lvl->towerList.size(); i++)
-	{
-		list<Enemy*>::iterator it = lvl->currentWave->enemyList->begin();
-		for (; it != lvl->currentWave->enemyList->end(); ++it)
-		{
-			if (lvl->towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->pathIndex > 0)
-			{
-				lvl->towerList[i]->Shoot(*it);
-				break;
-			}
-		}
-		if (lvl->currentWave->enemyList->size() == 0)
-		{
-			lvl->towerList[i]->distance_to_target = lvl->towerList[i]->Range + 1;		//stop shooting after all enemies are killed
-		}
-		lvl->towerList[i]->UpdateMissiles(&p, lvl->currentWave->enemyList);
-		lvl->towerList[i]->Reload();
-	}
 	lvl->AdvanceToNextWave();
-	//----- end 3D drawing 
 
-	// ---- 2D drawing on screen eg. menu text etc.
-
-	glDepthMask(GL_FALSE);  // disable writes to Z-Buffer				//-------------------do not copy this function calls if you want to draw in 2D do this
-	glDisable(GL_DEPTH_TEST);  // disable depth-testing
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);																						//after this
-
-	if (showHud)
-	{
-		text->RenderText(displayedText, 320, 10, 1, glm::vec3(0.2, 0.2, 0.2));
-		hud->Draw(lvl->currentWave->enemyList->size());
-	}
-
-	if (Player::getPlayer().lives == 0)
-	{
-		//text->RenderText("GAME OVER", 280, 240, 1, glm::vec3(1, 0, 0));		//add some function to exit to menu
-		hud->DrawGameOverInfo();
-	}
-	if (lvl->IsWon())
-	{
-		//text->RenderText("CONGRATULATION YOU WON", 150, 240, 1, glm::vec3(0, 1, 0));		//add some function to advance to next
-		//text->RenderText("Click 'n' and wait", 200, 200, 1, glm::vec3(1, 1, 1));		//add some function to advance to next
-		hud->DrawYouWonInfo();
-	}
-
-
-
-	glDisable(GL_BLEND);																															//before this
-	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
-
+	RenderHud();
 }
 
 void CalcPickingCoords(Pipeline &p)
@@ -456,40 +426,79 @@ void CheckMouseLeftClick()
 		}
 	}
 }
-
-void Display()
+void RenderTerrain(Pipeline &p)
 {
-	if (gameIsRunning)
+	p.Scale(1.f, 1.f, 1.f);
+	p.Rotate(0.0f, 0.0f, 0.0f);
+	p.WorldPos(0.f, 0.f, 0.f);
+	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
+	light->SetWVP(p.GetWVPTrans());
+	light->SetWV(p.GetWVTrans());
+	light->SetWorldMatrix(p.GetWorldTrans());
+	p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
+	light->SetLightWVP(p.GetWVPTrans());
+	lvl->terrain->Render();
+	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
+}
+
+void RenderTowers(Pipeline &p)
+{
+	m_pEffect->Enable();		//leave it here
+	for (int i = 0; i < lvl->towerList.size(); i++)
 	{
-		gameInProgress = true;
-		GameProgress();
-		glutSwapBuffers();
-		if (Player::lives <= 0)
-		{
-			Sleep(2500);
-			gameIsRunning = false;
-			gameInProgress = false;
-		}
-	}
-	else
-	{
-		menu->Draw(gameInProgress);
-		glutSwapBuffers();
+		lvl->towerList[i]->Render(&p, cam);
 	}
 }
 
-void GameProgress()
+void RenderEnemies(Pipeline &p)
 {
-	m_frameCount++;
-	long long time = GetCurrentTimeMillis();
-	if (time - m_frameTime >= 1000) {
-		m_frameTime = time;
-		m_fps = m_frameCount;
-		m_frameCount = 0;
+	light->Enable();
+	lvl->currentWave->UpdatePosition();
+}
+
+void ProcessAndRenderMissiles(Pipeline &p)
+{
+	for (int i = 0; i < lvl->towerList.size(); i++)
+	{
+		list<Enemy*>::iterator it = lvl->currentWave->enemyList->begin();
+		for (; it != lvl->currentWave->enemyList->end(); ++it)
+		{
+			if (lvl->towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->pathIndex > 0)
+			{
+				lvl->towerList[i]->Shoot(*it);
+				break;
+			}
+		}
+		if (lvl->currentWave->enemyList->size() == 0)
+		{
+			lvl->towerList[i]->distance_to_target = lvl->towerList[i]->Range + 1;		//stop shooting after all enemies are killed
+		}
+		lvl->towerList[i]->UpdateMissiles(&p, lvl->currentWave->enemyList);
+		lvl->towerList[i]->Reload();
 	}
-	cam->UpdateCamera();
-	CalcShadow();
-	Render();
+}
+
+void RenderHud()
+{
+	glDepthMask(GL_FALSE);  // disable writes to Z-Buffer
+	glDisable(GL_DEPTH_TEST);  // disable depth-testing
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	if (showHud)
+	{
+		text->RenderText(displayedText, 320, 10, 1, glm::vec3(0.2, 0.2, 0.2));
+		hud->Draw(lvl->currentWave->enemyList->size());
+	}
+
+	if (Player::getPlayer().lives == 0)
+		hud->DrawGameOverInfo();
+	if (lvl->IsWon())
+		hud->DrawYouWonInfo();
+
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
 }
 
 void PrepareNewGame()
@@ -532,11 +541,11 @@ void HandleUserCommand(int menuOption)
 	}
 }
 
-// change window size
+// Change window size
 void Reshape(int width, int height)
 {
 	// Compute aspect ratio of the new window
-	if (height == 0) height = 1;                // To prevent divide by 0
+	if (height == 0) height = 1;// To prevent divide by 0
 	GLfloat aspect = (GLfloat)width / (GLfloat)height;
 
 	// Set the viewport to cover the new window
@@ -565,7 +574,7 @@ void Keyboard(unsigned char key, int x, int y)
 	const double angle = 5;
 	if (key == 'z')
 	{
-		cam->Rotate(-angle);	//kat_obrotu += 5;
+		cam->Rotate(-angle);//kat_obrotu += 5;
 	}
 	if (key == 'x')
 	{
