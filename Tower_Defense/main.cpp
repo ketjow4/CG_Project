@@ -72,7 +72,7 @@ SpotLight sl[1];
 
 void InitGL() 
 {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);				// Set background color
 
 
 	glClearDepth(1.0f);									// Set background depth to farthest
@@ -252,9 +252,14 @@ void Render()
 				{
 					displayedText = "You need to select tower first";
 				}
+				else if (lvl->occupiedTowerPoints.find(closest) != lvl->occupiedTowerPoints.end())
+				{
+					displayedText = "There's already a tower here";
+				}
 				else
 				{
 					Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
+					lvl->occupiedTowerPoints.insert(closest);
 					if (hud->selectedTower == FIRST_TOWER)
 					{
 						tower->LoadModel(11);
@@ -593,9 +598,9 @@ int main(int argc, char * argv[])
 
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
 	ModelsContainer::LoadMesh(11, new SkinnedMesh(FIRST_TOWER_MATERIAL), "Models/firstTower.md5mesh");
-	ModelsContainer::LoadMesh(21, new Mesh, "Models/missile.fbx");
+	ModelsContainer::LoadMesh(21, new Mesh, "Models/grayMissile.fbx");
 	ModelsContainer::LoadMesh(12, new SkinnedMesh(SEC_TOWER_MATERIAL), "Models/secondTower.md5mesh");
-	ModelsContainer::LoadMesh(22, new Mesh, "Models/missile.fbx");
+	ModelsContainer::LoadMesh(22, new Mesh, "Models/greenMissile.fbx");
 
 	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
 	PathsContainer::LoadPath(1, "Models/path1.bmp");

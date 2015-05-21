@@ -18,6 +18,7 @@ public:
 	Path* path;
 	Wave * currentWave;
 	vector<Tower*> towerList;	//tower list for actual level
+	set<pair<float, float>> occupiedTowerPoints;
 	Camera* cam;
 	list<Wave*> waveList;
 	int levelNumber;		//to chceck if this is last level
@@ -26,7 +27,6 @@ public:
 	~Level();
 	void AdvanceToNextWave();
 	bool IsWon();
-	void Load();
 	void LoadFromFile(string filename);
 private:
 	bool Accomplished;

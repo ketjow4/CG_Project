@@ -20,7 +20,7 @@ bool Missile::Collide(Enemy *enemy) const
 	for (; it != enemy->model->m_Entries.end(); ++it)
 	{
 		it->boundingCylinder->SetTrans(enemyPos);
-		if (it->boundingCylinder->SphereCollision(pos, 10.f))
+		if (it->boundingCylinder->SphereCollision(pos, 5.f))
 			return true;
 	}
 	return false;
