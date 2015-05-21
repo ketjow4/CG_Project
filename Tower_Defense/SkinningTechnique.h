@@ -19,6 +19,7 @@ public:
     virtual bool Init();
 
     void SetWVP(const Matrix4f& WVP);
+	void SetWV(const Matrix4f& WV);
     void SetWorldMatrix(const Matrix4f& WVP);
     void SetColorTextureUnit(uint TextureUnit);
     void SetDirectionalLight(const DirectionalLight& Light);
@@ -29,10 +30,12 @@ public:
     void SetMatSpecularPower(float Power);
     void SetBoneTransform(uint Index, const Matrix4f& Transform);
 	void SetLightWVP(const Matrix4f& LightWVP);
-
+	void SetFogColor(const Vector4f& color);
+	void SetFogDensity(float density);
 private:
     
     GLuint m_WVPLocation;
+	GLuint m_WVLocation;
     GLuint m_WorldMatrixLocation;
     GLuint m_colorTextureLocation;
     GLuint m_eyeWorldPosLocation;
@@ -40,6 +43,7 @@ private:
     GLuint m_matSpecularPowerLocation;
     GLuint m_numPointLightsLocation;
     GLuint m_numSpotLightsLocation;
+	GLuint m_fogDensity, m_fogColor;
 	GLuint m_LightWVPLocation;
 
     struct {

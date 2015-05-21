@@ -47,7 +47,7 @@ const int MAX_SPOT_LIGHTS = 2;
 in vec2 TexCoord0;
 in vec3 Normal0;
 in vec3 WorldPos0;
-
+in float fogFactor; 
 in vec4 LightSpacePos; 
 
 uniform int gNumPointLights;
@@ -62,6 +62,8 @@ uniform SpotLight gSpotLights[MAX_SPOT_LIGHTS];
 uniform sampler2D gColorMap;
 uniform vec3 gEyeWorldPos;
 uniform sampler2D gShadowMap; 
+
+uniform vec4 fogColor; 
 
 out vec4 FragColor;
 
@@ -86,7 +88,9 @@ void main()
     for (int i = 0 ; i < gNumSpotLights ; i++)
         TotalLight += CalcSpotLight(gSpotLights[i], In, LightSpacePos);
 
-    FragColor = texture(gColorMap, In.TexCoord.xy); //* TotalLight;
+    vec4 finalColor = texture(gColorMap, In.TexCoord.xy); //* TotalLight;
+    vec4 foggedColor = mix(finalColor, fogColor, fogFactor);
+	FragColor = finalColor;
 }
 
 vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, VSOutput In, float ShadowFactor)

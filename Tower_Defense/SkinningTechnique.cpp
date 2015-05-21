@@ -31,6 +31,7 @@ bool SkinningTechnique::Init()
     }
     
     m_WVPLocation = GetUniformLocation("gWVP");
+	m_WVLocation = GetUniformLocation("gWV");
     m_WorldMatrixLocation = GetUniformLocation("gWorld");
     m_colorTextureLocation = GetUniformLocation("gColorMap");
     m_eyeWorldPosLocation = GetUniformLocation("gEyeWorldPos");
@@ -43,8 +44,8 @@ bool SkinningTechnique::Init()
     m_numPointLightsLocation = GetUniformLocation("gNumPointLights");
     m_numSpotLightsLocation = GetUniformLocation("gNumSpotLights");
 	m_LightWVPLocation = GetUniformLocation("gLightWVP");
-
-
+	m_fogDensity = GetUniformLocation("fogDensity");
+	m_fogColor = GetUniformLocation("fogColor");
 
     for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_pointLightsLocation) ; i++) {
         char Name[128];
@@ -117,18 +118,30 @@ void SkinningTechnique::SetWVP(const Matrix4f& WVP)
     glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP);    
 }
 
+void SkinningTechnique::SetWV(const Matrix4f& WV)
+{
+	glUniformMatrix4fv(m_WVLocation, 1, GL_TRUE, (const GLfloat*)WV.m);
+}
 
 void SkinningTechnique::SetWorldMatrix(const Matrix4f& World)
 {
     glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)World);
 }
 
+void SkinningTechnique::SetFogColor(const Vector4f& color)
+{
+	glUniform4f(m_fogColor, color.x, color.y, color.z, color.w);
+}
+
+void SkinningTechnique::SetFogDensity(float density)
+{
+	glUniform1f(m_fogDensity, density);
+}
 
 void SkinningTechnique::SetColorTextureUnit(unsigned int TextureUnit)
 {
     glUniform1i(m_colorTextureLocation, TextureUnit);
 }
-
 
 void SkinningTechnique::SetDirectionalLight(const DirectionalLight& Light)
 {
