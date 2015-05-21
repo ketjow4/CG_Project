@@ -90,7 +90,7 @@ void main()
 
     vec4 finalColor = texture(gColorMap, In.TexCoord.xy); //* TotalLight;
     vec4 foggedColor = mix(finalColor, fogColor, fogFactor);
-	FragColor = finalColor;
+	FragColor = foggedColor;
 }
 
 vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, VSOutput In, float ShadowFactor)
