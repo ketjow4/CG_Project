@@ -156,6 +156,7 @@ void CalcShadow()
 
 	for (int i = 0; i < lvl->towerList.size(); i++)
 	{
+		lvl->towerList[i]->CalcAnimation();
 		p.Scale(lvl->towerList[i]->GetScale());
 		p.Rotate(0,90,-90);
 		p.WorldPos(lvl->towerList[i]->GetPosition());

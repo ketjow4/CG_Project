@@ -59,12 +59,14 @@ public:
 
 	SkinnedMesh *model;
 
+	void CalcAnimation();
+
 private:
 	
 	Mesh *missileModel;
 	int missileType;
 
-	void CalcAnimation();
+	
 	void UpdateMissile(Pipeline * p, Missile* missile, list<Enemy*> *enemies);
 	void LimitTowerPosition();
 };
