@@ -34,7 +34,7 @@ void main()
     vec4 NormalL = BoneTransform * vec4(Normal, 0.0);
     Normal0      = (gWorld * NormalL).xyz;
     WorldPos0    = (gWorld * PosL).xyz;                 
-	LightSpacePos = gLightWVP * vec4(Position, 1.0); 
+	LightSpacePos = gLightWVP * PosL;
 	
 	const float LOG2 = 1.442695;
 	vec4 eyeSpacePos = gWV * PosL;

@@ -1,7 +1,6 @@
 1				     #Level number
-Models/terrain1.bmp  #terrain file
-0.3					 #terrain elevation (height factor)
-Models/path1.bmp	 #path file
+1					 #terrain file
+1					 #path file
 5					 #wave count
 3					 # 1 wave
 4					 # 2 wave

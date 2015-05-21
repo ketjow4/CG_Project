@@ -25,6 +25,7 @@ void ModelsContainer::LoadMesh(int key, Renderable *mesh, const string &filename
 	if (models.find(key) == models.end())
 	{
 		mesh->LoadMesh(filename);
+		printf("Loaded model '%s'\n", filename.c_str());
 		models.insert(make_pair(key, mesh));
 	}
 	else

@@ -72,7 +72,7 @@ SpotLight sl[1];
 
 void InitGL() 
 {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);				// Set background color
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);				// Set background color
 
 
 	glClearDepth(1.0f);									// Set background depth to farthest
@@ -251,9 +251,14 @@ void Render()
 				{
 					displayedText = "You need to select tower first";
 				}
+				else if (lvl->occupiedTowerPoints.find(closest) != lvl->occupiedTowerPoints.end())
+				{
+					displayedText = "There's already a tower here";
+				}
 				else
 				{
 					Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
+					lvl->occupiedTowerPoints.insert(closest);
 					if (hud->selectedTower == FIRST_TOWER)
 					{
 						tower->LoadModel(11);
