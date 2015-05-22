@@ -78,6 +78,11 @@ const Vector3f& Enemy::GetRotation() const
 	return rotation;
 }
 
+const int& Enemy::GetPathIndex() const
+{
+	return pathIndex;
+}
+
 Vector3f Enemy::GetFuturePosition(int steps) const
 {
 	int futurePathIndex = min(pathIndex + steps, (int)path->pathPoints.size() - 1);
@@ -85,4 +90,18 @@ Vector3f Enemy::GetFuturePosition(int steps) const
 	float z = path->pathPoints[futurePathIndex].second;
 	float y = terrain->GetTerrainHeight(x, z)  + 10;
 	return Vector3f(x, y, z);
+}
+
+void Enemy::SetLight(BasicLightingTechnique* light)
+{
+	this->light = light;
+}
+
+void Enemy::SetTerrain(Terrain* terrain)
+{
+	this->terrain = terrain;
+}
+void Enemy::SetPath(Path* path)
+{
+	this->path = path;
 }

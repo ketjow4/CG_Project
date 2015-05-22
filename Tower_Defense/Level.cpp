@@ -48,10 +48,10 @@ void Level::LoadFromFile(string filename)
 			for(int i = 0; i < stoi(enemyCount); i++)
 			{
 				Enemy *en = new Enemy();
-				en->light = Engine::getEngine().getLight();
+				en->SetLight( Engine::getEngine().getLight() );
 				en->LoadModel(1);
-				en->terrain = terrain;
-				en->path = path;
+				en->SetTerrain(terrain);
+				en->SetPath(path);
 				enList->push_back(en);
 			}
 			Wave* wave = new Wave(enList, 0, 50,cam);

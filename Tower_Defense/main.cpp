@@ -38,7 +38,7 @@ PersProjInfo pers;
 Text* text;
 Level* lvl;
 Mouse mouse;
-string displayedText = "Tower Defense gamma 0.99";
+string displayedText = "Tower Defense Release 1.0";
 
 float m_scale = 0;
 const float FieldDepth = 400.0f;
@@ -95,7 +95,7 @@ int main(int argc, char * argv[])
 	menu = new GameMenu();
 	hud = new GameHUD();
 	audio = new Audio();
-	//audio->PlayBackground();
+	audio->PlayBackground();
 	try
 	{
 		glutTimerFunc(0, Timer, 0);
@@ -125,8 +125,8 @@ void InitGL()
 	m_directionalLight.Direction = Vector3f(1.0f, 1.0, 1.0).Normalize();
 
 	cam = new Camera();
-	cam->eyey = 200;//100;
-	cam->eyex = 256;//256;
+	cam->eyey = 200;
+	cam->eyex = 256;
 	cam->eyez = 0;
 	cam->centerx = 1;
 	cam->centerz = 1;
@@ -288,13 +288,6 @@ void CalcShadow()
 	Pipeline p;
 	p.SetPerspectiveProj(pers);
 
-	//p.Scale(1.f, 1.f, 1.f);
-	//p.Rotate(0.0f, 0.0f, 0.0f);
-	//p.WorldPos(0.f, 0.f, 0.f);
-	//p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
-	//m_pShadowMapEffect->SetWVP(p.GetWVPTrans());
-	//lvl->terrain->Render();
-
 	m_pShadowMapEffect->Enable();
 	std::list<Enemy*>::iterator it = lvl->currentWave->enemyList->begin();
 	for (it; it != lvl->currentWave->enemyList->end(); it++)
@@ -325,6 +318,7 @@ void CalcShadow()
 void ProcessAndRender()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	//m_scale += 0.057;
 	//PointLight pl[2];
 	//for (int i = 0; i < 2; i++)
@@ -463,7 +457,7 @@ void ProcessAndRenderMissiles(Pipeline &p)
 		list<Enemy*>::iterator it = lvl->currentWave->enemyList->begin();
 		for (; it != lvl->currentWave->enemyList->end(); ++it)
 		{
-			if (lvl->towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->pathIndex > 0)
+			if (lvl->towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->GetPathIndex() > 0)
 			{
 				lvl->towerList[i]->Shoot(*it);
 				break;

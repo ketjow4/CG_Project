@@ -220,24 +220,6 @@ void Terrain::Init(const string &heightMap, const string &texture, float heightF
 		texCoordS += texCoordSStep;
 	}
 
-	/*for (int i = 2; i < this->width-1; ++i)
-	{
-		for (int j = 2; j < this->height-1; ++j)
-		{
-			vector<vector<Vector3f>> &N = flatNormals;
-			Vector3f bottomLeft = (N[i-1][j-1] + N[i-1][j] + N[i][j] + N[i][j-1]).Normalize();
-			Vector3f upperLeft = (N[i-1][j] + N[i-1][j+1] + N[i][j+1] + N[i][j]).Normalize();
-			Vector3f upperRight = (N[i][j] + N[i][j+1] + N[i+1][j+1] + N[i+1][j]).Normalize();
-			Vector3f bottomRight = (N[i][j-1] + N[i][j] + N[i+1][j] + N[i+1][j-1]).Normalize();
-
-			*triangles[i][j].t1BottomLeft = bottomLeft;
-			*triangles[i][j].t1UpperLeft = upperLeft;
-			*triangles[i][j].t1UpperRight = upperRight;
-			*triangles[i][j].t2BottomLeft = bottomLeft;
-			*triangles[i][j].t2BottomRight = bottomRight;
-			*triangles[i][j].t2UpperRight = upperRight;
-		}
-	}*/
 
 	m_Entries.resize(1);
 	m_Entries[0].Init(Vertices, Indices);
