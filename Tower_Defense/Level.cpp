@@ -1,17 +1,14 @@
 #include "Level.h"
 
 Level::Level()
-{
-}
+{}
 
 Level::~Level()
 {
 	delete currentWave;
-	delete path;
 }
 
-
-void Level::LoadFromFile(string filename)
+void Level::LoadFromFile(const string &filename)
 {
 	std::ifstream file;
 	file.open(filename, std::ios::in);
@@ -40,11 +37,11 @@ void Level::LoadFromFile(string filename)
 
 		for(int i = 0; i < stoi(waveCount); i++)
 		{
-			list<Enemy*> *enList;			//remember to add destructor
+			list<Enemy*> *enList;	//remember to add destructor
 			enList = new list<Enemy*>();
 			string enemyCount;
 			file >> enemyCount;
-			getline(file,temp);			//get rid of comment
+			getline(file,temp);		//get rid of comment
 			for(int i = 0; i < stoi(enemyCount); i++)
 			{
 				Enemy *en = new Enemy();
@@ -66,18 +63,19 @@ void Level::LoadFromFile(string filename)
 
 void Level::AdvanceToNextWave()
 {
+	if (waveList.size() <= 1)
+		return;
 	std::list<Wave*>::iterator it = waveList.begin();
-	if ((*it)->enemyList->size() == 0 && waveList.size() != 1)			//last wave should not be deleted for now
-	{
-		delete *it,it = waveList.erase(it);
-
-	}
-	currentWave = *(waveList.begin());
+	if ((*it)->activeEnemies->size() == 0)			//last wave should not be deleted for now
+		delete *it, it = waveList.erase(it);
+	currentWave = *it;
 }
 
 bool Level::IsWon()
 {
-	if(waveList.size() == 1 && (*waveList.begin())->enemyList->size() == 0)
+	if (waveList.size() == 1 && 
+		(*waveList.begin())->activeEnemies->size() == 0 && 
+		(*waveList.begin())->inactiveEnemies->size() == 0)
 		Accomplished = true;
 	else
 		Accomplished = false;

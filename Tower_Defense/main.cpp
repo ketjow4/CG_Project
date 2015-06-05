@@ -289,8 +289,8 @@ void CalcShadow()
 	p.SetPerspectiveProj(pers);
 
 	m_pShadowMapEffect->Enable();
-	std::list<Enemy*>::iterator it = lvl->currentWave->enemyList->begin();
-	for (it; it != lvl->currentWave->enemyList->end(); it++)
+	std::list<Enemy*>::iterator it = lvl->currentWave->activeEnemies->begin();
+	for (it; it != lvl->currentWave->activeEnemies->end(); it++)
 	{
 		p.Scale(0.3, 0.3, 0.3);
 		p.Rotate((*it)->GetRotation());
@@ -451,8 +451,8 @@ void ProcessAndRenderMissiles(Pipeline &p)
 	light->Enable();
 	for (int i = 0; i < lvl->towerList.size(); i++)
 	{
-		list<Enemy*>::iterator it = lvl->currentWave->enemyList->begin();
-		for (; it != lvl->currentWave->enemyList->end(); ++it)
+		list<Enemy*>::iterator it = lvl->currentWave->activeEnemies->begin();
+		for (; it != lvl->currentWave->activeEnemies->end(); ++it)
 		{
 			if (lvl->towerList[i]->IsInRange((*it)->GetPosition()) && (*it)->HP > 0 && (*it)->GetPathIndex() > 0)
 			{
@@ -460,11 +460,11 @@ void ProcessAndRenderMissiles(Pipeline &p)
 				break;
 			}
 		}
-		if (lvl->currentWave->enemyList->size() == 0)
-		{
-			lvl->towerList[i]->distance_to_target = lvl->towerList[i]->Range + 1;		//stop shooting after all enemies are killed
+		if (lvl->currentWave->activeEnemies->size() == 0)
+		{	//stop shooting after all enemies are killed
+			lvl->towerList[i]->distance_to_target = lvl->towerList[i]->Range + 1;
 		}
-		lvl->towerList[i]->UpdateMissiles(&p, lvl->currentWave->enemyList);
+		lvl->towerList[i]->UpdateMissiles(&p, lvl->currentWave->activeEnemies);
 		lvl->towerList[i]->Reload();
 	}
 }
@@ -479,7 +479,7 @@ void RenderHud()
 	if (showHud)
 	{
 		text->RenderText(displayedText, 320, 10, 1, glm::vec3(0.2, 0.2, 0.2));
-		hud->Draw(lvl->currentWave->enemyList->size());
+		hud->Draw(lvl->currentWave->activeEnemies->size() + lvl->currentWave->inactiveEnemies->size());
 	}
 
 	if (Player::getPlayer().lives == 0)
@@ -572,11 +572,11 @@ void Keyboard(unsigned char key, int x, int y)
 	if (key == 'n' && lvl->IsWon())
 	{
 		lvl->towerList.clear();
-		Level *pLvl = new Level();
-		pLvl->cam = cam;
-		pLvl->LoadFromFile("Levels/level2.txt");
 		delete lvl;
-		lvl = pLvl;
+		Player::getPlayer().Init(3, 30);
+		lvl = new Level();
+		lvl->cam = cam;
+		lvl->LoadFromFile("Levels/level2.txt");
 	}
 }
 

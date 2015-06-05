@@ -1,9 +1,9 @@
 1				     #Level number
-2					 #terrain file
-2					 #path file
-5					 #wave count
-3					 # 1 wave
-4					 # 2 wave
-5					 # 3 wave
-6					 # 4 wave
-7					 # 5 wave
+1					 #terrain file
+1					 #path file
+2					 #wave count
+1					 # 1 wave
+2					 # 1 wave
+5					 # 1 wave
+6					 # 1 wave
+7					 # 1 wave

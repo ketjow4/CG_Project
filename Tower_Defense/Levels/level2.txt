@@ -1,7 +1,7 @@
 2				     #Level number
 2					 #terrain file
 2					 #path file
-5					 #wave count
+3					 #wave count
 10					 # 1 wave
 14					 # 2 wave
 15					 # 3 wave

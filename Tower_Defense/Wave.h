@@ -11,7 +11,9 @@
 class Wave
 {
 public:
-	list<Enemy*>* enemyList;
+	list<Enemy*>* activeEnemies;
+	list<Enemy*>* inactiveEnemies;
+
 	Pipeline *p;
 	Camera* cam;
 
@@ -25,7 +27,9 @@ public:
 private:
 	//the differenc in path index between 2 enemies in wave
 	int pathDifference;
-	int j;	//to proper position update TODO: name it better
+	int currentPathDifference;
+
+	void ActivateNextEnemy();
 };
 
 

@@ -28,7 +28,7 @@ public:
 
 	void AdvanceToNextWave();
 	bool IsWon();
-	void LoadFromFile(string filename);
+	void LoadFromFile(const string &filename);
 
 private:
 	bool Accomplished;
