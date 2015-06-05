@@ -1,6 +1,7 @@
 #include "Level.h"
 
 Level::Level()
+	: currentWave(0)
 {}
 
 Level::~Level()
@@ -8,7 +9,7 @@ Level::~Level()
 	delete currentWave;
 }
 
-void Level::LoadFromFile(const string &filename)
+bool Level::LoadFromFile(const string &filename)
 {
 	std::ifstream file;
 	file.open(filename, std::ios::in);
@@ -35,14 +36,14 @@ void Level::LoadFromFile(const string &filename)
 		file >> waveCount;
 		getline(file,temp);			//get rid of comment
 
-		for(int i = 0; i < stoi(waveCount); i++)
+		for (int i = 0, ie = stoi(waveCount); i < ie; ++i)
 		{
 			list<Enemy*> *enList;	//remember to add destructor
 			enList = new list<Enemy*>();
 			string enemyCount;
 			file >> enemyCount;
 			getline(file,temp);		//get rid of comment
-			for(int i = 0; i < stoi(enemyCount); i++)
+			for (int j = 0, je = stoi(enemyCount); j < je; ++j)
 			{
 				Enemy *en = new Enemy();
 				en->SetLight( Engine::getEngine().getLight() );
@@ -56,9 +57,9 @@ void Level::LoadFromFile(const string &filename)
 		}
 		currentWave = *waveList.begin();
 		file.close();
+		return true;
 	}
-	else
-		std::cout << "Error reading level file " + filename << std::endl;
+	return false;
 }
 
 void Level::AdvanceToNextWave()
@@ -66,7 +67,7 @@ void Level::AdvanceToNextWave()
 	if (waveList.size() <= 1)
 		return;
 	std::list<Wave*>::iterator it = waveList.begin();
-	if ((*it)->activeEnemies->size() == 0)			//last wave should not be deleted for now
+	if ((*it)->activeEnemies->size() == 0 && (*it)->inactiveEnemies->size() == 0)//last wave should not be deleted for now
 		delete *it, it = waveList.erase(it);
 	currentWave = *it;
 }
@@ -80,4 +81,11 @@ bool Level::IsWon()
 	else
 		Accomplished = false;
 	return Accomplished;
+}
+
+string Level::Filename(int level)
+{
+	ostringstream oss;
+	oss << "Levels/level" << level << ".txt";
+	return oss.str();
 }

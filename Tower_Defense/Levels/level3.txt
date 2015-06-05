@@ -1,0 +1,9 @@
+3				     #Level number
+2					 #terrain file
+2					 #path file
+5					 #wave count
+1					 # 1st wave
+14					 # 2nd wave
+15					 # 3rd wave
+16					 # 4th wave
+17					 # 5th wave

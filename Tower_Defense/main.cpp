@@ -101,7 +101,7 @@ int main(int argc, char * argv[])
 		glutTimerFunc(0, Timer, 0);
 		glutMainLoop();// wprowadzenie programu do obs³ugi pêtli komunikatów
 	}
-	catch (const char *msg)
+	catch (const char *)
 	{
 		std::cout << "Game terminated\n";
 	}
@@ -217,7 +217,7 @@ void LoadModels()
 	ModelsContainer::LoadMesh(11, new SkinnedMesh(FIRST_TOWER_MATERIAL), "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/grayMissile.fbx");
 	ModelsContainer::LoadMesh(12, new SkinnedMesh(SEC_TOWER_MATERIAL), "Models/secondTower.md5mesh");
-	ModelsContainer::LoadMesh(22, new Mesh, "Models/greenMissile.obj");
+	ModelsContainer::LoadMesh(22, new Mesh, "Models/greenMissile.fbx");
 
 	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
 	PathsContainer::LoadPath(1, "Models/path1.bmp");
@@ -278,7 +278,6 @@ void GameProgress()
 	CalcShadow();
 	ProcessAndRender();
 }
-
 
 void CalcShadow()
 {
@@ -418,6 +417,7 @@ void CheckMouseLeftClick()
 		}
 	}
 }
+
 void RenderTerrain(Pipeline &p)
 {
 	p.Scale(1.f, 1.f, 1.f);
@@ -494,10 +494,11 @@ void RenderHud()
 
 void PrepareNewGame()
 {
+	delete lvl;
 	Player::getPlayer().Init(3, 30);
 	lvl = new Level();
 	lvl->cam = cam;
-	lvl->LoadFromFile("Levels/level.txt");
+	lvl->LoadFromFile(Level::Filename(1));
 }
 
 void ResetGame()
@@ -572,11 +573,13 @@ void Keyboard(unsigned char key, int x, int y)
 	if (key == 'n' && lvl->IsWon())
 	{
 		lvl->towerList.clear();
+		string nextLevelFile = Level::Filename(lvl->levelNumber + 1);
 		delete lvl;
 		Player::getPlayer().Init(3, 30);
 		lvl = new Level();
 		lvl->cam = cam;
-		lvl->LoadFromFile("Levels/level2.txt");
+		if(!lvl->LoadFromFile(nextLevelFile))
+			ResetGame();
 	}
 }
 

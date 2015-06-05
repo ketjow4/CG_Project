@@ -1,7 +1,6 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-
 #include <stdlib.h>
 #include <GL\glew.h>
 #include <glut.h>
@@ -13,8 +12,6 @@
 #include <map>
 #include <vector>
 
-
-
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
@@ -24,7 +21,6 @@
 #include "texture.h"
 #include "Renderable.h"
 #include "BoundingCylinder.h"
-
 
 struct Vertex
 {

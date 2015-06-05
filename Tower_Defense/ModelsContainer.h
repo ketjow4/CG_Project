@@ -4,7 +4,7 @@
 
 #include <map>
 
-static class ModelsContainer
+class ModelsContainer
 {
 public:
 	static void LoadMesh(int key, Renderable *mesh, const string &filename);

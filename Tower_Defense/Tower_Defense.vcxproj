@@ -176,6 +176,9 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClInclude Include="Wave.h" />
     <ClInclude Include="WorldObject.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Levels\level3.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

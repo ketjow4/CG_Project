@@ -2,12 +2,20 @@
 
 Wave::~Wave()
 {
-	std::list<Enemy*>::iterator it = activeEnemies->begin();
-	while (it != activeEnemies->end())
+	if (activeEnemies)
+	{
+		std::list<Enemy*>::iterator it = activeEnemies->begin();
+		while (it != activeEnemies->end())
 			delete *it, it = activeEnemies->erase(it);
-	it = inactiveEnemies->begin();
-	while (it != inactiveEnemies->end())
-		delete *it, it = inactiveEnemies->erase(it);
+		delete activeEnemies;
+	}
+	if (inactiveEnemies)
+	{
+		std::list<Enemy*>::iterator it = inactiveEnemies->begin();
+		while (it != inactiveEnemies->end())
+			delete *it, it = inactiveEnemies->erase(it);
+		delete inactiveEnemies;
+	}
 }
 
 Wave::Wave(list<Enemy*>* list, Pipeline *p, int pathDifference, Camera* c)

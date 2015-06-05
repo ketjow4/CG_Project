@@ -77,4 +77,7 @@
     <ClInclude Include="Audio.h" />
     <ClInclude Include="SkinnedShadowTechnique.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Levels\level3.txt" />
+  </ItemGroup>
 </Project>
