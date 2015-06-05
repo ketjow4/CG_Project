@@ -95,7 +95,7 @@ int main(int argc, char * argv[])
 	menu = new GameMenu();
 	hud = new GameHUD();
 	audio = new Audio();
-	//audio->PlayBackground();
+	audio->PlayBackground();
 	try
 	{
 		glutTimerFunc(0, Timer, 0);
@@ -217,7 +217,7 @@ void LoadModels()
 	ModelsContainer::LoadMesh(11, new SkinnedMesh(FIRST_TOWER_MATERIAL), "Models/firstTower.md5mesh");
 	ModelsContainer::LoadMesh(21, new Mesh, "Models/grayMissile.fbx");
 	ModelsContainer::LoadMesh(12, new SkinnedMesh(SEC_TOWER_MATERIAL), "Models/secondTower.md5mesh");
-	ModelsContainer::LoadMesh(22, new Mesh, "Models/greenMissile.fbx");
+	ModelsContainer::LoadMesh(22, new Mesh, "Models/greenMissile.obj");
 
 	TerrainsContainer::LoadTerrain(1, "Models/terrain1.bmp", "Models/terrain1texture.bmp", 0.3);
 	PathsContainer::LoadPath(1, "Models/path1.bmp");
@@ -376,7 +376,6 @@ void CalcPickingCoords(Pipeline &p)
 	p.Scale(1.f, 1.f, 1.f);
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
-	light->SetWVP(p.GetWVPTrans());
 	m_pickingEffect->SetWVP(p.GetWVPTrans());
 	lvl->terrain->Render();
 
@@ -422,7 +421,6 @@ void CheckMouseLeftClick()
 				hud->action = DO_NOTHING;
 				hud->selectedTower = NO_SELECTION;
 			}
-
 		}
 	}
 }
@@ -443,11 +441,9 @@ void RenderTerrain(Pipeline &p)
 
 void RenderTowers(Pipeline &p)
 {
-	m_pEffect->Enable();		//leave it here
+	m_pEffect->Enable();
 	for (int i = 0; i < lvl->towerList.size(); i++)
-	{
 		lvl->towerList[i]->Render(&p, cam);
-	}
 }
 
 void RenderEnemies(Pipeline &p)
@@ -458,6 +454,7 @@ void RenderEnemies(Pipeline &p)
 
 void ProcessAndRenderMissiles(Pipeline &p)
 {
+	light->Enable();
 	for (int i = 0; i < lvl->towerList.size(); i++)
 	{
 		list<Enemy*>::iterator it = lvl->currentWave->enemyList->begin();
@@ -504,7 +501,6 @@ void RenderHud()
 void PrepareNewGame()
 {
 	Player::getPlayer().Init(3, 30);
-	//delete lvl;
 	lvl = new Level();
 	lvl->cam = cam;
 	lvl->LoadFromFile("Levels/level.txt");
