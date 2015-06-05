@@ -20,17 +20,11 @@ class Enemy
 {
 
 public:
-	Vector3f position;
-	Vector3f rotation;
-	BasicLightingTechnique* light;
-	Path* path;
-	Terrain* terrain;
 	Mesh *model;
-	int pathIndex;
 	double HP;
 	double Attack;
 	int effectId;
-	Camera* cam;
+
 	struct Poison
 	{
 		int duration;
@@ -43,11 +37,21 @@ public:
 	void UpdatePosition(Pipeline *p, Camera* cam);
 	const Vector3f& GetPosition() const;
 	const Vector3f& GetRotation() const;
-
+	const int& GetPathIndex() const;
 	Vector3f GetFuturePosition(int steps) const;
+	void SetLight(BasicLightingTechnique* light);
+	void SetTerrain(Terrain* terrain);
+	void SetPath(Path* path);
+	
 private:
 	const static float EffectIntensity[2];
 	const static Vector4f EffectColor[2];
+	Vector3f position;
+	Vector3f rotation;
+	int pathIndex;
+	BasicLightingTechnique* light;
+	Path* path;
+	Terrain* terrain;
 };
 
 #endif

@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -69,7 +69,9 @@
 xcopy "$(ProjectDir)\Shaders\*.*" "$(ProjectDir)..\Debug\Shaders\" /i /y
 xcopy "$(ProjectDir)\Models\*.*" "$(ProjectDir)..\Debug\Models\" /i /y
 xcopy "$(ProjectDir)\fonts\*.*" "$(ProjectDir)..\Debug\fonts\" /i /y
-xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y</Command>
+xcopy "$(ProjectDir)\Levels\*.*" "$(ProjectDir)..\Debug\Levels\" /i /y
+xcopy "$(ProjectDir)\Audio\*.*" "$(ProjectDir)..\Debug\Audio\" /i /y
+xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>

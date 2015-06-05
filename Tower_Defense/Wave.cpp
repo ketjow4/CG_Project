@@ -17,7 +17,7 @@ void Wave::UpdatePosition()
 	std::list<Enemy*>::iterator it = enemyList->begin();
 	for (int i = 0; it != enemyList->end(); ++it, ++i)
 	{
-		if(i == j && (*it)->pathIndex > pathDifference)
+		if(i == j && (*it)->GetPathIndex() > pathDifference)
 			j++;
 		if(i > j)
 			break;

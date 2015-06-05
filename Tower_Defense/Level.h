@@ -25,9 +25,11 @@ public:
 
 	Level();
 	~Level();
+
 	void AdvanceToNextWave();
 	bool IsWon();
 	void LoadFromFile(string filename);
+
 private:
 	bool Accomplished;
 };
