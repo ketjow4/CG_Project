@@ -7,33 +7,47 @@
 class Terrain
 {
 public:
-	std::vector<MeshEntry> m_Entries;
-	std::vector<Texture*> m_Textures;
-	//Get max verticies in X direction to limit area of tower building
+	/** Maksymalna wspó³rzêdna x terenu */
 	float MaxX;
+	/** Maksymalna wspó³rzêdna z terenu */
 	float MaxZ;
+	/** Minimalna wspó³rzêdna x terenu */
 	float MinX;
+	/** Minimalna wspó³rzêdna z terenu */
 	float MinZ;
-
-	struct Triangle
-	{
-		Vector3f vertices[3];
-	};
 
 	Terrain();
 	~Terrain();
-	// Initializes terrain object basing on bitmap.
+	/**
+	* Inicjalizuje teren na podstawie mapy wysokoœci.
+	* @param heightMap nazwa bitmapy opisuj¹cej kszta³t terenu
+	* @param texture nazwa pliku z tekstur¹ terenu
+	* @param heightFactor wspó³czynnik wysokoœci
+	*/
 	void Init(const string &heightMap, const string &texture, float heightFactor = 1.0);
-	// Calculates height of terrain at P(x,z)
+	/**
+	* Funkcja oblicza wysokoœæ y w punkcie (x,z)
+	* @param x wspó³rzêdna x w œwiecie gry
+	* @param z wspó³rzêdna z w œwiecie gry
+	*/
 	float GetTerrainHeight(float x, float z);
-	// Draws terrain
+	/**
+	* Funkcja wyœwietlaj¹ca obiekt.
+	*/
 	void Render();
 private:
+	std::vector<MeshEntry> m_Entries;
+	std::vector<Texture*> m_Textures;
 	float heightFactor;
 	int terrainList;
 	int width, height;
 	Vector3f **vertices;
 	Texture *texture;
+
+	struct Triangle
+	{
+		Vector3f vertices[3];
+	};
 
 	// Loads bitmap and converts it to vertices.
 	void LoadHeightMap(const string &filename);

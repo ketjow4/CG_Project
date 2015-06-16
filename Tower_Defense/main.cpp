@@ -257,8 +257,9 @@ void LoadModels()
 void FreeResources()
 {
 	delete text;
-	for (int i = 0; i < lvl->towerList.size(); i++)
-		delete lvl->towerList[i];
+	if (lvl)
+		for (int i = 0; i < lvl->towerList.size(); i++)
+			delete lvl->towerList[i];
 	delete m_pSkinnedShadowMapEffect;
 	delete m_pShadowMapEffect;
 	delete m_shadowMapFBO;

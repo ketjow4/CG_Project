@@ -10,12 +10,23 @@
 class Path
 {
 public:
+	/** Kolejne punktu na œcie¿ce */
 	vector<pair<float, float>> pathPoints;
+	/** Punkty, w których mo¿na postawiæ wie¿e */
 	vector<pair<float, float>> possibleTowerPoints;
 
 	Path();
 	~Path();
+	/**
+	* Funkcja inicjalizuje œcie¿kê na podstawie pliku.
+	* @param filename plik z opisem œcie¿ki
+	*/
 	void Init(const string &filename);
+	/**
+	* Funkcja zwraca wektor kierunku obiektu wzglêdem podanego punktu na œcie¿ce.
+	* @param currentPos pozycja danego obiektu
+	* @param nextPathPointIndex indeks punktu na œcie¿ce, w stronê którego zwrócony jest obiekt
+	*/
 	Vector3f GetRotation(const Vector3f &currentPos, int nextPathPointIndex) const;
 private:
 	struct RgbPoint
