@@ -69,7 +69,6 @@
     <ClInclude Include="util.h" />
     <ClInclude Include="technique.h" />
     <ClInclude Include="Wave.h" />
-    <ClInclude Include="WorldObject.h" />
     <ClInclude Include="ShadowMapFBO.h" />
     <ClInclude Include="ShadowMapTechnique.h" />
     <ClInclude Include="TerrainsContainer.h" />

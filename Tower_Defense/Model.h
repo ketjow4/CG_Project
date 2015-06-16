@@ -57,14 +57,23 @@ struct Vertex
 class Mesh : public Renderable
 {
 public:
+	/** Zbiór elementów sk³adaj¹cych siê na ca³y model */
 	std::vector<MeshEntry> m_Entries;
-	std::vector<Texture*> m_Textures;
 
 	Mesh();
     ~Mesh();
+	/**
+	* Funkcja ³aduj¹ca model z pliku.
+	* @param Filename plik z opisem modelu
+	*/
     bool LoadMesh(const std::string& Filename);
+	/**
+	* Funkcja wyœwietla obiekt.
+	*/
     void Render();
 private:
+	std::vector<Texture*> m_Textures;
+
     bool InitFromScene(const aiScene* pScene, const std::string& Filename);
     void InitMesh(unsigned int Index, const aiMesh* paiMesh);
     bool InitMaterials(const aiScene* pScene, const std::string& Filename);

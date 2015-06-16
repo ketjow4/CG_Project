@@ -53,11 +53,6 @@ void Audio::PlayBackground()
 		stream->play();
 }
 
-void Audio::LoadFile()
-{
-
-}
-
 Audio::~Audio()
 {
 }

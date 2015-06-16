@@ -174,7 +174,6 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClInclude Include="util.h" />
     <ClInclude Include="technique.h" />
     <ClInclude Include="Wave.h" />
-    <ClInclude Include="WorldObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Levels\level3.txt" />
