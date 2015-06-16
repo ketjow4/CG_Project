@@ -5,11 +5,6 @@ const Path::RgbPoint Path::beginPoint(0, 0, 255);
 const Path::RgbPoint Path::endPoint(255, 0, 0);
 const Path::RgbPoint Path::towerPoint(255, 0, 255);
 
-//Path::Path(Terrain* terrain)
-//	: terrain(terrain)
-//{
-//}
-
 Path::Path()
 {}
 
