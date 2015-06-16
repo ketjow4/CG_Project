@@ -62,6 +62,7 @@ bool Level::LoadFromFile(const string &filename)
 	return false;
 }
 
+
 void Level::AdvanceToNextWave()
 {
 	if (waveList.size() <= 1)

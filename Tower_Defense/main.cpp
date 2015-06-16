@@ -1,3 +1,5 @@
+/** \file Plik main aplikacji. Tutaj znajduje siê pêtla gry oraz obs³uga zdarzeñ */ 
+
 #include <Windows.h>
 #include <iostream>
 #include <sstream>
@@ -84,6 +86,14 @@ void MouseFunc(int button, int state, int x, int y);
 void MotionFunc(int x, int y);
 void PassiveMotionFunc(int x, int y);
 
+
+ /**
+       * G³ówna funkcja programu. Incjalizuje wszystkie biblioteki, shadery oraz wczytuje modele. Przed zakoñczeniem zwalania pobrane zasoby
+       * @param argc liczba parametrów uruchomieniowych programu
+       * @param argv[] wartoœci parametrów uruchomieniowych programu.
+       * @see Display()
+       * @return 0 kiedy wszystko zakoñczy³o siê poprawnie
+       */
 int main(int argc, char * argv[])
 {
 	Magick::InitializeMagick(*argv);
