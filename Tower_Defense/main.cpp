@@ -119,6 +119,10 @@ int main(int argc, char * argv[])
 	return 0;
 }
 
+
+ /**
+ * Funckja incjalizuj¹ca OpenGL. Funckja ta incjalizuje odpowiednie zmienne OpenGL, kamerê, œwiat³o oraz macierz perspektywy.
+ */
 void InitGL()
 {
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);				// Set background color
@@ -157,6 +161,10 @@ void InitGL()
 	pers.zNear = 0.1f;
 }
 
+
+ /**
+ * Funckja incjalizuj¹ca bibliotekê GLUT. Funckja ta inijaclizujê bibliotekê GLUT, która s³y¿y do zarz¹dzania oknem oraz zdarzeniami, przekazuje jej niezbêdne wskaŸniki do funkcji obs³ugi zdarzeñ.
+ */
 void InitGlut(int argc, char * argv[])
 {
 	glutInit(&argc, argv);// inicjalizacja biblioteki GLUT
@@ -175,6 +183,11 @@ void InitGlut(int argc, char * argv[])
 	glutPassiveMotionFunc(PassiveMotionFunc);
 }
 
+
+
+ /**
+ * Funckja incjalizuj¹ca Shadery wykorzystywane w programie.
+ */
 void InitShaders()
 {
 	const Vector4f fogColor(0.5f, 0.5f, 0.5f, 1.f);
@@ -221,6 +234,9 @@ void InitShaders()
 	text = new Text(24);
 }
 
+/**
+* Funckja wczytuj¹ca modele do gry z plików.
+*/
 void LoadModels()
 {
 	ModelsContainer::LoadMesh(1, new Mesh, "Models/phoenix_ugv.md2");
@@ -235,6 +251,9 @@ void LoadModels()
 	PathsContainer::LoadPath(2, "Models/path2.bmp");
 }
 
+/**
+* Funckja zwalniaj¹ca pamiêæ po zakoñczeniu rozgrywiki przed wy³¹czeniem gry.
+*/
 void FreeResources()
 {
 	delete text;
@@ -254,6 +273,9 @@ void FreeResources()
 	PathsContainer::FreeResources();
 }
 
+/**
+* Funckja wyœwietlaj¹ca ca³¹ grafikê na ekranie monitora.
+*/
 void Display()
 {
 	if (gameIsRunning)
