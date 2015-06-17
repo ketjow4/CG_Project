@@ -1,22 +1,20 @@
 #include <iostream>
 #include "texture.h"
 
-Texture::Texture(GLenum TextureTarget, const std::string& FileName)
-{
-    m_textureTarget = TextureTarget;
-    m_fileName      = FileName;
-}
+Texture::Texture(GLenum TextureTarget, const std::string& Filename)
+	: m_textureTarget(TextureTarget), m_filename(Filename)
+{}
 
 bool Texture::Load()
 {
     try 
 	{
-        m_image.read(m_fileName);
+        m_image.read(m_filename);
         m_image.write(&m_blob, "RGBA");
     }
     catch (Magick::Error& Error) 
 	{
-        std::cout << "Error loading texture '" << m_fileName << "': " << Error.what() << std::endl;
+        std::cout << "Error loading texture '" << m_filename << "': " << Error.what() << std::endl;
         return false;
     }
 

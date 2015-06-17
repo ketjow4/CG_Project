@@ -8,14 +8,21 @@
 class Texture
 {
 public:
-    Texture(GLenum TextureTarget, const std::string& FileName);
-
+	/**
+	* Tworzy teksturê na podstawie pliku.
+	* @param Filename
+	*/
+    Texture(GLenum TextureTarget, const std::string& Filename);
+	/**
+	* Funkcja ³aduje teksturê z pliku.
+	*/
     bool Load();
-
+	/**
+	* Funkcja wi¹¿e teskture z identyfikatorem.
+	*/
     void Bind(GLenum TextureUnit);
-
 private:
-    std::string m_fileName;
+    std::string m_filename;
     GLenum m_textureTarget;
     GLuint m_textureObj;
     Magick::Image m_image;
