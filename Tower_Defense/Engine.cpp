@@ -21,14 +21,14 @@ Engine::~Engine()
 
 void Engine::Init()
 {
-	light = new BasicLightingTechnique();
+	light = new SimpleModelTechnique();
 	if (!light->Init())
 	{
 		printf("Error initializing the lighting technique\n");
 		//return -1;
 	}
 
-	m_pEffect = new SkinningTechnique();
+	m_pEffect = new AnimatedModelTechnique();
 	if (!m_pEffect->Init())
 	{
 		printf("Error initializing the skinning technique\n");
@@ -50,7 +50,7 @@ void Engine::Init()
 	}
 }
 
-BasicLightingTechnique* Engine::light = NULL;		//use this shaders for static objects
-SkinningTechnique* Engine::m_pEffect = NULL;
+SimpleModelTechnique* Engine::light = NULL;		//use this shaders for static objects
+AnimatedModelTechnique* Engine::m_pEffect = NULL;
 PickingTexture* Engine::m_pickingTexture = NULL;
 PickingTechnique* Engine::m_pickingEffect = NULL;

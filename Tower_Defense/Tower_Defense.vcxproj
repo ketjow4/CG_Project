@@ -113,7 +113,8 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClCompile Include="math_3d.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="BasicLighting.cpp" />
+    <ClCompile Include="ModelTechnique.cpp" />
+    <ClCompile Include="SimpleModelTechnique.cpp" />
     <ClCompile Include="ModelsContainer.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Path.cpp" />
@@ -126,7 +127,7 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="SkinnedShadowTechnique.cpp" />
     <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="SkinningTechnique.cpp" />
+    <ClCompile Include="AnimatedModelTechnique.cpp" />
     <ClCompile Include="TerrainsContainer.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -149,7 +150,8 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClInclude Include="Level.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="Model.h" />
-    <ClInclude Include="BasicLighting.h" />
+    <ClInclude Include="ModelTechnique.h" />
+    <ClInclude Include="SimpleModelTechnique.h" />
     <ClInclude Include="math_3d.h" />
     <ClInclude Include="ModelsContainer.h" />
     <ClInclude Include="Mouse.h" />
@@ -164,7 +166,7 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="pipeline.h" />
     <ClInclude Include="SkinnedShadowTechnique.h" />
-    <ClInclude Include="SkinningTechnique.h" />
+    <ClInclude Include="AnimatedModelTechnique.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TerrainsContainer.h" />
     <ClInclude Include="Text.h" />

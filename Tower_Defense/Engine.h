@@ -2,8 +2,8 @@
 #define ENGINE_H
 
 #include "util.h"
-#include "BasicLighting.h"
-#include "SkinningTechnique.h"
+#include "SimpleModelTechnique.h"
+#include "AnimatedModelTechnique.h"
 #include "PickingTechnique.h"
 #include "PickingTexture.h"
 
@@ -22,15 +22,15 @@ public:
 
 	static float GetRunningTime();
 
-	static BasicLightingTechnique* light;		//use this shaders for static objects
-	static SkinningTechnique* m_pEffect;
+	static SimpleModelTechnique* light;		//use this shaders for static objects
+	static AnimatedModelTechnique* m_pEffect;
 	static PickingTexture* m_pickingTexture;
 	static PickingTechnique* m_pickingEffect;
 
 	
 
-	BasicLightingTechnique* getLight() { return light; }	
-	SkinningTechnique* getEffect() {return m_pEffect;}
+	SimpleModelTechnique* getLight() { return light; }	
+	AnimatedModelTechnique* getEffect() {return m_pEffect;}
 	PickingTexture* getpickingTexture() {return m_pickingTexture;}
 	PickingTechnique* getpickingEffect() { return m_pickingEffect;}
 

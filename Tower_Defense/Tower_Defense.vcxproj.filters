@@ -13,7 +13,6 @@
     <ClCompile Include="math_3d.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="BasicLighting.cpp" />
     <ClCompile Include="ModelsContainer.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Path.cpp" />
@@ -22,7 +21,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="SkinningTechnique.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="Tower.cpp" />
@@ -36,6 +34,9 @@
     <ClCompile Include="PathsContainer.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="SkinnedShadowTechnique.cpp" />
+    <ClCompile Include="SimpleModelTechnique.cpp" />
+    <ClCompile Include="AnimatedModelTechnique.cpp" />
+    <ClCompile Include="ModelTechnique.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingCylinder.h" />
@@ -49,7 +50,6 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="Model.h" />
-    <ClInclude Include="BasicLighting.h" />
     <ClInclude Include="math_3d.h" />
     <ClInclude Include="ModelsContainer.h" />
     <ClInclude Include="Mouse.h" />
@@ -60,7 +60,6 @@
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="pipeline.h" />
-    <ClInclude Include="SkinningTechnique.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="texture.h" />
@@ -75,6 +74,9 @@
     <ClInclude Include="PathsContainer.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="SkinnedShadowTechnique.h" />
+    <ClInclude Include="SimpleModelTechnique.h" />
+    <ClInclude Include="AnimatedModelTechnique.h" />
+    <ClInclude Include="ModelTechnique.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Levels\level3.txt" />

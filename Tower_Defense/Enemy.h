@@ -7,7 +7,7 @@
 
 #include "math_3d.h"
 #include "Model.h"
-#include "BasicLighting.h"
+#include "SimpleModelTechnique.h"
 #include "Path.h"
 #include "Terrain.h"
 #include "pipeline.h"
@@ -39,7 +39,7 @@ public:
 	const Vector3f& GetRotation() const;
 	const int& GetPathIndex() const;
 	Vector3f GetFuturePosition(int steps) const;
-	void SetLight(BasicLightingTechnique* light);
+	void SetLight(SimpleModelTechnique* light);
 	void SetTerrain(Terrain* terrain);
 	void SetPath(Path* path);
 	
@@ -49,7 +49,7 @@ private:
 	Vector3f position;
 	Vector3f rotation;
 	int pathIndex;
-	BasicLightingTechnique* light;
+	SimpleModelTechnique* light;
 	Path* path;
 	Terrain* terrain;
 };

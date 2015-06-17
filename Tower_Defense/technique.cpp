@@ -134,10 +134,3 @@ GLint Technique::GetUniformLocation(const char* pUniformName)
 
     return Location;
 }
-
-GLint Technique::GetProgramParam(GLint param)
-{
-    GLint ret;
-    glGetProgramiv(m_shaderProg, param, &ret);
-    return ret;
-}

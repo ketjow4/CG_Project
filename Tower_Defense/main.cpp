@@ -18,15 +18,15 @@
 #include "ShadowMapFBO.h"
 #include "ShadowMapTechnique.h"
 #include "SkinnedShadowTechnique.h"
-#include "BasicLighting.h"
+#include "SimpleModelTechnique.h"
 #include "Audio.h"
 
 const int refreshMills = 30;
 long long m_frameTime;
 int m_frameCount;
 int m_fps;
-BasicLightingTechnique* light;		//use this shaders for static objects
-SkinningTechnique* m_pEffect;
+SimpleModelTechnique* light;		//use this shaders for static objects
+AnimatedModelTechnique* m_pEffect;
 PickingTexture* m_pickingTexture;
 PickingTechnique* m_pickingEffect;
 ShadowMapTechnique* m_pShadowMapEffect;
@@ -213,7 +213,7 @@ void InitShaders()
 	light->Init();		//very important
 	light->Enable();
 	light->SetSpotLights(1, sl);
-	light->SetTextureUnit(0);
+	light->SetColorTextureUnit(0);
 	light->SetShadowMapTextureUnit(1);
 	light->SetFogColor(fogColor);
 	light->SetFogDensity(fogDensity);

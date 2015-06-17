@@ -92,7 +92,7 @@ Vector3f Enemy::GetFuturePosition(int steps) const
 	return Vector3f(x, y, z);
 }
 
-void Enemy::SetLight(BasicLightingTechnique* light)
+void Enemy::SetLight(SimpleModelTechnique* light)
 {
 	this->light = light;
 }

@@ -8,7 +8,7 @@ Tower::Tower()
 
 
 
-Tower::Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect, Vector3f position, Terrain* ter)
+Tower::Tower(SimpleModelTechnique* light, AnimatedModelTechnique* m_pEffect, Vector3f position, Terrain* ter)
 	: light(light), m_pEffect(m_pEffect), towerPos(position), terrain(ter), reloading(0)
 {
 	towerHeight = 55;			//only good when scale is 5

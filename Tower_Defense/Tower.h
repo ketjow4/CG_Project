@@ -2,9 +2,9 @@
 
 #include "Model.h"
 #include "SkinnedMesh.h"
-#include "SkinningTechnique.h"
+#include "AnimatedModelTechnique.h"
 #include "SkinnedShadowTechnique.h"
-#include "BasicLighting.h"
+#include "SimpleModelTechnique.h"
 #include "Engine.h"
 #include "Enemy.h"
 #include "Missile.h"
@@ -31,14 +31,14 @@ public:
 	/** Pozosta³y czas prze³adowywania */
 	int reloading;
 
-	BasicLightingTechnique* light;
-	SkinningTechnique* m_pEffect;
+	SimpleModelTechnique* light;
+	AnimatedModelTechnique* m_pEffect;
 	Terrain* terrain;
 	SkinnedMesh *model;
 
 	Tower();
 	~Tower();
-	Tower(BasicLightingTechnique* light, SkinningTechnique* m_pEffect, Vector3f position, Terrain* ter);
+	Tower(SimpleModelTechnique* light, AnimatedModelTechnique* m_pEffect, Vector3f position, Terrain* ter);
 
 	/**
 	* Funkcja sprawiaj¹ce, ¿e wie¿a wystrzeliwuje pocisk w strone przeciwnika.
