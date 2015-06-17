@@ -25,8 +25,8 @@ const int refreshMills = 30;
 long long m_frameTime;
 int m_frameCount;
 int m_fps;
-SimpleModelTechnique* light;		//use this shaders for static objects
-AnimatedModelTechnique* m_pEffect;
+SimpleModelTechnique* simpleModel;
+AnimatedModelTechnique* animatedModel;
 PickingTexture* m_pickingTexture;
 PickingTechnique* m_pickingEffect;
 ShadowMapTechnique* m_pShadowMapEffect;
@@ -209,26 +209,26 @@ void InitShaders()
 		exit(-1);
 	}
 
-	light = Engine::getEngine().getLight();
-	light->Init();		//very important
-	light->Enable();
-	light->SetSpotLights(1, sl);
-	light->SetColorTextureUnit(0);
-	light->SetShadowMapTextureUnit(1);
-	light->SetFogColor(fogColor);
-	light->SetFogDensity(fogDensity);
+	simpleModel = Engine::GetEngine().GetSimpleModel();
+	simpleModel->Init();		//very important
+	simpleModel->Enable();
+	simpleModel->SetSpotLights(1, sl);
+	simpleModel->SetColorTextureUnit(0);
+	simpleModel->SetShadowMapTextureUnit(1);
+	simpleModel->SetFogColor(fogColor);
+	simpleModel->SetFogDensity(fogDensity);
 
-	m_pEffect = Engine::getEngine().getEffect();
-	m_pEffect->Init();
-	m_pEffect->Enable();
-	m_pEffect->SetSpotLights(1, sl);
-	m_pEffect->SetFogColor(fogColor);
-	m_pEffect->SetFogDensity(fogDensity);
+	animatedModel = Engine::GetEngine().GetAnimatedModel();
+	animatedModel->Init();
+	animatedModel->Enable();
+	animatedModel->SetSpotLights(1, sl);
+	animatedModel->SetFogColor(fogColor);
+	animatedModel->SetFogDensity(fogDensity);
 
-	m_pickingTexture = Engine::getEngine().getpickingTexture();
+	m_pickingTexture = Engine::GetEngine().GetpickingTexture();
 	m_pickingTexture->Init(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	m_pickingEffect = Engine::getEngine().getpickingEffect();
+	m_pickingEffect = Engine::GetEngine().GetpickingEffect();
 	m_pickingEffect->Init();
 
 	text = new Text(24);
@@ -265,8 +265,8 @@ void FreeResources()
 	delete m_shadowMapFBO;
 	delete m_pickingEffect;
 	delete m_pickingTexture;
-	delete m_pEffect;
-	delete light;
+	delete animatedModel;
+	delete simpleModel;
 	delete menu;
 	delete hud;
 	ModelsContainer::FreeResources();
@@ -361,7 +361,7 @@ void ProcessAndRender()
 	//	pl[i].Position = Vector3f(-150.0f*i, 1.0f, FieldDepth * (cosf(m_scale) + 1.0f) / 2.0f);
 	//	pl[i].Attenuation.Linear = 0.05f;
 	//}
-	//light->SetPointLights(2, pl);
+	//simpleModel->SetPointLights(2, pl);
 
 	Pipeline p;
 	p.SetPerspectiveProj(pers);
@@ -375,12 +375,12 @@ void ProcessAndRender()
 	CheckMouseLeftClick();
 
 	m_shadowMapFBO->BindForReading(GL_TEXTURE1);
-	light->Enable();
-	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
-	light->SetDirectionalLight(m_directionalLight);
-	light->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
-	light->SetMatSpecularIntensity(0.5f);
-	light->SetMatSpecularPower(2);
+	simpleModel->Enable();
+	simpleModel->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
+	simpleModel->SetDirectionalLight(m_directionalLight);
+	simpleModel->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
+	simpleModel->SetMatSpecularIntensity(0.5f);
+	simpleModel->SetMatSpecularPower(2);
 
 	RenderTerrain(p);
 	RenderTowers(p);
@@ -430,7 +430,7 @@ void CheckMouseLeftClick()
 			}
 			else
 			{
-				Tower *tower = new Tower(light, m_pEffect, Vector3f(closest.first, 0, closest.second), lvl->terrain);
+				Tower *tower = new Tower(simpleModel, animatedModel, Vector3f(closest.first, 0, closest.second), lvl->terrain);
 				lvl->occupiedTowerPoints.insert(closest);
 				if (hud->selectedTower == FIRST_TOWER)
 				{
@@ -457,31 +457,31 @@ void RenderTerrain(Pipeline &p)
 	p.Rotate(0.0f, 0.0f, 0.0f);
 	p.WorldPos(0.f, 0.f, 0.f);
 	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
-	light->SetWVP(p.GetWVPTrans());
-	light->SetWV(p.GetWVTrans());
-	light->SetWorldMatrix(p.GetWorldTrans());
+	simpleModel->SetWVP(p.GetWVPTrans());
+	simpleModel->SetWV(p.GetWVTrans());
+	simpleModel->SetWorldMatrix(p.GetWorldTrans());
 	p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
-	light->SetLightWVP(p.GetWVPTrans());
+	simpleModel->SetLightWVP(p.GetWVPTrans());
 	lvl->terrain->Render();
 	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 }
 
 void RenderTowers(Pipeline &p)
 {
-	m_pEffect->Enable();
+	animatedModel->Enable();
 	for (int i = 0; i < lvl->towerList.size(); i++)
 		lvl->towerList[i]->Render(&p, cam);
 }
 
 void RenderEnemies(Pipeline &p)
 {
-	light->Enable();
+	simpleModel->Enable();
 	lvl->currentWave->UpdatePosition();
 }
 
 void ProcessAndRenderMissiles(Pipeline &p)
 {
-	light->Enable();
+	simpleModel->Enable();
 	for (int i = 0; i < lvl->towerList.size(); i++)
 	{
 		list<Enemy*>::iterator it = lvl->currentWave->activeEnemies->begin();

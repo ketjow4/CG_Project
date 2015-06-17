@@ -8,8 +8,8 @@ Tower::Tower()
 
 
 
-Tower::Tower(SimpleModelTechnique* light, AnimatedModelTechnique* m_pEffect, Vector3f position, Terrain* ter)
-	: light(light), m_pEffect(m_pEffect), towerPos(position), terrain(ter), reloading(0)
+Tower::Tower(SimpleModelTechnique* simpleModel, AnimatedModelTechnique* animatedModel, Vector3f position, Terrain* ter)
+	: simpleModel(simpleModel), animatedModel(animatedModel), towerPos(position), terrain(ter), reloading(0)
 {
 	towerHeight = 55;			//only good when scale is 5
 	towerScale = 5;
@@ -93,9 +93,9 @@ void Tower::RenderMissile(Missile *missile, Pipeline *p)
 	p->WorldPos(missile->pos);
 	p->Scale(.5f, .5f, .5f);
 	p->Rotate(0, 0, 0);
-	light->SetWVP(p->GetWVPTrans());
-	light->SetWV(p->GetWVTrans());
-	light->SetWorldMatrix(p->GetWorldTrans());
+	simpleModel->SetWVP(p->GetWVPTrans());
+	simpleModel->SetWV(p->GetWVTrans());
+	simpleModel->SetWorldMatrix(p->GetWorldTrans());
 	missileModel->Render();
 }
 
@@ -119,7 +119,7 @@ void Tower::CalcAnimation()
 	float RunningTime = reloading / 25.f;
 	model->BoneTransform(RunningTime, Transforms);
     for (uint i = 0 ; i < Transforms.size() ; i++)
-        m_pEffect->SetBoneTransform(i, Transforms[i]);
+        animatedModel->SetBoneTransform(i, Transforms[i]);
 }
 
 void Tower::CalcAnimation(SkinnedShadowTechnique *m_SkinnedShadowTechnique)
@@ -137,12 +137,12 @@ void Tower::Render(Pipeline *p, Camera* cam)
 	p->Scale(towerScale,towerScale,towerScale);
 	p->Rotate(0,90,-90);
 	p->WorldPos(towerPos);
-	m_pEffect->SetWV(p->GetWVTrans());
-	m_pEffect->SetWVP(p->GetWVPTrans());
-	m_pEffect->SetWorldMatrix(p->GetWorldTrans()); 
+	animatedModel->SetWV(p->GetWVTrans());
+	animatedModel->SetWVP(p->GetWVPTrans());
+	animatedModel->SetWorldMatrix(p->GetWorldTrans()); 
 
 	p->SetCamera(Vector3f(-100.0, 300.0, -100.0f), Vector3f(0.2f, -1.0f, 0.1f), Vector3f(0.0f, 1.0f, 0.0f));
-	m_pEffect->SetLightWVP(p->GetWVPTrans());
+	animatedModel->SetLightWVP(p->GetWVPTrans());
 
 	model->Render();
 

@@ -22,23 +22,23 @@ public:
 
 	static float GetRunningTime();
 
-	static SimpleModelTechnique* light;		//use this shaders for static objects
-	static AnimatedModelTechnique* m_pEffect;
+	static SimpleModelTechnique* simpleModel;		//use this shaders for static objects
+	static AnimatedModelTechnique* animatedModel;
 	static PickingTexture* m_pickingTexture;
 	static PickingTechnique* m_pickingEffect;
 
 	
 
-	SimpleModelTechnique* getLight() { return light; }	
-	AnimatedModelTechnique* getEffect() {return m_pEffect;}
-	PickingTexture* getpickingTexture() {return m_pickingTexture;}
-	PickingTechnique* getpickingEffect() { return m_pickingEffect;}
+	SimpleModelTechnique* GetSimpleModel() { return simpleModel; }
+	AnimatedModelTechnique* GetAnimatedModel() {return animatedModel;}
+	PickingTexture* GetpickingTexture() {return m_pickingTexture;}
+	PickingTechnique* GetpickingEffect() { return m_pickingEffect;}
 
 	//use only this to get something from engine
-	static Engine getEngine()
+	static Engine GetEngine()
 	{
 		static Engine en;
-		if(en.light == NULL)
+		if (en.simpleModel == NULL)
 		{
 			Init();
 		}

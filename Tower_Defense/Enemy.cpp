@@ -20,7 +20,7 @@ void Enemy::LoadModel(int id)
 
 void Enemy::UpdatePosition(Pipeline *p, Camera* cam)
 {
-	light->Enable();
+	simpleModel->Enable();
 
 	if (poison.duration > 0)
 	{
@@ -46,18 +46,18 @@ void Enemy::UpdatePosition(Pipeline *p, Camera* cam)
 	p->WorldPos(x,y+1.0,z);
 	position = Vector3f(x, y + 1, z);
 
-	light->SetWVP(p->GetWVPTrans());
-	light->SetWV(p->GetWVTrans());
-	light->SetWorldMatrix(p->GetWorldTrans());
-	light->SetColorEffect(EffectColor[effectId]);
-	light->SetColorEffectIntensity(EffectIntensity[effectId]);
+	simpleModel->SetWVP(p->GetWVPTrans());
+	simpleModel->SetWV(p->GetWVTrans());
+	simpleModel->SetWorldMatrix(p->GetWorldTrans());
+	simpleModel->SetColorEffect(EffectColor[effectId]);
+	simpleModel->SetColorEffectIntensity(EffectIntensity[effectId]);
 	p->SetCamera(Vector3f(-100.0, 300.0, -100.0f), Vector3f(0.2f, -1.0f, 0.1f), Vector3f(0.0f, 1.0f, 0.0f));
-	light->SetLightWVP(p->GetWVPTrans());
+	simpleModel->SetLightWVP(p->GetWVPTrans());
 
 	model->Render();
 
 	p->SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
-	light->SetColorEffectIntensity(0.f);
+	simpleModel->SetColorEffectIntensity(0.f);
 
 	if (++pathIndex >= path->pathPoints.size() - 1)				//object arrived at end point 
 	{
@@ -92,9 +92,9 @@ Vector3f Enemy::GetFuturePosition(int steps) const
 	return Vector3f(x, y, z);
 }
 
-void Enemy::SetLight(SimpleModelTechnique* light)
+void Enemy::SetSimpleModel(SimpleModelTechnique* simpleModel)
 {
-	this->light = light;
+	this->simpleModel = simpleModel;
 }
 
 void Enemy::SetTerrain(Terrain* terrain)

@@ -1,6 +1,4 @@
-#ifndef ENEMY_H
-#define ENEMY_H
-
+#pragma once
 
 #include <iostream>
 #include <map>
@@ -39,7 +37,7 @@ public:
 	const Vector3f& GetRotation() const;
 	const int& GetPathIndex() const;
 	Vector3f GetFuturePosition(int steps) const;
-	void SetLight(SimpleModelTechnique* light);
+	void SetSimpleModel(SimpleModelTechnique* simpleModel);
 	void SetTerrain(Terrain* terrain);
 	void SetPath(Path* path);
 	
@@ -49,9 +47,7 @@ private:
 	Vector3f position;
 	Vector3f rotation;
 	int pathIndex;
-	SimpleModelTechnique* light;
+	SimpleModelTechnique* simpleModel;
 	Path* path;
 	Terrain* terrain;
 };
-
-#endif

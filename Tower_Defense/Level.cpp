@@ -46,7 +46,7 @@ bool Level::LoadFromFile(const string &filename)
 			for (int j = 0, je = stoi(enemyCount); j < je; ++j)
 			{
 				Enemy *en = new Enemy();
-				en->SetLight( Engine::getEngine().getLight() );
+				en->SetSimpleModel( Engine::GetEngine().GetSimpleModel() );
 				en->LoadModel(1);
 				en->SetTerrain(terrain);
 				en->SetPath(path);

@@ -10,21 +10,17 @@ AnimatedModelTechnique::AnimatedModelTechnique()
 
 bool AnimatedModelTechnique::Init()
 {
-    if (!Technique::Init()) {
+    if (!Technique::Init())
         return false;
-    }
 
-    if (!AddShader(GL_VERTEX_SHADER, "Shaders/skinning.vs")) {
+    if (!AddShader(GL_VERTEX_SHADER, "Shaders/animatedModel.vs"))
         return false;
-    }
 
-    if (!AddShader(GL_FRAGMENT_SHADER, "Shaders/skinning.fs")) {
+    if (!AddShader(GL_FRAGMENT_SHADER, "Shaders/animatedModel.fs"))
         return false;
-    }
 
-    if (!Finalize()) {
+    if (!Finalize())
         return false;
-    }
     
     m_WVPLocation = GetUniformLocation("gWVP");
 	m_WVLocation = GetUniformLocation("gWV");

@@ -31,14 +31,14 @@ public:
 	/** Pozosta³y czas prze³adowywania */
 	int reloading;
 
-	SimpleModelTechnique* light;
-	AnimatedModelTechnique* m_pEffect;
+	SimpleModelTechnique* simpleModel;
+	AnimatedModelTechnique* animatedModel;
 	Terrain* terrain;
-	SkinnedMesh *model;
+	SkinnedMesh* model;
 
 	Tower();
 	~Tower();
-	Tower(SimpleModelTechnique* light, AnimatedModelTechnique* m_pEffect, Vector3f position, Terrain* ter);
+	Tower(SimpleModelTechnique* simpleModel, AnimatedModelTechnique* animatedModel, Vector3f position, Terrain* ter);
 
 	/**
 	* Funkcja sprawiaj¹ce, ¿e wie¿a wystrzeliwuje pocisk w strone przeciwnika.
