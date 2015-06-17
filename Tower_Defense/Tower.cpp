@@ -122,13 +122,13 @@ void Tower::CalcAnimation()
         animatedModel->SetBoneTransform(i, Transforms[i]);
 }
 
-void Tower::CalcAnimation(SkinnedShadowTechnique *m_SkinnedShadowTechnique)
+void Tower::CalcAnimation(AnimatedShadowTechnique *m_AnimatedShadowTechnique)
 {
 	vector<Matrix4f> Transforms;
 	float RunningTime = reloading / 25.f;
 	model->BoneTransform(RunningTime, Transforms);
 	for (uint i = 0; i < Transforms.size(); i++)
-		m_SkinnedShadowTechnique->SetBoneTransform(i, Transforms[i]);
+		m_AnimatedShadowTechnique->SetBoneTransform(i, Transforms[i]);
 }
 
 void Tower::Render(Pipeline *p, Camera* cam)

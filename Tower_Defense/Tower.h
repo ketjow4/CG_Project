@@ -3,7 +3,7 @@
 #include "Model.h"
 #include "SkinnedMesh.h"
 #include "AnimatedModelTechnique.h"
-#include "SkinnedShadowTechnique.h"
+#include "AnimatedShadowTechnique.h"
 #include "SimpleModelTechnique.h"
 #include "Engine.h"
 #include "Enemy.h"
@@ -88,9 +88,9 @@ public:
 	void CalcAnimation();
 	/**
 	* Funkcja obliczaj¹ca transformacje koœci na potrzeby animacji przy wyœwietlaniu cieni.
-	* @param m_SkinnedShadowTechnique obiekt steruj¹cy shaderami cieni
+	* @param m_AnimatedShadowTechnique obiekt steruj¹cy shaderami cieni
 	*/
-	void CalcAnimation(SkinnedShadowTechnique *m_SkinnedShadowTechnique);
+	void CalcAnimation(AnimatedShadowTechnique *m_AnimatedShadowTechnique);
 	Vector3f GetPosition()
 	{
 		return towerPos;

@@ -16,8 +16,8 @@
 #include "PickingTechnique.h"
 #include "Level.h"
 #include "ShadowMapFBO.h"
-#include "ShadowMapTechnique.h"
-#include "SkinnedShadowTechnique.h"
+#include "SimpleShadowTechnique.h"
+#include "AnimatedShadowTechnique.h"
 #include "SimpleModelTechnique.h"
 #include "Audio.h"
 
@@ -29,8 +29,8 @@ SimpleModelTechnique* simpleModel;
 AnimatedModelTechnique* animatedModel;
 PickingTexture* m_pickingTexture;
 PickingTechnique* m_pickingEffect;
-ShadowMapTechnique* m_pShadowMapEffect;
-SkinnedShadowTechnique* m_pSkinnedShadowMapEffect;
+SimpleShadowTechnique* m_pShadowMapEffect;
+AnimatedShadowTechnique* m_pSkinnedShadowMapEffect;
 ShadowMapFBO* m_shadowMapFBO;
 
 DirectionalLight m_directionalLight;
@@ -196,13 +196,13 @@ void InitShaders()
 	m_shadowMapFBO = new ShadowMapFBO();
 	if (!m_shadowMapFBO->Init(WINDOW_WIDTH, WINDOW_HEIGHT))
 		exit(-1);
-	m_pShadowMapEffect = new ShadowMapTechnique();
+	m_pShadowMapEffect = new SimpleShadowTechnique();
 	if (!m_pShadowMapEffect->Init())
 	{
 		printf("Error initializing the shadow map technique\n");
 		exit(-1);
 	}
-	m_pSkinnedShadowMapEffect = new SkinnedShadowTechnique();
+	m_pSkinnedShadowMapEffect = new AnimatedShadowTechnique();
 	if (!m_pSkinnedShadowMapEffect->Init())
 	{
 		printf("Error initializing the skinned shadow map technique\n");

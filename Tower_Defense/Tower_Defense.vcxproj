@@ -114,6 +114,7 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelTechnique.cpp" />
+    <ClCompile Include="ShadowTechnique.cpp" />
     <ClCompile Include="SimpleModelTechnique.cpp" />
     <ClCompile Include="ModelsContainer.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -123,9 +124,9 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClCompile Include="PickingTexture.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShadowMapFBO.cpp" />
-    <ClCompile Include="ShadowMapTechnique.cpp" />
+    <ClCompile Include="SimpleShadowTechnique.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
-    <ClCompile Include="SkinnedShadowTechnique.cpp" />
+    <ClCompile Include="AnimatedShadowTechnique.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="AnimatedModelTechnique.cpp" />
     <ClCompile Include="TerrainsContainer.cpp" />
@@ -151,6 +152,7 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClInclude Include="Missile.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelTechnique.h" />
+    <ClInclude Include="ShadowTechnique.h" />
     <ClInclude Include="SimpleModelTechnique.h" />
     <ClInclude Include="math_3d.h" />
     <ClInclude Include="ModelsContainer.h" />
@@ -162,10 +164,10 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClInclude Include="Player.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="ShadowMapFBO.h" />
-    <ClInclude Include="ShadowMapTechnique.h" />
+    <ClInclude Include="SimpleShadowTechnique.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="pipeline.h" />
-    <ClInclude Include="SkinnedShadowTechnique.h" />
+    <ClInclude Include="AnimatedShadowTechnique.h" />
     <ClInclude Include="AnimatedModelTechnique.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TerrainsContainer.h" />

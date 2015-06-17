@@ -28,15 +28,16 @@
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="ShadowMapFBO.cpp" />
-    <ClCompile Include="ShadowMapTechnique.cpp" />
     <ClCompile Include="TerrainsContainer.cpp" />
     <ClCompile Include="PathsContainer.cpp" />
     <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="SkinnedShadowTechnique.cpp" />
     <ClCompile Include="SimpleModelTechnique.cpp" />
     <ClCompile Include="AnimatedModelTechnique.cpp" />
     <ClCompile Include="ModelTechnique.cpp" />
     <ClCompile Include="Technique.cpp" />
+    <ClCompile Include="ShadowTechnique.cpp" />
+    <ClCompile Include="SimpleShadowTechnique.cpp" />
+    <ClCompile Include="AnimatedShadowTechnique.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingCylinder.h" />
@@ -68,15 +69,16 @@
     <ClInclude Include="util.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="ShadowMapFBO.h" />
-    <ClInclude Include="ShadowMapTechnique.h" />
     <ClInclude Include="TerrainsContainer.h" />
     <ClInclude Include="PathsContainer.h" />
     <ClInclude Include="Audio.h" />
-    <ClInclude Include="SkinnedShadowTechnique.h" />
     <ClInclude Include="SimpleModelTechnique.h" />
     <ClInclude Include="AnimatedModelTechnique.h" />
     <ClInclude Include="ModelTechnique.h" />
     <ClInclude Include="Technique.h" />
+    <ClInclude Include="ShadowTechnique.h" />
+    <ClInclude Include="SimpleShadowTechnique.h" />
+    <ClInclude Include="AnimatedShadowTechnique.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Levels\level3.txt" />
