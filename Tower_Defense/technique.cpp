@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "util.h"
-#include "technique.h"
+#include "Technique.h"
 
 Technique::Technique()
 {

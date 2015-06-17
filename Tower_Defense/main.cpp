@@ -228,7 +228,7 @@ void InitShaders()
 	m_pickingTexture = Engine::GetEngine().GetpickingTexture();
 	m_pickingTexture->Init(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	m_pickingEffect = Engine::GetEngine().GetpickingEffect();
+	m_pickingEffect = Engine::GetEngine().GetPickingEffect();
 	m_pickingEffect->Init();
 
 	text = new Text(24);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <assert.h>
-#include "technique.h"
+#include "Technique.h"
 #include "math_3d.h"
 #include "util.h"
 

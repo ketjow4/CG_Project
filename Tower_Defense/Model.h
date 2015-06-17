@@ -1,5 +1,4 @@
-#ifndef MODEL_H
-#define MODEL_H
+#pragma once
 
 #include <stdlib.h>
 #include <GL\glew.h>
@@ -81,6 +80,3 @@ private:
 
 #define INVALID_MATERIAL 0xFFFFFFFF
 };
-
-
-#endif

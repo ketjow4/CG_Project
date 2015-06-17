@@ -26,7 +26,6 @@
     <ClCompile Include="Tower.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="pipeline.cpp" />
-    <ClCompile Include="technique.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="ShadowMapFBO.cpp" />
     <ClCompile Include="ShadowMapTechnique.cpp" />
@@ -37,6 +36,7 @@
     <ClCompile Include="SimpleModelTechnique.cpp" />
     <ClCompile Include="AnimatedModelTechnique.cpp" />
     <ClCompile Include="ModelTechnique.cpp" />
+    <ClCompile Include="Technique.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingCylinder.h" />
@@ -66,7 +66,6 @@
     <ClInclude Include="Tower.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="util.h" />
-    <ClInclude Include="technique.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="ShadowMapFBO.h" />
     <ClInclude Include="ShadowMapTechnique.h" />
@@ -77,6 +76,7 @@
     <ClInclude Include="SimpleModelTechnique.h" />
     <ClInclude Include="AnimatedModelTechnique.h" />
     <ClInclude Include="ModelTechnique.h" />
+    <ClInclude Include="Technique.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Levels\level3.txt" />

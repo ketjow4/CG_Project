@@ -1,6 +1,4 @@
-#ifndef WAVE_H
-#define WAVE_H
-
+#pragma once
 
 #include "Enemy.h"
 #include <vector>
@@ -31,9 +29,3 @@ private:
 
 	void ActivateNextEnemy();
 };
-
-
-
-
-
-#endif

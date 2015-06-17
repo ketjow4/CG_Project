@@ -1,6 +1,6 @@
 #pragma once
 
-#include "technique.h"
+#include "Technique.h"
 #include "math_3d.h"
 #include "types.h"
 

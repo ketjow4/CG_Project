@@ -1,8 +1,6 @@
-#ifndef DRAWING2D_H
-#define DRAWING2D_H
+#pragma once
 
-
-#include "technique.h"
+#include "Technique.h"
 #include "math_3d.h"
 #include "texture.h"
 
@@ -27,6 +25,3 @@ private:
 	GLuint m_texture;
 
 };
-
-
-#endif

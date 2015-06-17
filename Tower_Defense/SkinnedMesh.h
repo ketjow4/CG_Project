@@ -1,5 +1,4 @@
-#ifndef OGLDEV_SKINNED_MESH_H
-#define	OGLDEV_SKINNED_MESH_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -132,7 +131,4 @@ enum VB_TYPES {
     const aiScene* m_pScene;
     Assimp::Importer m_Importer;
 };
-
-
-#endif	/* OGLDEV_SKINNED_MESH_H */
 

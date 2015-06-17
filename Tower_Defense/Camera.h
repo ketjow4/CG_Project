@@ -1,5 +1,4 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#pragma once
 
 #include <stdlib.h>
 #include <glut.h>
@@ -53,5 +52,3 @@ public:
 
 	void Rotate(double angle);
 };
-
-#endif

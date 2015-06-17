@@ -1,5 +1,4 @@
-#ifndef TEXTURE_H
-#define	TEXTURE_H
+#pragma once
 
 #include <string>
 
@@ -22,7 +21,4 @@ private:
     Magick::Image m_image;
     Magick::Blob m_blob;
 };
-
-
-#endif	/* TEXTURE_H */
 

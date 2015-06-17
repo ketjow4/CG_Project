@@ -1,5 +1,4 @@
-#ifndef TEXT_H
-#define TEXT_H
+#pragma once
 
 #include <ft2build.h>
 #include FT_FREETYPE_H  
@@ -8,7 +7,7 @@
 #include <map>
 #include <string>
 
-#include "technique.h"
+#include "Technique.h"
 #include "glm\glm.hpp"
 #include "math_3d.h"
 
@@ -40,8 +39,3 @@ private:
 
 };
 
-
-
-
-
-#endif

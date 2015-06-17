@@ -1,5 +1,4 @@
-#ifndef PIPELINE_H
-#define	PIPELINE_H
+#pragma once
 
 #include "math_3d.h"
 
@@ -115,7 +114,4 @@ private:
     Matrix4f m_WVtransformation;
     Matrix4f m_Wtransformation;
 };
-
-
-#endif	/* PIPELINE_H */
 

@@ -1,5 +1,4 @@
-#ifndef SHADOWMAPFBO_H
-#define	SHADOWMAPFBO_H
+#pragma once
 
 #include <GL/glew.h>
 #include <stdio.h>
@@ -18,5 +17,3 @@ private:
 
 	void FreeResources();
 };
-
-#endif	/* SHADOWMAPFBO_H */

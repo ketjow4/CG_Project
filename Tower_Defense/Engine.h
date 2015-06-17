@@ -1,12 +1,10 @@
-#ifndef ENGINE_H
-#define ENGINE_H
+#pragma once
 
 #include "util.h"
 #include "SimpleModelTechnique.h"
 #include "AnimatedModelTechnique.h"
 #include "PickingTechnique.h"
 #include "PickingTexture.h"
-
 
 class Engine
 {
@@ -32,7 +30,7 @@ public:
 	SimpleModelTechnique* GetSimpleModel() { return simpleModel; }
 	AnimatedModelTechnique* GetAnimatedModel() {return animatedModel;}
 	PickingTexture* GetpickingTexture() {return m_pickingTexture;}
-	PickingTechnique* GetpickingEffect() { return m_pickingEffect;}
+	PickingTechnique* GetPickingEffect() { return m_pickingEffect;}
 
 	//use only this to get something from engine
 	static Engine GetEngine()
@@ -49,8 +47,3 @@ private:
 	static void Init();
 };
 
-
-
-
-
-#endif

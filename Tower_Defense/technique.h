@@ -1,5 +1,4 @@
-#ifndef TECHNIQUE_H
-#define	TECHNIQUE_H
+#pragma once
 
 #include <list>
 #include <GL/glew.h>
@@ -41,6 +40,4 @@ private:
     typedef std::list<GLuint> ShaderObjList;
     ShaderObjList m_shaderObjList;
 };
-
-#endif	/* TECHNIQUE_H */
 

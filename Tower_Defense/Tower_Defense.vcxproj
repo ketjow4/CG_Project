@@ -134,7 +134,7 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClCompile Include="Tower.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="pipeline.cpp" />
-    <ClCompile Include="technique.cpp" />
+    <ClCompile Include="Technique.cpp" />
     <ClCompile Include="Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,7 +174,7 @@ xcopy "$(ProjectDir)\Menu\*.*" "$(ProjectDir)..\Debug\Menu\" /i /y</Command>
     <ClInclude Include="Tower.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="util.h" />
-    <ClInclude Include="technique.h" />
+    <ClInclude Include="Technique.h" />
     <ClInclude Include="Wave.h" />
   </ItemGroup>
   <ItemGroup>

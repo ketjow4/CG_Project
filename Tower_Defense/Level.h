@@ -1,5 +1,4 @@
-#ifndef LEVEL_H
-#define LEVEL_H
+#pragma once
 
 #include <list>
 #include "Wave.h"
@@ -35,8 +34,3 @@ private:
 	bool Accomplished;
 };
 
-
-
-
-
-#endif

@@ -1,8 +1,6 @@
-#ifndef SHADOW_MAP_TECHNIQUE_H
-#define	SHADOW_MAP_TECHNIQUE_H
+#pragma once
 
-
-#include "technique.h"
+#include "Technique.h"
 #include "math_3d.h"
 #include "util.h"
 
@@ -21,5 +19,3 @@ private:
     GLuint m_textureLocation;
 };
 
-
-#endif	/* SHADOW_MAP_TECHNIQUE_H */

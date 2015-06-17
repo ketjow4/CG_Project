@@ -1,5 +1,4 @@
-#ifndef MATH_3D_H
-#define	MATH_3D_H
+#pragma once
 
 #include <stdio.h>
 #ifdef WIN32
@@ -294,5 +293,4 @@ Quaternion operator*(const Quaternion& l, const Quaternion& r);
 
 Quaternion operator*(const Quaternion& q, const Vector3f& v);
 
-#endif	/* MATH_3D_H */
 
