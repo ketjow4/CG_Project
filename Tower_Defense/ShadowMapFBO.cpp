@@ -12,13 +12,11 @@ ShadowMapFBO::~ShadowMapFBO()
 
 void ShadowMapFBO::FreeResources()
 {
-	if (m_fbo != 0) {
+	if (m_fbo != 0)
 		glDeleteFramebuffers(1, &m_fbo);
-	}
 
-	if (m_shadowMap != 0) {
+	if (m_shadowMap != 0)
 		glDeleteTextures(1, &m_shadowMap);
-	}
 }
 
 bool ShadowMapFBO::Init(unsigned int WindowWidth, unsigned int WindowHeight)
@@ -49,7 +47,8 @@ bool ShadowMapFBO::Init(unsigned int WindowWidth, unsigned int WindowHeight)
 
     GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
-    if (Status != GL_FRAMEBUFFER_COMPLETE) {
+    if (Status != GL_FRAMEBUFFER_COMPLETE) 
+	{
         printf("FB error, status: 0x%x\n", Status);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
         return false;

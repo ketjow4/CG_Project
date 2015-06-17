@@ -29,8 +29,8 @@ SimpleModelTechnique* simpleModel;
 AnimatedModelTechnique* animatedModel;
 PickingTexture* m_pickingTexture;
 PickingTechnique* m_pickingEffect;
-SimpleShadowTechnique* m_pShadowMapEffect;
-AnimatedShadowTechnique* m_pSkinnedShadowMapEffect;
+SimpleShadowTechnique* m_simpleShadowEffect;
+AnimatedShadowTechnique* m_animatedShadowEffect;
 ShadowMapFBO* m_shadowMapFBO;
 
 DirectionalLight m_directionalLight;
@@ -52,9 +52,6 @@ bool showHud = true;
 GameMenu *menu;
 GameHUD *hud;
 Audio *audio;
-
-#define WINDOW_WIDTH  640
-#define WINDOW_HEIGHT 480
 
 void InitGL();
 void InitGlut(int argc, char * argv[]);
@@ -196,14 +193,14 @@ void InitShaders()
 	m_shadowMapFBO = new ShadowMapFBO();
 	if (!m_shadowMapFBO->Init(WINDOW_WIDTH, WINDOW_HEIGHT))
 		exit(-1);
-	m_pShadowMapEffect = new SimpleShadowTechnique();
-	if (!m_pShadowMapEffect->Init())
+	m_simpleShadowEffect = new SimpleShadowTechnique();
+	if (!m_simpleShadowEffect->Init())
 	{
 		printf("Error initializing the shadow map technique\n");
 		exit(-1);
 	}
-	m_pSkinnedShadowMapEffect = new AnimatedShadowTechnique();
-	if (!m_pSkinnedShadowMapEffect->Init())
+	m_animatedShadowEffect = new AnimatedShadowTechnique();
+	if (!m_animatedShadowEffect->Init())
 	{
 		printf("Error initializing the skinned shadow map technique\n");
 		exit(-1);
@@ -260,8 +257,8 @@ void FreeResources()
 	if (lvl)
 		for (int i = 0; i < lvl->towerList.size(); i++)
 			delete lvl->towerList[i];
-	delete m_pSkinnedShadowMapEffect;
-	delete m_pShadowMapEffect;
+	delete m_animatedShadowEffect;
+	delete m_simpleShadowEffect;
 	delete m_shadowMapFBO;
 	delete m_pickingEffect;
 	delete m_pickingTexture;
@@ -302,7 +299,8 @@ void GameProgress()
 {
 	m_frameCount++;
 	long long time = GetCurrentTimeMillis();
-	if (time - m_frameTime >= 1000) {
+	if (time - m_frameTime >= 1000) 
+	{
 		m_frameTime = time;
 		m_fps = m_frameCount;
 		m_frameCount = 0;
@@ -320,7 +318,7 @@ void CalcShadow()
 	Pipeline p;
 	p.SetPerspectiveProj(pers);
 
-	m_pShadowMapEffect->Enable();
+	m_simpleShadowEffect->Enable();
 	std::list<Enemy*>::iterator it = lvl->currentWave->activeEnemies->begin();
 	for (it; it != lvl->currentWave->activeEnemies->end(); it++)
 	{
@@ -328,19 +326,19 @@ void CalcShadow()
 		p.Rotate((*it)->GetRotation());
 		p.WorldPos((*it)->GetPosition());
 		p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
-		m_pShadowMapEffect->SetWVP(p.GetWVPTrans());
+		m_simpleShadowEffect->SetWVP(p.GetWVPTrans());
 		(*it)->model->Render();
 	}
 
-	m_pSkinnedShadowMapEffect->Enable();
+	m_animatedShadowEffect->Enable();
 	for (int i = 0; i < lvl->towerList.size(); i++)
 	{
 		p.Scale(lvl->towerList[i]->GetScale());
 		p.Rotate(0, 90, -90);
 		p.WorldPos(lvl->towerList[i]->GetPosition());
 		p.SetCamera(sl[0].Position, sl[0].Direction, Vector3f(0.0f, 1.0f, 0.0f));
-		m_pSkinnedShadowMapEffect->SetWVP(p.GetWVPTrans());
-		lvl->towerList[i]->CalcAnimation(m_pSkinnedShadowMapEffect);
+		m_animatedShadowEffect->SetWVP(p.GetWVPTrans());
+		lvl->towerList[i]->CalcAnimation(m_animatedShadowEffect);
 		lvl->towerList[i]->model->Render();
 	}
 

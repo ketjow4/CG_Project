@@ -39,7 +39,8 @@ bool AnimatedModelTechnique::Init()
 	m_fogDensity = GetUniformLocation("fogDensity");
 	m_fogColor = GetUniformLocation("fogColor");
 
-    for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_pointLightsLocation) ; i++) {
+    for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_pointLightsLocation) ; i++) 
+	{
         char Name[128];
         memset(Name, 0, sizeof(Name));
         SNPRINTF(Name, sizeof(Name), "gPointLights[%d].Base.Color", i);
@@ -64,7 +65,8 @@ bool AnimatedModelTechnique::Init()
         m_pointLightsLocation[i].Atten.Exp = GetUniformLocation(Name);
     }
 
-    for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_spotLightsLocation) ; i++) {
+    for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_spotLightsLocation) ; i++) 
+	{
         char Name[128];
         memset(Name, 0, sizeof(Name));
         SNPRINTF(Name, sizeof(Name), "gSpotLights[%d].Base.Base.Color", i);
@@ -95,7 +97,8 @@ bool AnimatedModelTechnique::Init()
         m_spotLightsLocation[i].Atten.Exp = GetUniformLocation(Name);
     }
 
-    for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_boneLocation) ; i++) {
+    for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(m_boneLocation) ; i++) 
+	{
         char Name[128];
         memset(Name, 0, sizeof(Name));
         SNPRINTF(Name, sizeof(Name), "gBones[%d]", i);
@@ -108,6 +111,5 @@ bool AnimatedModelTechnique::Init()
 void AnimatedModelTechnique::SetBoneTransform(uint Index, const Matrix4f& Transform)
 {
 	assert(Index < MAX_BONES);
-	//Transform.Print();
 	glUniformMatrix4fv(m_boneLocation[Index], 1, GL_TRUE, (const GLfloat*)Transform);
 }

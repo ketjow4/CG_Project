@@ -71,7 +71,8 @@ void ModelTechnique::SetPointLights(unsigned int NumLights, const PointLight* pL
 {
 	glUniform1i(m_numPointLightsLocation, NumLights);
 
-	for (unsigned int i = 0; i < NumLights; i++) {
+	for (unsigned int i = 0; i < NumLights; i++) 
+	{
 		glUniform3f(m_pointLightsLocation[i].Color, pLights[i].Color.x, pLights[i].Color.y, pLights[i].Color.z);
 		glUniform1f(m_pointLightsLocation[i].AmbientIntensity, pLights[i].AmbientIntensity);
 		glUniform1f(m_pointLightsLocation[i].DiffuseIntensity, pLights[i].DiffuseIntensity);
@@ -86,7 +87,8 @@ void ModelTechnique::SetSpotLights(unsigned int NumLights, const SpotLight* pLig
 {
 	glUniform1i(m_numSpotLightsLocation, NumLights);
 
-	for (unsigned int i = 0; i < NumLights; i++) {
+	for (unsigned int i = 0; i < NumLights; i++)
+	{
 		glUniform3f(m_spotLightsLocation[i].Color, pLights[i].Color.x, pLights[i].Color.y, pLights[i].Color.z);
 		glUniform1f(m_spotLightsLocation[i].AmbientIntensity, pLights[i].AmbientIntensity);
 		glUniform1f(m_spotLightsLocation[i].DiffuseIntensity, pLights[i].DiffuseIntensity);

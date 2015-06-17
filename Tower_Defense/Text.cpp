@@ -70,22 +70,17 @@ Text::Text(int fontSize)
 
 	FT_Set_Pixel_Sizes(face, 0, fontSize);  
 
-	 if (!Technique::Init()) {
+	 if (!Technique::Init())
        std::cout << "ERROR::FREETYPE: shader init" << std::endl; 
-    }
 
-    if (!AddShader(GL_VERTEX_SHADER, "Shaders/text.vs")) {
+    if (!AddShader(GL_VERTEX_SHADER, "Shaders/text.vs"))
         std::cout << "ERROR::FREETYPE: vertex shader load" << std::endl; 
-    }
 
-
-    if (!AddShader(GL_FRAGMENT_SHADER, "Shaders/text.fs")) {
+    if (!AddShader(GL_FRAGMENT_SHADER, "Shaders/text.fs"))
        std::cout << "ERROR::FREETYPE: fragment shader load" << std::endl; 
-    }
 
-    if (!Finalize()) {
+    if (!Finalize())
        std::cout << "ERROR::FREETYPE: finalize shader" << std::endl; 
-    }
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);   
 

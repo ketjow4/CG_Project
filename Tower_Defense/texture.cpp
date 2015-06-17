@@ -7,14 +7,15 @@ Texture::Texture(GLenum TextureTarget, const std::string& FileName)
     m_fileName      = FileName;
 }
 
-
 bool Texture::Load()
 {
-    try {
+    try 
+	{
         m_image.read(m_fileName);
         m_image.write(&m_blob, "RGBA");
     }
-    catch (Magick::Error& Error) {
+    catch (Magick::Error& Error) 
+	{
         std::cout << "Error loading texture '" << m_fileName << "': " << Error.what() << std::endl;
         return false;
     }

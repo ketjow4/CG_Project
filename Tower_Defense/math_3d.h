@@ -208,11 +208,9 @@ public:
     {
         Matrix4f n;
         
-        for (unsigned int i = 0 ; i < 4 ; i++) {
-            for (unsigned int j = 0 ; j < 4 ; j++) {
+        for (unsigned int i = 0 ; i < 4 ; i++) 
+            for (unsigned int j = 0 ; j < 4 ; j++)
                 n.m[i][j] = m[j][i];
-            }
-        }
         
         return n;
     }
@@ -230,14 +228,12 @@ public:
     {
         Matrix4f Ret;
 
-        for (unsigned int i = 0 ; i < 4 ; i++) {
-            for (unsigned int j = 0 ; j < 4 ; j++) {
+        for (unsigned int i = 0 ; i < 4 ; i++)
+            for (unsigned int j = 0 ; j < 4 ; j++)
                 Ret.m[i][j] = m[i][0] * Right.m[0][j] +
                               m[i][1] * Right.m[1][j] +
                               m[i][2] * Right.m[2][j] +
                               m[i][3] * Right.m[3][j];
-            }
-        }
 
         return Ret;
     }
@@ -261,9 +257,8 @@ public:
     
     void Print() const
     {
-        for (int i = 0 ; i < 4 ; i++) {
+        for (int i = 0 ; i < 4 ; i++)
             printf("%f %f %f %f\n", m[i][0], m[i][1], m[i][2], m[i][3]);
-        }       
     }
     
     float Determinant() const;
