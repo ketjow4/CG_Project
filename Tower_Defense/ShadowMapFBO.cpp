@@ -10,16 +10,7 @@ ShadowMapFBO::~ShadowMapFBO()
 	FreeResources();
 }
 
-void ShadowMapFBO::FreeResources()
-{
-	if (m_fbo != 0)
-		glDeleteFramebuffers(1, &m_fbo);
-
-	if (m_shadowMap != 0)
-		glDeleteTextures(1, &m_shadowMap);
-}
-
-bool ShadowMapFBO::Init(unsigned int WindowWidth, unsigned int WindowHeight)
+bool ShadowMapFBO::Init(uint WindowWidth, uint WindowHeight)
 {
 	// Clean for reinit
 	FreeResources();
@@ -68,4 +59,13 @@ void ShadowMapFBO::BindForReading(GLenum TextureUnit)
 {
     glActiveTexture(TextureUnit);
     glBindTexture(GL_TEXTURE_2D, m_shadowMap);
+}
+
+void ShadowMapFBO::FreeResources()
+{
+	if (m_fbo != 0)
+		glDeleteFramebuffers(1, &m_fbo);
+
+	if (m_shadowMap != 0)
+		glDeleteTextures(1, &m_shadowMap);
 }
