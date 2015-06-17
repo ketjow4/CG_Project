@@ -84,13 +84,13 @@ void MotionFunc(int x, int y);
 void PassiveMotionFunc(int x, int y);
 
 
- /**
-       * G³ówna funkcja programu. Incjalizuje wszystkie biblioteki, shadery oraz wczytuje modele. Przed zakoñczeniem zwalania pobrane zasoby
-       * @param argc liczba parametrów uruchomieniowych programu
-       * @param argv[] wartoœci parametrów uruchomieniowych programu.
-       * @see Display()
-       * @return 0 kiedy wszystko zakoñczy³o siê poprawnie
-       */
+/**
+* G³ówna funkcja programu. Incjalizuje wszystkie biblioteki, shadery oraz wczytuje modele. Przed zakoñczeniem zwalania pobrane zasoby
+* @param argc liczba parametrów uruchomieniowych programu
+* @param argv[] wartoœci parametrów uruchomieniowych programu.
+* @see Display()
+* @return 0 kiedy wszystko zakoñczy³o siê poprawnie
+*/
 int main(int argc, char * argv[])
 {
 	Magick::InitializeMagick(*argv);
@@ -117,9 +117,9 @@ int main(int argc, char * argv[])
 }
 
 
- /**
- * Funckja incjalizuj¹ca OpenGL. Funckja ta incjalizuje odpowiednie zmienne OpenGL, kamerê, œwiat³o oraz macierz perspektywy.
- */
+/**
+* Funckja incjalizuj¹ca OpenGL. Funckja ta incjalizuje odpowiednie zmienne OpenGL, kamerê, œwiat³o oraz macierz perspektywy.
+*/
 void InitGL()
 {
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);				// Set background color
@@ -159,9 +159,9 @@ void InitGL()
 }
 
 
- /**
- * Funckja incjalizuj¹ca bibliotekê GLUT. Funckja ta inijaclizujê bibliotekê GLUT, która s³y¿y do zarz¹dzania oknem oraz zdarzeniami, przekazuje jej niezbêdne wskaŸniki do funkcji obs³ugi zdarzeñ.
- */
+/**
+* Funckja incjalizuj¹ca bibliotekê GLUT. Funckja ta inijaclizujê bibliotekê GLUT, która s³y¿y do zarz¹dzania oknem oraz zdarzeniami, przekazuje jej niezbêdne wskaŸniki do funkcji obs³ugi zdarzeñ.
+*/
 void InitGlut(int argc, char * argv[])
 {
 	glutInit(&argc, argv);// inicjalizacja biblioteki GLUT
@@ -182,9 +182,9 @@ void InitGlut(int argc, char * argv[])
 
 
 
- /**
- * Funckja incjalizuj¹ca Shadery wykorzystywane w programie.
- */
+/**
+* Funckja incjalizuj¹ca Shadery wykorzystywane w programie.
+*/
 void InitShaders()
 {
 	const Vector4f fogColor(0.5f, 0.5f, 0.5f, 1.f);
@@ -384,7 +384,7 @@ void ProcessAndRender()
 	RenderTowers(p);
 	RenderEnemies(p);
 	ProcessAndRenderMissiles(p);
-	
+
 	lvl->currentWave->ClearDead();
 	lvl->AdvanceToNextWave();
 
