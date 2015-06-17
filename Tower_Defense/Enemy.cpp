@@ -63,7 +63,7 @@ void Enemy::UpdatePosition(Pipeline *p, Camera* cam)
 	{
 		HP = 0;
 		pathIndex = 0;
-		Player::getPlayer().LooseLive(Attack);
+		Player::GetPlayer().LooseLive(Attack);
 	}
 }
 

@@ -418,7 +418,7 @@ void CheckMouseLeftClick()
 	pair<float, float> closest;
 	if (mouse.DistToClosest(lvl->path->possibleTowerPoints, closest) < 20.f)
 	{
-		if ((Player::getPlayer().money >= Tower::cost))
+		if ((Player::GetPlayer().money >= Tower::cost))
 		{
 			if ((hud->selectedTower == NO_SELECTION))
 			{
@@ -443,7 +443,7 @@ void CheckMouseLeftClick()
 					tower->LoadMissile(22);
 				}
 				lvl->towerList.push_back(tower);
-				Player::getPlayer().TowerBuy();
+				Player::GetPlayer().TowerBuy();
 				hud->action = DO_NOTHING;
 				hud->selectedTower = NO_SELECTION;
 			}
@@ -515,7 +515,7 @@ void RenderHud()
 		hud->Draw(lvl->currentWave->activeEnemies->size() + lvl->currentWave->inactiveEnemies->size());
 	}
 
-	if (Player::getPlayer().lives == 0)
+	if (Player::GetPlayer().lives == 0)
 		hud->DrawGameOverInfo();
 	if (lvl->IsWon())
 		hud->DrawYouWonInfo();
@@ -528,7 +528,7 @@ void RenderHud()
 void PrepareNewGame()
 {
 	delete lvl;
-	Player::getPlayer().Init(3, 30);
+	Player::GetPlayer().Init(3, 30);
 	lvl = new Level();
 	lvl->cam = cam;
 	lvl->LoadFromFile(Level::Filename(1));
@@ -608,7 +608,7 @@ void Keyboard(unsigned char key, int x, int y)
 		lvl->towerList.clear();
 		string nextLevelFile = Level::Filename(lvl->levelNumber + 1);
 		delete lvl;
-		Player::getPlayer().Init(3, 30);
+		Player::GetPlayer().Init(3, 30);
 		lvl = new Level();
 		lvl->cam = cam;
 		if(!lvl->LoadFromFile(nextLevelFile))

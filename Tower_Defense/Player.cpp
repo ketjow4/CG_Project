@@ -1,12 +1,5 @@
 #include "Player.h"
 
-
-
-void Player::AddMoneyWaveCompleted(int howMany)
-{
-	this->money += howMany; 
-}
-
 void Player::TowerBuy()
 {
 	money -= 10;

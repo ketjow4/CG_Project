@@ -131,9 +131,9 @@ void GameHUD::DrawGameInfo(const int &enemiesLeft)
 {
 	//text->RenderText("Tower Defense, version ALPHA", 10, 10, 1, glm::vec3(0, 1, 0));
 	draw2d.RenderQuad(0, 454, 640, 26, 1, BackgroundImg);
-	text->RenderText("LIVES: " + std::to_string(Player::getPlayer().lives), 10, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
+	text->RenderText("LIVES: " + std::to_string(Player::GetPlayer().lives), 10, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
 	text->RenderText("ENEMIES: " + std::to_string(enemiesLeft), 110, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
-	text->RenderText("MONEY: " + std::to_string(Player::getPlayer().money) + " $", 250, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
+	text->RenderText("MONEY: " + std::to_string(Player::GetPlayer().money) + " $", 250, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
 }
 
 void GameHUD::DrawButtons()

@@ -22,20 +22,29 @@ class SkinnedMesh : public Renderable
 {
 public:
 	SkinnedMesh(int selectMaterial = 0);
-
     ~SkinnedMesh();
-
+	/**
+	* Funkcja ³aduj¹ca model z pliku.
+	* @param Filename plik z opisem modelu
+	*/
     bool LoadMesh(const string& Filename);
-
+	/**
+	* Funkcja wyœwietla obiekt.
+	*/
     void Render();
-	
+	/**
+	* Funkcja zwraca liczbê koœci.
+	*/
     uint NumBones() const
     {
         return m_NumBones;
     }
-    
+	/**
+	* Funkcja dokonuje transfrmacji koœci.
+	* @param TimeInSeconds czas w sekundach
+	* @param Transforms transformacje koœci
+	*/
     void BoneTransform(float TimeInSeconds, vector<Matrix4f>& Transforms);
-    
 private:
     #define NUM_BONES_PER_VEREX 4
 	string materialName;
