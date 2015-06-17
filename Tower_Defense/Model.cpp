@@ -1,6 +1,7 @@
 #include "Model.h"
 #include <assert.h>
 
+std::string Mesh::defaultTexture = "Models/white.png";
 
 MeshEntry::MeshEntry()
 	: VB(INVALID_OGL_VALUE), IB(INVALID_OGL_VALUE), NumIndices(0), MaterialIndex(INVALID_MATERIAL), boundingCylinder(0)
@@ -184,12 +185,11 @@ bool Mesh::InitMaterials(const aiScene* pScene, const std::string& Filename)
         }
 
         // Load a white texture in case the model does not include its own texture
-        //if (!m_Textures[i]) 
-		//{
-        //    m_Textures[i] = new Texture(GL_TEXTURE_2D, "Models/white.png");
-
-        //    Ret = m_Textures[i]->Load();
-        //}
+        if (!m_Textures[i]) 
+		{
+            m_Textures[i] = new Texture(GL_TEXTURE_2D, Mesh::defaultTexture);
+            Ret = m_Textures[i]->Load();
+        }
     }
 
     return Ret;

@@ -56,6 +56,8 @@ struct Vertex
 class Mesh : public Renderable
 {
 public:
+	/** Domyœlna tekstura */
+	static std::string defaultTexture;
 	/** Zbiór elementów sk³adaj¹cych siê na ca³y model */
 	std::vector<MeshEntry> m_Entries;
 

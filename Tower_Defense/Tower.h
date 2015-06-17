@@ -48,9 +48,10 @@ public:
 	/**
 	* Funkcja aktualizuj¹ca pozycjê pocisków, sprawdzaj¹ca ewenlutalne kolizje oraz wyœwietlaj¹ca je.
 	* @param p potok
+	* @param cam kamera
 	* @param enemies wszyscy aktywni przeciwnicy
 	*/
-	void UpdateMissiles(Pipeline * p, list<Enemy*> *enemies);
+	void UpdateMissiles(Pipeline* p, Camera* cam,  list<Enemy*> *enemies);
 	/**
 	* Funkcja skraca czas prze³adowywania.
 	*/
@@ -80,8 +81,9 @@ public:
 	* Funkcja wyœwietlaj¹ca pocisk.
 	* @param missile pocisk
 	* @param p potok
+	* @param cam kamera
 	*/
-	void RenderMissile(Missile *missile, Pipeline *p);
+	void RenderMissile(Missile *missile, Pipeline *p, Camera* cam);
 	/**
 	* Funkcja obliczaj¹ca transformacje koœci na potrzeby animacji.
 	*/
@@ -103,7 +105,7 @@ private:
 	Mesh *missileModel;
 	int missileType;
 	
-	void UpdateMissile(Pipeline * p, Missile* missile, list<Enemy*> *enemies);
+	void UpdateMissile(Pipeline * p, Camera* cam, Missile* missile, list<Enemy*> *enemies);
 	void LimitTowerPosition();
 };
 
