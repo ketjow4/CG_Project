@@ -4,10 +4,8 @@
 void Text::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
 {
 	// Activate corresponding render state	
-
 	//Create ortographic projection matrix
 	Matrix4f mat = Matrix4f(2.0 / (screenWidth - 0.0), 0, 0, -(screenWidth + 0.0) / (screenWidth - 0.0), 0, 2.0 / (screenHeight - 0.0), 0, -(screenHeight + 0) / (screenHeight - 0), 0, 0, -2.0 / (1.0 + 1.0), -(1.0 - 1.0) / (1.0 + 1.0), 0, 0, 0, 1);
-
 
 	this->Enable();
 	glUniformMatrix4fv(this->GetUniformLocation("projection"), 1, GL_TRUE, (const GLfloat*)mat);
@@ -56,8 +54,8 @@ void Text::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm
 
 Text::Text(int fontSize)
 {
-	screenHeight = 480.0;
-	screenWidth = 640.0;
+	screenHeight = WINDOW_HEIGHT;
+	screenWidth = WINDOW_WIDTH;
 	this->fontSize = fontSize;
 
 	FT_Library ft;
@@ -140,5 +138,4 @@ Text::Text(int fontSize)
 }
 
 Text::~Text()
-{
-}
+{}

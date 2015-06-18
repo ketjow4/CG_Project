@@ -1,9 +1,7 @@
 #include "Terrain.h"
 
 Terrain::Terrain()
-{
-}
-
+{}
 
 Terrain::~Terrain()
 {
@@ -123,17 +121,6 @@ void Terrain::Init(const string &heightMap, const string &texture, float heightF
 
 	vector<Vertex> Vertices;
 	vector<unsigned int> Indices;
-	/*struct PairedTrianglesNormals
-	{
-		Vector3f *t1BottomLeft, *t1UpperLeft, *t1UpperRight;
-		Vector3f *t2BottomLeft, *t2UpperRight, *t2BottomRight;
-	};
-	vector<vector<PairedTrianglesNormals>> triangles(this->width);
-	for (vector<vector<PairedTrianglesNormals>>::iterator it = triangles.begin(); it != triangles.end(); ++it)
-		it->resize(this->height);
-	vector<vector<Vector3f>> flatNormals(this->width);
-	for (vector<vector<Vector3f>>::iterator it = flatNormals.begin(); it != flatNormals.end(); ++it)
-		it->resize(this->height);*/
 
 	unsigned int index = 0;
 	for (int i = 1; i < this->width; ++i)
@@ -146,74 +133,60 @@ void Terrain::Init(const string &heightMap, const string &texture, float heightF
 			triangle.vertices[1] = Vector3f(vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z);
 			triangle.vertices[2] = Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z);
 			Vector3f triangleNormal = GetNormal(triangle) * -1.f;
-			//flatNormals[i][j] = triangleNormal;
-			//PairedTrianglesNormals &ptn = triangles[i][j];
 
 			Vertex t1BottomLeft
 				(
 				Vector3f( vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z ),
 				Vector2f( texCoordS, texCoordT ),
 				triangleNormal
-				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1BottomLeft);
 			AddThreeIndices(Indices, index);
-			//ptn.t1BottomLeft = &t1BottomLeft.m_normal;
 
 			Vertex t1UpperLeft
 				(
 				Vector3f(vertices[i][j - 1].x, vertices[i][j - 1].y, vertices[i][j - 1].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT),
 				triangleNormal
-				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1UpperLeft);
 			AddThreeIndices(Indices, index);
-			//ptn.t1UpperLeft = &t1UpperLeft.m_normal;
 
 			Vertex t1UpperRight
 				(
 				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
 				triangleNormal
-				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t1UpperRight);
 			AddThreeIndices(Indices, index);
-			//ptn.t1UpperRight = &t1UpperRight.m_normal;
 
 			Vertex t2BottomLeft
 				(
 				Vector3f(vertices[i - 1][j - 1].x, vertices[i - 1][j - 1].y, vertices[i - 1][j - 1].z),
 				Vector2f(texCoordS, texCoordT),
 				triangleNormal
-				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2BottomLeft);
 			AddThreeIndices(Indices, index);
-			//ptn.t2BottomLeft = &t2BottomLeft.m_normal;
 
 			Vertex t2UpperRight
 				(
 				Vector3f(vertices[i][j].x, vertices[i][j].y, vertices[i][j].z),
 				Vector2f(texCoordS + texCoordSStep, texCoordT + texCoordTStep),
 				triangleNormal
-				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2UpperRight);
 			AddThreeIndices(Indices, index);
-			//ptn.t2UpperRight = &t2UpperRight.m_normal;
 
 			Vertex t2BottomRight
 				(
 				Vector3f(vertices[i - 1][j].x, vertices[i - 1][j].y, vertices[i - 1][j].z),
 				Vector2f(texCoordS, texCoordT + texCoordTStep),
 				triangleNormal
-				//Vector3f(0.0, 0.0, -1.0)
 				);
 			Vertices.push_back(t2BottomRight);
 			AddThreeIndices(Indices, index);
-			//ptn.t2BottomRight = &t2BottomRight.m_normal;
 
 			texCoordT += texCoordTStep;
 		}

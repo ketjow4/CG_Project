@@ -8,6 +8,7 @@
 #include "Technique.h"
 #include "glm\glm.hpp"
 #include "math_3d.h"
+#include "GameConstsDefinitions.h"
 
 struct Character 
 {

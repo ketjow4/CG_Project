@@ -5,6 +5,7 @@
 class AnimatedModelTechnique : public ModelTechnique 
 {
 public:
+	/** Maksymalna liczba koœci */
     static const uint MAX_BONES = 100;
 
     AnimatedModelTechnique();

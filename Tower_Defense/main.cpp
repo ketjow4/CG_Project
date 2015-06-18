@@ -9,16 +9,8 @@
 #include "Player.h"
 #include "GameMenu.h"
 #include "GameHUD.h"
-#include "Player.h"
-#include "GameConstsDefinitions.h"
 #include "Mouse.h"
-#include "PickingTexture.h"
-#include "PickingTechnique.h"
 #include "Level.h"
-#include "ShadowMapFBO.h"
-#include "SimpleShadowTechnique.h"
-#include "AnimatedShadowTechnique.h"
-#include "SimpleModelTechnique.h"
 #include "Audio.h"
 
 const int refreshMills = 30;
@@ -190,24 +182,7 @@ void InitShaders()
 	const Vector4f fogColor(0.5f, 0.5f, 0.5f, 1.f);
 	const float fogDensity = 0.003f;
 
-	m_shadowMapFBO = new ShadowMapFBO();
-	if (!m_shadowMapFBO->Init(WINDOW_WIDTH, WINDOW_HEIGHT))
-		exit(-1);
-	m_simpleShadowEffect = new SimpleShadowTechnique();
-	if (!m_simpleShadowEffect->Init())
-	{
-		printf("Error initializing the shadow map technique\n");
-		exit(-1);
-	}
-	m_animatedShadowEffect = new AnimatedShadowTechnique();
-	if (!m_animatedShadowEffect->Init())
-	{
-		printf("Error initializing the skinned shadow map technique\n");
-		exit(-1);
-	}
-
-	simpleModel = Engine::GetEngine().GetSimpleModel();
-	simpleModel->Init();		//very important
+	simpleModel = Engine::GetEngine()->GetSimpleModel();
 	simpleModel->Enable();
 	simpleModel->SetSpotLights(1, sl);
 	simpleModel->SetColorTextureUnit(0);
@@ -215,18 +190,17 @@ void InitShaders()
 	simpleModel->SetFogColor(fogColor);
 	simpleModel->SetFogDensity(fogDensity);
 
-	animatedModel = Engine::GetEngine().GetAnimatedModel();
-	animatedModel->Init();
+	animatedModel = Engine::GetEngine()->GetAnimatedModel();
 	animatedModel->Enable();
 	animatedModel->SetSpotLights(1, sl);
 	animatedModel->SetFogColor(fogColor);
 	animatedModel->SetFogDensity(fogDensity);
 
-	m_pickingTexture = Engine::GetEngine().GetpickingTexture();
-	m_pickingTexture->Init(WINDOW_WIDTH, WINDOW_HEIGHT);
-
-	m_pickingEffect = Engine::GetEngine().GetPickingEffect();
-	m_pickingEffect->Init();
+	m_pickingTexture = Engine::GetEngine()->GetPickingTexture();
+	m_pickingEffect = Engine::GetEngine()->GetPickingEffect();
+	m_simpleShadowEffect = Engine::GetEngine()->GetSimpleShadow();
+	m_animatedShadowEffect = Engine::GetEngine()->GetAnimatedShoadow();
+	m_shadowMapFBO = Engine::GetEngine()->GetShadowMapFBO();
 
 	text = new Text(24);
 }

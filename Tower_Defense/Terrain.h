@@ -32,7 +32,7 @@ public:
 	*/
 	float GetTerrainHeight(float x, float z);
 	/**
-	* Funkcja wyœwietlaj¹ca obiekt.
+	* Funkcja wyœwietlaj¹ca teren.
 	*/
 	void Render();
 private:

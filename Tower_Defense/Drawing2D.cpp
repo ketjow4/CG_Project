@@ -14,26 +14,16 @@ Drawing2D::~Drawing2D(void)
 bool Drawing2D::Init()
 {
     if (!Technique::Init()) 
-	{
         return false;
-    }
 
-    if (!AddShader(GL_VERTEX_SHADER, "Shaders/Drawing2D.vs")) 
-	{
+    if (!AddShader(GL_VERTEX_SHADER, "Shaders/drawing2d.vs")) 
         return false;
-    }
 
-
-    if (!AddShader(GL_FRAGMENT_SHADER, "Shaders/Drawing2D.fs")) 
-	{
+    if (!AddShader(GL_FRAGMENT_SHADER, "Shaders/drawing2d.fs")) 
         return false;
-    }
 
     if (!Finalize()) 
-	{
         return false;
-    }
-
 
 	m_WVPLocation = GetUniformLocation("gWVP");
 	m_ColorLocation = GetUniformLocation("m_Color");
