@@ -75,13 +75,6 @@ GameHUD::~GameHUD()
 void GameHUD::Draw(const int &enemiesLeft)
 {
 	// ---- 2D drawing on screen eg. menu text etc.
-
-	//just draw here like in game menu
-	////draw2D.Enable();
-
-	////draw2D.RenderQuad(0,0,640,480,1,BackgroundImg);				//drawing quad with texture texture must be loaded succesful before
-
-	////draw2D.RenderQuad(250,340,150,40,0,NULL, Vector3f(0.2,1.0,0.0));	//draw regular quad in one color 
 	draw2d.Enable();
 	this->DrawGameInfo(enemiesLeft);
 	this->DrawButtons();
@@ -129,7 +122,6 @@ void GameHUD::DrawYouWonInfo()
 
 void GameHUD::DrawGameInfo(const int &enemiesLeft)
 {
-	//text->RenderText("Tower Defense, version ALPHA", 10, 10, 1, glm::vec3(0, 1, 0));
 	draw2d.RenderQuad(0, 454, 640, 26, 1, BackgroundImg);
 	text->RenderText("LIVES: " + std::to_string(Player::GetPlayer().lives), 10, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
 	text->RenderText("ENEMIES: " + std::to_string(enemiesLeft), 110, 460, 1, glm::vec3(0.8f, 0.8f, 0.8f));
@@ -229,10 +221,9 @@ int GameHUD::CheckWhereMouseClickedAndReact(int x, int y)
 			break;
 		}
 	}
-	//std::cout << "x " << x << "y " << y << std::endl;
 }
 
-int GameHUD::ShowHide()
+int GameHUD::ShowHide() const
 {
 	return SHOW_HIDE_HUD;
 }

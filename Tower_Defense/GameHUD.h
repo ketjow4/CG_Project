@@ -10,20 +10,44 @@
 class GameHUD
 {
 public:
-	GameHUD();
-	~GameHUD();
-
-	void Draw(const int &enemiesLeft);
-	int  CheckWhereMouseClickedAndReact(int x, int y);
-	void CheckMouseMoveAndReact(int x, int y);
-	void DrawGameOverInfo();
-	void DrawYouWonInfo();
-	int  ShowHide();
-
+	/** Identyfikator wybranej wie¿y */
 	int selectedTower;
+	/** Identyfikator przycisku najechanego mysz¹ */
 	int buttonHover;
+	/** Identyfikator akcji do podjêcia */
 	int action;
 
+	GameHUD();
+	~GameHUD();
+	/**
+	* Funkcja wyœwietla HUD.
+	* @param enemiesLeft pozostali przeciwncy w danej fali
+	*/
+	void Draw(const int &enemiesLeft);
+	/**
+	* Funkcja obsu³gu¹ca zdarzenie klikniêcia myszy w menu. Zwraca identyfikator klikniêtego elementu.
+	* @param x znormalizowana wspó³rzêdna x kursora wzglêdem okna
+	* @param y znormalizowana wspó³rzêdna y kursora wzglêdem okna
+	*/
+	int CheckWhereMouseClickedAndReact(int x, int y);
+	/**
+	* Funkcja obsu³gu¹ca zdarzenie przesuniêcia myszy w menu.
+	* @param x znormalizowana wspó³rzêdna x kursora wzglêdem okna
+	* @param y znormalizowana wspó³rzêdna y kursora wzglêdem okna
+	*/
+	void CheckMouseMoveAndReact(int x, int y);
+	/**
+	* Funkcja wyœwietla informacje o pora¿ce.
+	*/
+	void DrawGameOverInfo();
+	/**
+	* Funkcja wyœwietla informacje o zwyciêstwie.
+	*/
+	void DrawYouWonInfo();
+	/**
+	* Funkcja zwraca identyfikator akcji zmiany widocznoœci HUD.
+	*/
+	int  ShowHide() const;
 private:
 
 	const static int FirstTowerX = 0;

@@ -132,7 +132,6 @@ int GameMenu::CheckWhereMouseClickedAndReact(int x, int y)
 	{
 		return END_GAME;
 	}
-	//std::cout << "x: " << x << "y: " << y << std::endl;
 	return DO_NOTHING;
 }
 
