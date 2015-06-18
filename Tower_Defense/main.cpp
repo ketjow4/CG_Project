@@ -297,6 +297,10 @@ void Display()
 	}
 }
 
+
+/**
+* Funkcja opakowuj¹ca, wywo³uje odpowiednie funkcje tak aby mo¿na by³o graæ, swego rodzaju pêtla g³ówna gry.
+*/
 void GameProgress()
 {
 	m_frameCount++;
@@ -312,6 +316,9 @@ void GameProgress()
 	ProcessAndRender();
 }
 
+/**
+* Funkcja obliczaj¹ca cienie w œwiecie gry, obliczana 1 raz na klatkê
+*/
 void CalcShadow()
 {
 	m_shadowMapFBO->BindForWriting();
@@ -347,6 +354,10 @@ void CalcShadow()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+
+/**
+* Funkcja renderuj¹ca modele w œwiecie. Odpowiada za rendering modeli statycznych i dynamicznych. Obs³uguje klikniêcia myszy, wyœwietla HUD oraz ustawia Pipeline
+*/
 void ProcessAndRender()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -393,6 +404,11 @@ void ProcessAndRender()
 	RenderHud();
 }
 
+
+/**
+* Oblicza wspó³rzêdne kliknêcia myszy na terenie. Zapewnia projekcjê przestrzeni 2D ekranu na przestrzeñ 3D gry (dok³adnie terenu)
+* @param p Pipeline przekazywany do funkcji aby umo¿liwiæ jej poprawne dzia³anie i wyœwietlanie grafiki
+*/
 void CalcPickingCoords(Pipeline &p)
 {
 	m_pickingTexture->EnableWriting();
@@ -408,6 +424,10 @@ void CalcPickingCoords(Pipeline &p)
 	m_pickingTexture->DisableWriting();
 }
 
+
+/**
+* Sprawdza i obs³ugujê klikniêcie myszy na ekranie gry. Wa¿ne nie odpowiada za klikniêcia elementów HUD.
+*/
 void CheckMouseLeftClick()
 {
 	if (!mouse.leftClick)
@@ -451,6 +471,10 @@ void CheckMouseLeftClick()
 	}
 }
 
+/**
+* Funkcja renderuj¹ca model terenu wystêpuj¹cy w grze
+* @param p Pipeline przekazywany do funkcji aby umo¿liwiæ jej poprawne dzia³anie i wyœwietlanie grafiki
+*/
 void RenderTerrain(Pipeline &p)
 {
 	p.Scale(1.f, 1.f, 1.f);
@@ -466,6 +490,10 @@ void RenderTerrain(Pipeline &p)
 	p.SetCamera(Vector3f(cam->eyex, cam->eyey, cam->eyez), Vector3f(cam->centerx, cam->centery, cam->centerz), cam->m_up);
 }
 
+/**
+* Funckja renderuj¹ca wszystkie wie¿e znajduj¹ce siê w grze (równie wywo³uje przeliczanie animacji).
+* @param p Pipeline przekazywany do funkcji aby umo¿liwiæ jej poprawne dzia³anie i wyœwietlanie grafiki
+*/
 void RenderTowers(Pipeline &p)
 {
 	animatedModel->Enable();
@@ -473,12 +501,20 @@ void RenderTowers(Pipeline &p)
 		lvl->towerList[i]->Render(&p, cam);
 }
 
+/**
+* Funckja renderuj¹ca wszyskich przeciwników w grze
+* @param p Pipeline przekazywany do funkcji aby umo¿liwiæ jej poprawne dzia³anie i wyœwietlanie grafiki
+*/
 void RenderEnemies(Pipeline &p)
 {
 	simpleModel->Enable();
 	lvl->currentWave->UpdatePosition();
 }
 
+/**
+* Przetwarza trajektoriê pocisków oraz renderuje pociski. Zapewnia równie¿ poprawne prze³adowanie pocisków.
+* @param p Pipeline przekazywany do funkcji aby umo¿liwiæ jej poprawne dzia³anie i wyœwietlanie grafiki
+*/
 void ProcessAndRenderMissiles(Pipeline &p)
 {
 	simpleModel->Enable();
@@ -502,6 +538,9 @@ void ProcessAndRenderMissiles(Pipeline &p)
 	}
 }
 
+/**
+* Renderuje HUD gracza na ekranie (wszystkie elementy interfejsu 2D)
+*/
 void RenderHud()
 {
 	glDepthMask(GL_FALSE);  // disable writes to Z-Buffer
@@ -525,6 +564,9 @@ void RenderHud()
 	glDepthMask(GL_TRUE);
 }
 
+/**
+* Przygotowuje now¹ grê poprzez odpowiedni¹ inicjalizajê zmiennych.
+*/
 void PrepareNewGame()
 {
 	delete lvl;
@@ -534,11 +576,18 @@ void PrepareNewGame()
 	lvl->LoadFromFile(Level::Filename(1));
 }
 
+/**
+* Restertujê grê od pocz¹tku
+*/
 void ResetGame()
 {
 	PrepareNewGame();
 }
 
+
+/**
+* Funkcja obs³ugujê komendy wysy³ane z menu g³ównego gry.
+*/
 void HandleUserCommand(int menuOption)
 {
 	switch (menuOption)
@@ -565,7 +614,9 @@ void HandleUserCommand(int menuOption)
 	}
 }
 
-// Change window size
+/**
+* Funkcja odpowiedzialna za zmianê rozmiaru okna
+*/
 void Reshape(int width, int height)
 {
 	// Compute aspect ratio of the new window
@@ -586,12 +637,18 @@ void Reshape(int width, int height)
 	m_shadowMapFBO->Init(width, height);
 }
 
+/**
+* Odpowiada za wyœwietlanie maksymalnej iloœci klatek.
+*/
 void Timer(int value)
 {
 	glutPostRedisplay();					// Post re-paint request to activate display()
 	glutTimerFunc(refreshMills, Timer, 0);	// next Timer call milliseconds later
 }
 
+/**
+* Funkcja odpowiedzialna za obs³ugê klawiatury w grze.
+*/
 void Keyboard(unsigned char key, int x, int y)
 {
 	const double angle = 5;
@@ -616,6 +673,9 @@ void Keyboard(unsigned char key, int x, int y)
 	}
 }
 
+/**
+* Funkcja odpowiedzialna za odpowiedni¹ obs³ugê klawiszy specjalnych (strze³ek na klawiaturze).
+*/
 void SpecialKeys(int key, int x, int y)
 {
 	const double movementSpeed = 10.0;
@@ -636,6 +696,9 @@ void SpecialKeys(int key, int x, int y)
 	}
 }
 
+/**
+* Funckja odpowiedzialna za obs³ugê myszki w grze.
+*/
 void MouseFunc(int button, int state, int x, int y)
 {
 	int result = DO_NOTHING;
@@ -659,11 +722,17 @@ void MouseFunc(int button, int state, int x, int y)
 		HandleUserCommand(result);
 }
 
+/**
+* 
+*/
 void MotionFunc(int x, int y)
 {
 	mouse.MouseMove(x, y);
 }
 
+/**
+* 
+*/
 void PassiveMotionFunc(int x, int y)
 {
 	mouse.MouseMove(x, y);
