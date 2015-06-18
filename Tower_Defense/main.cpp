@@ -363,7 +363,6 @@ void ProcessAndRender()
 	simpleModel->Enable();
 	simpleModel->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
 	simpleModel->SetDirectionalLight(m_directionalLight);
-	simpleModel->SetEyeWorldPos(Vector3f(cam->eyex, cam->eyey, cam->eyez));
 	simpleModel->SetMatSpecularIntensity(0.5f);
 	simpleModel->SetMatSpecularPower(2);
 
@@ -530,7 +529,7 @@ void RenderHud()
 
 	if (Player::GetPlayer().lives == 0)
 		hud->DrawGameOverInfo();
-	if (lvl->IsWon())
+	else if (lvl->IsWon())
 		hud->DrawYouWonInfo();
 
 	glDisable(GL_BLEND);
@@ -544,7 +543,7 @@ void RenderHud()
 void PrepareNewGame()
 {
 	delete lvl;
-	Player::GetPlayer().Init(3, 30);
+	Player::GetPlayer().Init(3, 25);
 	lvl = new Level();
 	lvl->cam = cam;
 	lvl->LoadFromFile(Level::Filename(1));
@@ -557,7 +556,6 @@ void ResetGame()
 {
 	PrepareNewGame();
 }
-
 
 /**
 * Funkcja obs³ugujê komendy wysy³ane z menu g³ównego gry.
@@ -634,7 +632,7 @@ void Keyboard(unsigned char key, int x, int y)
 	{
 		cam->Rotate(angle);	//kat_obrotu -= 5;
 	}
-	if (key == 'n' && lvl->IsWon())
+	if (key == 'n' && lvl->IsWon() && Player::lives > 0)
 	{
 		lvl->towerList.clear();
 		string nextLevelFile = Level::Filename(lvl->levelNumber + 1);

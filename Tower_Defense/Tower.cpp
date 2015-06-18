@@ -63,7 +63,7 @@ void Tower::UpdateMissile(Pipeline *p, Camera* cam, Missile *missile, list<Enemy
 					(*it)->poison.duration = 300;
 					break;
 				default:
-					(*it)->HP -= 30;
+					(*it)->HP -= 18;
 					break;
 			}
 			missile->lifetime = 0;

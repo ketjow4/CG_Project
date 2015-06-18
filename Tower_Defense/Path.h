@@ -52,8 +52,8 @@ private:
 	// Red (255,0,0)
 	const static RgbPoint endPoint;
 	const static char endPointChar = 'e';
-	// Magenta (255,0,255)
-	const static RgbPoint towerPoint;
+	// Magenta (255,0,255) / Yellow (255,255,0)
+	const static RgbPoint towerPoint, alternativeTowerPoint;
 	const static char towerPointChar = 't';
 	// Default
 	const static char defaultPointChar = '-';

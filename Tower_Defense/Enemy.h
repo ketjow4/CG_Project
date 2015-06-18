@@ -21,7 +21,7 @@ public:
 	/** Pozosta³e punkty ¿ycia */
 	double HP;
 	/** Obra¿enia po przejœciu œcie¿ki */
-	double Attack;
+	int Attack;
 	/** Identyfikator efektu */
 	int effectId;
 	/** Efekt trucizny */

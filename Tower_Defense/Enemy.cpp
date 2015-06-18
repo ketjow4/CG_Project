@@ -61,7 +61,7 @@ void Enemy::UpdatePosition(Pipeline *p, Camera* cam)
 
 	if (++pathIndex >= path->pathPoints.size() - 1)				//object arrived at end point 
 	{
-		HP = 0;
+		HP = INT32_MIN;
 		pathIndex = 0;
 		Player::GetPlayer().LooseLive(Attack);
 	}

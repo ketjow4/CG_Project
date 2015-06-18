@@ -4,13 +4,13 @@ const Path::RgbPoint Path::pathPoint(0, 0, 0);
 const Path::RgbPoint Path::beginPoint(0, 0, 255);
 const Path::RgbPoint Path::endPoint(255, 0, 0);
 const Path::RgbPoint Path::towerPoint(255, 0, 255);
+const Path::RgbPoint Path::alternativeTowerPoint(255, 255, 0);
 
 Path::Path()
 {}
 
 Path::~Path()
-{
-}
+{}
 
 void Path::Init(const string &filename)
 {
@@ -184,7 +184,7 @@ char Path::RgbToPointChar(const RgbPoint &rgbPoint) const
 		return Path::beginPointChar;
 	if (rgbPoint == Path::endPoint)
 		return Path::endPointChar;
-	if (rgbPoint == Path::towerPoint || rgbPoint == RgbPoint( 255, 255, 0 ))
+	if (rgbPoint == Path::towerPoint || rgbPoint == Path::alternativeTowerPoint)
 		return Path::towerPointChar;
 	return defaultPointChar;
 }

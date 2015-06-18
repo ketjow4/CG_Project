@@ -13,6 +13,9 @@
 class Engine
 {
 public:
+	/**
+	* Funckja zwraca czas od inicjalizacji silnika.
+	*/
 	float GetRunningTime();
 	SimpleModelTechnique* GetSimpleModel() { return simpleModel; }
 	AnimatedModelTechnique* GetAnimatedModel() {return animatedModel;}
